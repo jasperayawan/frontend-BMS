@@ -16,7 +16,7 @@ export const useLogout = () => {
         }
         catch(error){
             console.log(error)
-        } finally {P
+        } finally {
             setLoading(false)
         }
     }

@@ -11,11 +11,14 @@ const router = () => {
   return (
     <Routes>
         <Route path="/" element={<App />}>
-            <Route path="/" element={<Login />}/>
-            <Route path="/home" element={<ProtectedRoute element={<Home />}/>}/>
-            <Route path="/signup" element={<Signup />}/>
-            <Route path="/forgot" element={<ForgotPass />}/>
+            {/* Public Routes */}
+            <Route path="/" element={<ProtectedRoute element={<Login />}/>}/>
+            <Route path="/signup" element={<ProtectedRoute element={<Signup />}/>}/>
+            <Route path="/forgot" element={<ProtectedRoute element={<ForgotPass />}/>}/>
             <Route path="/reset-password" element={<ResetPassword />}/>
+
+            {/* Protected Route */}
+            <Route path="/home" element={<ProtectedRoute element={<Home />}/>}/>
         </Route>
     </Routes>
   )
