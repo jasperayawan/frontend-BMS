@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react'
 import Parse from 'parse/dist/parse.min.js';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-
+import { FaEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
+  const [seePass, setSeePass] = useState("password")
   const navigate = useNavigate()
 
   const validateInputs = () => {
@@ -66,6 +68,13 @@ const Login = () => {
   }
 
 
+  const handleSeepassword = (e, data) => {
+    e.preventDefault();
+
+    setSeePass(data)
+  }
+
+
   useEffect(() => {
     const checkUser = async () => {
       const isAuthenticated = await Parse.User.current();
@@ -90,10 +99,15 @@ const Login = () => {
                 <input type="email" onChange={(e) => setEmail(e.target.value)} id='email' className='border-[1.5px] border-zinc-400 rounded-md px-3 py-2'/>
                 {errors.email && <p className="text-red-500 text-sm text-start w-full mt-1">{errors.email}</p>}
             </label>
-            <label htmlFor="password" className='flex flex-col w-full'>
+            <label htmlFor="password" className='flex flex-col w-full relative'>
                 Password *
-                <input type="password" onChange={(e) => setPassword(e.target.value)} id='password' className='border-[1.5px] border-zinc-400 rounded-md px-3 py-2'/>
+                <input type={seePass} onChange={(e) => setPassword(e.target.value)} id='password' className='border-[1.5px] border-zinc-400 rounded-md px-3 py-2'/>
                 {errors.password && <p className="text-red-500 text-sm text-start w-full mt-1">{errors.password}</p>}
+                {seePass === 'password' ? (
+                  <FaRegEyeSlash onClick={(e) => handleSeepassword(e, "text")} className='absolute top-9 right-2 cursor-pointer'/>
+                ) : (
+                  <FaEye onClick={(e) => handleSeepassword(e, "password")} className='absolute top-9 right-2 cursor-pointer'/>
+                )}
             </label>
             <a href="/forgot" className='underline ms-auto'>Forgot Password?</a>
             <button type='submit' disabled={loading} className='mx-auto w-[max-content] px-6 py-2 rounded-md bg-zinc-600 text-zinc-300'>
