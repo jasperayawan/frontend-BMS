@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Parse from 'parse/dist/parse.min.js';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -63,6 +64,20 @@ const Login = () => {
       setLoading(false)
     }
   }
+
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const isAuthenticated = await Parse.User.current();
+
+      if(isAuthenticated){
+        navigate('/home')
+      } else {
+        navigate('/')
+      }
+    }
+    checkUser()
+  },[])
 
 
   return (
