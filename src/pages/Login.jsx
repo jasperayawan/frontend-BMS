@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import Parse from 'parse/dist/parse.min.js';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
+  const navigate = useNavigate()
 
   const validateInputs = () => {
     const newErrors = { email: '', password: '' };
@@ -39,15 +41,17 @@ const Login = () => {
       query.equalTo('users', loggedInUser);
       const roles = await query.find();
   
-      const userRoles = roles.map(role => role.get('name')); 
+      // const userRoles = roles.map(role => role.get('name')); 
       toast.success('login successfully!');
-
-      console.log({
-        message: 'Login successful',
-        username: loggedInUser.get('username'),
-        sessionToken: loggedInUser.getSessionToken(),
-        roles: userRoles 
-      });
+      localStorage.setItem('sessionToken', loggedInUser.getSessionToken());
+      navigate('/home')
+      
+      // console.log({
+      //   message: 'Login successful',
+      //   username: loggedInUser.get('username'),
+      //   sessionToken: loggedInUser.getSessionToken(),
+      //   roles: userRoles 
+      // });
       
     } catch (error){
       toast.error("error", error);
@@ -78,7 +82,7 @@ const Login = () => {
             </label>
             <a href="/forgot" className='underline ms-auto'>Forgot Password?</a>
             <button type='submit' disabled={loading} className='mx-auto w-[max-content] px-6 py-2 rounded-md bg-zinc-600 text-zinc-300'>
-              {loading ? 'loading' : 'LOGIN'}
+              {loading ? 'loading...' : 'LOGIN'}
             </button>
         </form>
       </div>
