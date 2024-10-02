@@ -1,6 +1,9 @@
 import React from 'react'
+import Parse from 'parse/dist/parse.min.js';
 
 const Header = () => {
+    const isAuthenticated = Parse.User.current();
+
   return (
     <div className="flex flex-col w-full">
         <div className='flex flex-row justify-between items-center px-10 py-4 h-[150px] bg-yellow-500'>
@@ -11,16 +14,18 @@ const Header = () => {
         </h2>
         <img src="/pagadianlogo.svg" alt="" />
         </div>
-        <ul className='flex justify-between items-center px-4 py-1 border-b-[1px] border-yellow-600'>
-            <li>PATIENT</li>
-            <li>EMPLOYEE</li>
-            <li>SERVICES</li>
-            <li>GALLERY</li>
-            <li>CONTACT US</li>
-            <li>ABOUT US</li>
-            <li>USERS ACCOUNT</li>
-            <li>MY ACCOUNT</li>
-        </ul>
+        {isAuthenticated && (
+            <ul className='flex justify-between items-center px-20 py-1 border-b-[1px] border-yellow-600'>
+                <li>PATIENT</li>
+                <li>EMPLOYEE</li>
+                <li>SERVICES</li>
+                <li>GALLERY</li>
+                <li>CONTACT US</li>
+                <li>ABOUT US</li>
+                <li>USERS ACCOUNT</li>
+                <li>MY ACCOUNT</li>
+            </ul>
+        )}
     </div>
   )
 }
