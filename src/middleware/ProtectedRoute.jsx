@@ -43,7 +43,7 @@ const ProtectedRoute = ({ element }) => {
 
 
   if (isAuthenticated && restrictedForAuthenticated.includes(normalizedPathname)) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/" />;
   }
 
   if (!isAuthenticated && protectedPathsForUnauthenticated.includes(normalizedPathname)) {

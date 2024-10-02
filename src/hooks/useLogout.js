@@ -12,7 +12,7 @@ export const useLogout = () => {
         try{
             await Parse.User.logOut();
             localStorage.removeItem("sessionToken")
-            navigate('/')
+            window.location.reload();
         }
         catch(error){
             console.log(error)

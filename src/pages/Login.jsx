@@ -47,7 +47,8 @@ const Login = () => {
       // const userRoles = roles.map(role => role.get('name')); 
       toast.success('login successfully!');
       localStorage.setItem('sessionToken', loggedInUser.getSessionToken());
-      navigate('/home')
+      window.location.reload();
+      navigate('/')
       
       // console.log({
       //   message: 'Login successful',
