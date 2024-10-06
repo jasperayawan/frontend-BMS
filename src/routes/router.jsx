@@ -7,6 +7,7 @@ import ForgotPass from "../pages/ForgotPass"
 import ResetPassword from "../pages/ResetPassword"
 import ProtectedRoute from "../middleware/ProtectedRoute"
 import Parse from 'parse/dist/parse.min.js';
+import Patient from "../pages/Patient"
 
 const router = () => {
   const user = Parse.User.current();
@@ -19,6 +20,8 @@ const router = () => {
             <Route path="/signup" element={<ProtectedRoute element={<Signup />}/>}/>
             <Route path="/forgot" element={<ProtectedRoute element={<ForgotPass />}/>}/>
             <Route path="/reset-password" element={<ResetPassword />}/>
+
+            <Route path="/patient" element={<Patient />}/>
         </Route>
     </Routes>
   )
