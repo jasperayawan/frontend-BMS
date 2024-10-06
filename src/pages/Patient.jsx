@@ -95,7 +95,7 @@ const Patient = () => {
     <div className="flex justify-center items-center mt-20">
      {
         isModalOpen && (
-            <PatientModal patientData={patientData}/>
+            <PatientModal patientData={patientData} setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}/>
         )
      }
       <div className="flex flex-col gap-y-10">
