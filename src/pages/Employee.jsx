@@ -1,19 +1,21 @@
 import React, { useState, useRef } from "react";
 import { EmployeeData } from "../helper/DummyData";
+import EmployeeModal from "../components/EmployeeModal";
 
 const Employee = () => {
   const [searchType, setSearchType] = useState("ALL");
   const [searchInput, setSearchInput] = useState("");
   const [isPrint, setIsPrint] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [patientData, setPatientData] = useState(null);
-  const [view, setView] = useState(false)
+  const [employeeData, setEmployeeData] = useState(null);
+  const [view, setView] = useState(false);
+  const [viewClick, setViewClick] = useState(false);
 
   const componentRef = useRef(null);
 
   const handleOpenModal = (data) => {
     setIsModalOpen(true);
-    setPatientData(data);
+    setView(!view);
   };
 
   const handlePrint = () => {
@@ -140,13 +142,20 @@ const Employee = () => {
 
   return (
     <div className="flex justify-center items-center mt-20">
+      {view && (
+        <EmployeeModal
+          employeeData={employeeData}
+          setView={setView}
+          view={view}
+          handlePrint={handlePrint}
+        />
+      )}
 
       <div className="flex flex-col gap-y-10">
         <h1 className="text-2xl flex justify-center items-center font-semibold">
           EMPLOYEE LIST
         </h1>
         <div className="flex flex-col gap-y-3">
-
           <div ref={componentRef}>
             <table className="table-auto">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-orange-500 dark:text-slate-800">
@@ -170,7 +179,10 @@ const Employee = () => {
                     EMAIL
                   </th>
                   <th scope="col" className="py-2">
-                   STATUS
+                    STATUS
+                  </th>
+                  <th scope="col" className="py-2">
+                    ACTION
                   </th>
                 </tr>
               </thead>
@@ -179,7 +191,10 @@ const Employee = () => {
                   EmployeeData.map((data) => (
                     <tr
                       key={data.id}
-                      onClick={() => setView(!view)}
+                      onClick={() => {
+                        setViewClick(!viewClick);
+                        setEmployeeData(data);
+                      }}
                       className="bg-white border-b dark:bg-gray-200 dark:border-gray-700 cursor-pointer"
                     >
                       <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
@@ -203,6 +218,19 @@ const Employee = () => {
                       <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
                         ACTIVE
                       </td>
+                      <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
+                        <div className="flex gap-x-2">
+                            <button className="bg-zinc-700 text-white font-bold py-2 px-4 rounded">
+                            Edit
+                            </button>
+                            <button
+                            onClick={handleOpenModal}
+                            className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                            VIEW
+                            </button>
+                        </div>
+                      </td>
                     </tr>
                   ))
                 ) : (
@@ -220,22 +248,8 @@ const Employee = () => {
           </div>
 
           <div className="flex justify-center mt-5 gap-x-3">
-            {view && (
-                <button
-                className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                    VIEW
-                </button>
-            )}
-            <button
-              className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
+            <button className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               ADD
-            </button>
-            <button
-              className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Edit
             </button>
           </div>
         </div>
