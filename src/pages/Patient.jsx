@@ -6,20 +6,19 @@ const Patient = () => {
   const [searchType, setSearchType] = useState("ALL");
   const [searchInput, setSearchInput] = useState("");
   const [isPrint, setIsPrint] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [patientData, setPatientData] = useState(null)
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [patientData, setPatientData] = useState(null);
+
   const componentRef = useRef(null);
 
   const handleOpenModal = (data) => {
-    setIsModalOpen(true)
+    setIsModalOpen(true);
     setPatientData(data);
-  }
-
+  };
 
   const handlePrint = () => {
     const printContent = componentRef.current;
-    const printWindow = window.open('', '_blank');
+    const printWindow = window.open("", "_blank");
     setIsPrint(true);
 
     if (printWindow) {
@@ -28,7 +27,6 @@ const Patient = () => {
           <head>
             <title>Print Patient Data</title>
             <style>
-              /* Add any styles you want here */
               body {
                 font-family: Arial, sans-serif;
               }
@@ -53,6 +51,73 @@ const Patient = () => {
               .print-header img {
                 max-width: 100px; /* Adjust size as needed */
               }
+              .profilePic{
+                width: 150px;
+                height: 150px;
+              }
+                .formContainer{
+                  display: flex;
+                  gap: 1.5rem;
+                }
+                  .InitInnerformContainer{
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.5rem
+                  }
+                  .secondInnerformContainer{
+                  display: flex;
+                  flex-direction: column;
+                  line-height: 1px;
+                  }
+                  .cuttLine{
+                    display: flex;
+                    align-items: start;
+                  }
+                .secondInnerformContainer_child{
+                  display: flex;
+                  flex-direction: row;
+                  column-gap: 2rem;
+                  margin-right: calc(1.25rem /* 20px */ * var(--tw-space-x-reverse));
+                  margin-left: calc(1.25rem /* 20px */ * calc(1 - var(--tw-space-x-reverse)));
+                }
+                  .secondInnerformContainer_child h5{
+                  font-size: 12px;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  }
+                  .secondFormContainer{
+                    display: flex;
+                    flex-direction: column;
+                    line-height: 1px;
+                  }
+                    .secondFormContainer_child{
+                    display: flex;
+                    flex-direction: row;
+                    column-gap: 16px;
+                    }
+                    .secondFormContainer_childData{
+                      display: flex;
+                      flex-direction: column;
+                      align-items: start;
+                    }
+              .dtContainer{
+               display: flex;
+               flex-direction: column;
+               align-items: start;
+              }
+               .dtContainer h6 {
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+               }
+                .dtContainer p {
+                font-size: 12px;
+               }
+                @media print {
+                .no-print {
+                  display: none;
+                }
+  }
             </style>
           </head>
           <body>
@@ -90,14 +155,17 @@ const Patient = () => {
     return false;
   });
 
-  console.log(isModalOpen)
   return (
     <div className="flex justify-center items-center mt-20">
-     {
-        isModalOpen && (
-            <PatientModal patientData={patientData} setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}/>
-        )
-     }
+      {isModalOpen && (
+        <PatientModal
+          patientData={patientData}
+          setIsModalOpen={setIsModalOpen}
+          isModalOpen={isModalOpen}
+          handlePrint={handlePrint}
+          componentRef={componentRef}
+        />
+      )}
       <div className="flex flex-col gap-y-10">
         <h1 className="text-2xl flex justify-center items-center font-semibold">
           PATIENT LIST
@@ -131,15 +199,33 @@ const Patient = () => {
             <table className="table-auto">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-orange-500 dark:text-slate-800">
                 <tr>
-                  <th scope="col" className="py-2">No</th>
-                  <th scope="col" className="py-2">Patient ID No.</th>
-                  <th scope="col" className="py-2">Name</th>
-                  <th scope="col" className="py-2">Sex</th>
-                  <th scope="col" className="py-2">Blood type</th>
-                  <th scope="col" className="py-2">Birthdate</th>
-                  <th scope="col" className="py-2">Purok</th>
-                  <th scope="col" className="py-2">Contact No.</th>
-                  <th scope="col" className="py-2">Date registered</th>
+                  <th scope="col" className="py-2">
+                    No
+                  </th>
+                  <th scope="col" className="py-2">
+                    Patient ID No.
+                  </th>
+                  <th scope="col" className="py-2">
+                    Name
+                  </th>
+                  <th scope="col" className="py-2">
+                    Sex
+                  </th>
+                  <th scope="col" className="py-2">
+                    Blood type
+                  </th>
+                  <th scope="col" className="py-2">
+                    Birthdate
+                  </th>
+                  <th scope="col" className="py-2">
+                    Purok
+                  </th>
+                  <th scope="col" className="py-2">
+                    Contact No.
+                  </th>
+                  <th scope="col" className="py-2">
+                    Date registered
+                  </th>
                 </tr>
               </thead>
               <tbody>
