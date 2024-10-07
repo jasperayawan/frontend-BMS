@@ -172,3 +172,105 @@ export const PatientData = [
         ]
     },
 ];
+
+export const EmployeeData = [
+    {
+        id: 1,
+        image: '/avatarplaceholder.png',
+        userIdNo: 'MS-OO1',
+        firstName: 'JUAN',
+        lastName: 'CRUZ',
+        middleInitial: 'DELA',
+        email: 'dela@gmail.com',
+        maritalStatus: 'Single',
+        age: '34',
+        bloodType: 'O+',
+        birthdate: '08/25/2024',
+        nationality: 'FILIPINO',
+        contactNo: '09509820178',
+        position: 'ADMINISTRATOR',
+        workReferences: [
+            {
+                licenceIdNo: '988546-7357',
+                profession: 'System Admin',
+                companyName: 'J&Y IT SOLUTION',
+                contactNo: '0987341524362',
+                workAddress: 'DANLUGAN PAGADIAN CITY'
+            }
+        ],
+        emergencyContactPerson: [
+            {
+                name: 'Shina Pedro Cruz',
+                relationship: 'MOTHER',
+                address: 'Gatas, Pagadian City',
+                contactNo: '0976485237'
+            }
+        ]
+    },
+    {
+        id: 2,
+        image: '/avatarplaceholder.png',
+        userIdNo: 'MS-OO2',
+        firstName: 'MARIA',
+        lastName: 'SANTOS',
+        middleInitial: 'LOPEZ',
+        email: 'maria.santos@gmail.com',
+        maritalStatus: 'Married',
+        age: '29',
+        bloodType: 'A+',
+        birthdate: '04/15/1995',
+        nationality: 'FILIPINO',
+        contactNo: '09123456789',
+        position: 'SECRETARY',
+        workReferences: [
+            {
+                licenceIdNo: '874512-3489',
+                profession: 'HR Specialist',
+                companyName: 'HR Solutions',
+                contactNo: '09234567890',
+                workAddress: 'Carmen, Pagadian City'
+            }
+        ],
+        emergencyContactPerson: [
+            {
+                name: 'Pedro Santos',
+                relationship: 'HUSBAND',
+                address: 'Gatas, Pagadian City',
+                contactNo: '0987654321'
+            }
+        ]
+    },
+    {
+        id: 3,
+        image: '/avatarplaceholder.png',
+        userIdNo: 'MS-OO3',
+        firstName: 'CARLOS',
+        lastName: 'REYES',
+        middleInitial: 'JAMES',
+        email: 'carlos.reyes@gmail.com',
+        maritalStatus: 'Single',
+        age: '26',
+        bloodType: 'B+',
+        birthdate: '11/30/1997',
+        nationality: 'FILIPINO',
+        contactNo: '09456789012',
+        position: 'NURSE',
+        workReferences: [
+            {
+                licenceIdNo: '123456-7890',
+                profession: 'Developer',
+                companyName: 'Tech Innovations',
+                contactNo: '09345678901',
+                workAddress: 'San Pedro, Pagadian City'
+            }
+        ],
+        emergencyContactPerson: [
+            {
+                name: 'Ana Reyes',
+                relationship: 'SISTER',
+                address: 'Bato, Pagadian City',
+                contactNo: '09712345678'
+            }
+        ]
+    }
+];

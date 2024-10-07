@@ -37,7 +37,7 @@ const Header = () => {
               isActive === "employee" ? "bg-yellow-500" : ""
             } cursor-pointer`}
           >
-            EMPLOYEE
+            <a href="/employee">EMPLOYEE</a>
           </li>
           <li
             onClick={() => handleActiveSelect("services")}
