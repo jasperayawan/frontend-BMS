@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { EmployeeData } from "../helper/DummyData";
 import EmployeeModal from "../components/EmployeeModal";
+import EmployeeEditModal from "../components/EmployeeEditModal";
+import AddEmployeeModal from "../components/AddEmployeeModal";
 
 const Employee = () => {
   const [searchType, setSearchType] = useState("ALL");
@@ -10,6 +12,10 @@ const Employee = () => {
   const [employeeData, setEmployeeData] = useState(null);
   const [view, setView] = useState(false);
   const [viewClick, setViewClick] = useState(false);
+  const [isEditModal, setIsEditModal] = useState(false)
+  const [employeeState, setEmployeeState] = useState()
+  const [addEmployee, setAddEmployee] = useState(false)
+  const [image, setImage] = useState(null)
 
   const componentRef = useRef(null);
 
@@ -140,6 +146,10 @@ const Employee = () => {
     }
   };
 
+  const handleEditModal = () => {
+    setIsEditModal(!isEditModal)
+  }
+
   return (
     <div className="flex justify-center items-center mt-20">
       {view && (
@@ -149,6 +159,16 @@ const Employee = () => {
           view={view}
           handlePrint={handlePrint}
         />
+      )}
+
+      {isEditModal && (
+        <EmployeeEditModal employeeData={employeeData} setIsEditModal={setIsEditModal} isEditModal={isEditModal}/>
+      )}
+
+      {addEmployee && (
+        <div className="fixed top-0 left-0 w-full h-screen bg-black/30">
+          <AddEmployeeModal setImage={setImage} image={image}/>
+        </div>
       )}
 
       <div className="flex flex-col gap-y-10">
@@ -220,7 +240,7 @@ const Employee = () => {
                       </td>
                       <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
                         <div className="flex gap-x-2">
-                            <button className="bg-zinc-700 text-white font-bold py-2 px-4 rounded">
+                            <button onClick={handleEditModal} className="bg-zinc-700 text-white font-bold py-2 px-4 rounded">
                             Edit
                             </button>
                             <button
@@ -248,7 +268,7 @@ const Employee = () => {
           </div>
 
           <div className="flex justify-center mt-5 gap-x-3">
-            <button className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button onClick={() => setAddEmployee(!addEmployee)} className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               ADD
             </button>
           </div>
