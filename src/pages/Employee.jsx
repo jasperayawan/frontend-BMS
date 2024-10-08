@@ -13,9 +13,34 @@ const Employee = () => {
   const [view, setView] = useState(false);
   const [viewClick, setViewClick] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false)
-  const [employeeState, setEmployeeState] = useState()
   const [addEmployee, setAddEmployee] = useState(false)
   const [image, setImage] = useState(null)
+  const [addEmployeeModal, setAddEmployeeModal] = useState(false)
+  const [employeeObj, setEmployeeObj] = useState({
+    userId: "",
+    lastName: "",
+    firstName: "",
+    middleInitial: "",
+    maritalStatus: "",
+    bloodType: "",
+    position: "",
+    birthdate: "",
+    age: "",
+    nationality: "",
+    address: "",
+    contactNo: "",
+    email: "",
+    licenseId: "",
+    profession: "",
+    companyName: "",
+    companyContact: "",
+    workAddress: "",
+    emergencyName: "",
+    emergencyRelationship: "",
+    emergencyAddress: "",
+    emergencyContact: "",
+  });
+  
 
   const componentRef = useRef(null);
 
@@ -150,6 +175,23 @@ const Employee = () => {
     setIsEditModal(!isEditModal)
   }
 
+  const handleAddEmployee = (e) => {
+    e.preventDefault();
+
+    const newEmployee = { ...employeeObj, id: EmployeeData.length + 1 };
+    console.log(newEmployee)
+
+    setAddEmployeeModal(false);
+  }
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEmployeeObj({
+      ...employeeObj,
+      [name]: value,
+    });
+  };
+
   return (
     <div className="flex justify-center items-center mt-20">
       {view && (
@@ -167,7 +209,15 @@ const Employee = () => {
 
       {addEmployee && (
         <div className="fixed top-0 left-0 w-full h-screen bg-black/30">
-          <AddEmployeeModal setImage={setImage} image={image}/>
+          <AddEmployeeModal 
+          setImage={setImage} 
+          image={image} 
+          handleAddEmployee={handleAddEmployee} 
+          setAddEmployeeModa={setAddEmployeeModal} 
+          addEmployeeModal={addEmployeeModal}
+          handleInputChange={handleInputChange}
+          employeeObj={employeeObj}
+          />
         </div>
       )}
 
