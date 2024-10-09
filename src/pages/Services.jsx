@@ -81,7 +81,9 @@ const Services = () => {
   return (
     <div className="container mx-auto py-10">
       <div className="flex flex-col mx-3">
-      <h1 className="text-2xl font-semibold mb-5">Services</h1>
+      <h1 className="text-2xl flex justify-center items-center font-semibold">
+      Services
+        </h1>
 
             {/* Add new service button */}
             <button
