@@ -179,8 +179,6 @@ const Employee = () => {
     e.preventDefault();
 
     const newEmployee = { ...employeeObj, id: EmployeeData.length + 1 };
-    console.log(newEmployee)
-
     setAddEmployeeModal(false);
   }
 
@@ -207,13 +205,13 @@ const Employee = () => {
         <EmployeeEditModal employeeData={employeeData} setIsEditModal={setIsEditModal} isEditModal={isEditModal}/>
       )}
 
-      {addEmployee && (
+      {addEmployeeModal && (
         <div className="fixed top-0 left-0 w-full h-screen bg-black/30">
           <AddEmployeeModal 
           setImage={setImage} 
           image={image} 
           handleAddEmployee={handleAddEmployee} 
-          setAddEmployeeModa={setAddEmployeeModal} 
+          setAddEmployeeModal={setAddEmployeeModal} 
           addEmployeeModal={addEmployeeModal}
           handleInputChange={handleInputChange}
           employeeObj={employeeObj}
@@ -318,7 +316,7 @@ const Employee = () => {
           </div>
 
           <div className="flex justify-center mt-5 gap-x-3">
-            <button onClick={() => setAddEmployee(!addEmployee)} className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button onClick={() => setAddEmployeeModal(!addEmployeeModal)} className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               ADD
             </button>
           </div>

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import Parse from "parse/dist/parse.min.js";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
-  const [isActive, setIsActive] = useState(" ");
+  const [isActive, setIsActive] = useState("");
   const isAuthenticated = Parse.User.current();
+  const location = useLocation();
+  const currentRoute = location.pathname.split("/").pop();
 
   const handleActiveSelect = (activeData) => {
     setIsActive(activeData);
@@ -13,79 +16,79 @@ const Header = () => {
     <div className="flex flex-col w-full">
       <div className="flex flex-row justify-between items-center px-10 py-4 h-[150px] bg-yellow-500">
         <a href="/">
-          <img src="/sanfranciscologo.svg" alt="" />
+          <img src="/sanfranciscologo.svg" alt="San Francisco Logo" />
         </a>
         <h2 className="text-white text-[32px] text-center">
           BARANGAY SAN FRANCISCO HEALTH CENTER
           <br /> MANAGEMENT SYSTEM
         </h2>
-        <img src="/pagadianlogo.svg" alt="" />
+        <img src="/pagadianlogo.svg" alt="Pagadian Logo" />
       </div>
       {isAuthenticated && (
         <ul className="flex justify-between items-center px-20 py-1 border-b-[1px] border-yellow-600">
           <li
             onClick={() => handleActiveSelect("patient")}
             className={`${
-              isActive === "patient" ? "bg-yellow-500" : ""
-            } cursor-pointer`}
+              isActive === "patient" || currentRoute === "patient" ? "bg-yellow-500" : ""
+            } cursor-pointer px-4`}
           >
             <a href="/patient">PATIENT</a>
           </li>
           <li
             onClick={() => handleActiveSelect("employee")}
             className={`${
-              isActive === "employee" ? "bg-yellow-500" : ""
-            } cursor-pointer`}
+              isActive === "employee" || currentRoute === "employee" ? "bg-yellow-500" : ""
+            } cursor-pointer px-4`}
           >
             <a href="/employee">EMPLOYEE</a>
           </li>
           <li
             onClick={() => handleActiveSelect("services")}
             className={`${
-              isActive === "services" ? "bg-yellow-500" : ""
-            } cursor-pointer`}
+              isActive === "services" || currentRoute === "services" ? "bg-yellow-500" : ""
+            } cursor-pointer px-4`}
           >
-            SERVICES
+            <a href="/services">SERVICES</a>
           </li>
           <li
             onClick={() => handleActiveSelect("gallery")}
             className={`${
-              isActive === "gallery" ? "bg-yellow-500" : ""
+              isActive === "gallery" || currentRoute === "gallery" ? "bg-yellow-500" : ""
             } cursor-pointer`}
           >
-            GALLERY
+            <a href="/gallery px-4">GALLERY</a>
           </li>
           <li
             onClick={() => handleActiveSelect("contactus")}
             className={`${
-              isActive === "contactus" ? "bg-yellow-500" : ""
-            } cursor-pointer`}
+              isActive === "contactus" || currentRoute === "contactus" ? "bg-yellow-500" : ""
+            } cursor-pointer px-4`}
           >
-            CONTACT US
+            <a href="/contactus">CONTACT US</a>
           </li>
           <li
             onClick={() => handleActiveSelect("aboutus")}
             className={`${
-              isActive === "aboutus" ? "bg-yellow-500" : ""
-            } cursor-pointer`}
+              isActive === "aboutus" || currentRoute === "aboutus" ? "bg-yellow-500" : ""
+            } cursor-pointer px-4`}
           >
-            ABOUT US
+            <a href="/aboutus">ABOUT US</a>
           </li>
           <li
             onClick={() => handleActiveSelect("usersAccount")}
             className={`${
-              isActive === "usersAccount" ? "bg-yellow-500" : ""
-            } cursor-pointer`}
+              isActive === "usersAccount" || currentRoute === "usersAccount" ? "bg-yellow-500" : ""
+            } cursor-pointer px-4`}
           >
-            USERS ACCOUNT
+            <a href="/usersAccount">USERS ACCOUNT</a>
           </li>
           <li
             onClick={() => handleActiveSelect("myAccount")}
             className={`${
-              isActive === "myAccount" ? "bg-yellow-500" : ""
-            } cursor-pointer`}
+              isActive === "myAccount" || currentRoute === "myAccount" ? "bg-yellow-500" : ""
+            } cursor-pointer px-4`}
           >
-            MY ACCOUNT
+            <a href="/myAccount">MY ACCOUNT</a>
           </li>
         </ul>
       )}

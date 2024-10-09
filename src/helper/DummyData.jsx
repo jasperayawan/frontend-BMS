@@ -274,3 +274,37 @@ export const EmployeeData = [
         ]
     }
 ];
+
+export const servicesData = [
+    {
+        id: 1,
+        image: '/avatarplaceholder.png',
+        title: 'PRENATAL',
+        desc: 'Prenatal care service in Barangay San Francisco Health Center is designed to ensure the health and well-being of both the mother and the developing fetus throughout pregnancy. These services aim to provide comprehensive care, monitor the progress of the pregnancy, prevent potential complications, and educate expectant mothers about healthy pregnancy practices.'
+    },
+    {
+        id: 2,
+        image: '/avatarplaceholder.png',
+        title: 'IMMUNIZATION',
+        desc: 'Immunization services aim to protect children and adults from preventable diseases through vaccinations. The health center offers routine immunization for infants, booster shots for older children, and vaccines for adults to prevent diseases like measles, polio, tetanus, and more.'
+    },
+    {
+        id: 3,
+        image: '/avatarplaceholder.png',
+        title: 'DENTAL CARE',
+        desc: 'The Barangay San Francisco Health Center provides basic dental care services, including oral health education, tooth extraction, cavity fillings, and preventive care. These services help maintain good oral hygiene and prevent dental problems, especially among children and low-income families.'
+    },
+    {
+        id: 4,
+        image: '/avatarplaceholder.png',
+        title: 'FAMILY PLANNING',
+        desc: 'Family planning services are offered to help individuals and couples plan their families and make informed decisions about reproductive health. This includes counseling, contraceptives, and education on safe motherhood, birth spacing, and responsible parenthood.'
+    },
+    {
+        id: 5,
+        image: '/avatarplaceholder.png',
+        title: 'POSTNATAL CARE',
+        desc: 'Postnatal care services focus on the health and recovery of mothers and newborns following childbirth. These services include monitoring the mother\'s recovery, breastfeeding support, newborn care, and guidance on maternal nutrition and mental health.'
+    }
+];
+
