@@ -40,7 +40,42 @@ export const PatientData = [
                 religion: 'catholic',
                 contactNo: '09976546878',
             }
-        ]
+        ],
+        patientHistory: {
+            prenatal: [
+                {
+                    HealthService: 'Initial Checkup',
+                    Year: 2022,
+                    NurseInCharge: 'Nurse A. Santos'
+                }
+            ],
+            immunization: [
+                {
+                    HealthService: 'Measles Vaccine',
+                    Year: 2023,
+                    NurseInCharge: 'Nurse B. Reyes'
+                }
+            ],
+            familyPlanning: [
+                {
+                    HealthService: 'Consultation',
+                    Year: 2021,
+                    NurseInCharge: 'Nurse C. Gomez'
+                }
+            ],
+            otherServices: [
+                {
+                    HealthService: 'Tooth Extraction',
+                    Year: 2023,
+                    NurseInCharge: 'Marj Cabardo'
+                },
+                {
+                    HealthService: 'General Checkup',
+                    Year: 2023,
+                    NurseInCharge: 'Marj Cabardo'
+                }
+            ]
+        }
     },
     {
         id: 2,
@@ -83,7 +118,37 @@ export const PatientData = [
                 religion: 'catholic',
                 contactNo: '09876543210',
             }
-        ]
+        ],
+        patientHistory: {
+            prenatal: [
+                {
+                    HealthService: 'Monthly Checkup',
+                    Year: 2022,
+                    NurseInCharge: 'Nurse D. Alvarez'
+                }
+            ],
+            immunization: [
+                {
+                    HealthService: 'Flu Vaccine',
+                    Year: 2023,
+                    NurseInCharge: 'Nurse E. Villanueva'
+                }
+            ],
+            familyPlanning: [
+                {
+                    HealthService: 'Birth Control Counseling',
+                    Year: 2022,
+                    NurseInCharge: 'Nurse F. Ortega'
+                }
+            ],
+            otherServices: [
+                {
+                    HealthService: 'Eye Examination',
+                    Year: 2023,
+                    NurseInCharge: 'Nurse G. Ponce'
+                }
+            ]
+        }
     },
     {
         id: 3,
@@ -126,7 +191,25 @@ export const PatientData = [
                 religion: 'catholic',
                 contactNo: '09112223344',
             }
-        ]
+        ],
+        patientHistory: {
+            prenatal: [],
+            immunization: [
+                {
+                    HealthService: 'Hepatitis Vaccine',
+                    Year: 2023,
+                    NurseInCharge: 'Nurse H. Cruz'
+                }
+            ],
+            familyPlanning: [],
+            otherServices: [
+                {
+                    HealthService: 'Annual Physical Checkup',
+                    Year: 2024,
+                    NurseInCharge: 'Nurse I. Santos'
+                }
+            ]
+        }
     },
     {
         id: 4,
@@ -169,9 +252,40 @@ export const PatientData = [
                 religion: 'catholic',
                 contactNo: '09112233445',
             }
-        ]
-    },
+        ],
+        patientHistory: {
+            prenatal: [
+                {
+                    HealthService: 'Regular Checkup',
+                    Year: 2021,
+                    NurseInCharge: 'Nurse J. Lopez'
+                }
+            ],
+            immunization: [
+                {
+                    HealthService: 'Tetanus Vaccine',
+                    Year: 2023,
+                    NurseInCharge: 'Nurse K. Morales'
+                }
+            ],
+            familyPlanning: [
+                {
+                    HealthService: 'Family Planning Session',
+                    Year: 2022,
+                    NurseInCharge: 'Nurse L. Rivera'
+                }
+            ],
+            otherServices: [
+                {
+                    HealthService: 'Dental Checkup',
+                    Year: 2022,
+                    NurseInCharge: 'Nurse M. Delgado'
+                }
+            ]
+        }
+    }
 ];
+
 
 export const EmployeeData = [
     {

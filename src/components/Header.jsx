@@ -56,23 +56,23 @@ const Header = () => {
               isActive === "gallery" || currentRoute === "gallery" ? "bg-yellow-500" : ""
             } cursor-pointer`}
           >
-            <a href="/gallery px-4">GALLERY</a>
+            <a href="/gallery" className="px-4">GALLERY</a>
           </li>
           <li
             onClick={() => handleActiveSelect("contactus")}
             className={`${
-              isActive === "contactus" || currentRoute === "contactus" ? "bg-yellow-500" : ""
+              isActive === "contact-us" || currentRoute === "contact-us" ? "bg-yellow-500" : ""
             } cursor-pointer px-4`}
           >
-            <a href="/contactus">CONTACT US</a>
+            <a href="/contact-us">CONTACT US</a>
           </li>
           <li
-            onClick={() => handleActiveSelect("aboutus")}
+            onClick={() => handleActiveSelect("about-us")}
             className={`${
-              isActive === "aboutus" || currentRoute === "aboutus" ? "bg-yellow-500" : ""
+              isActive === "about-us" || currentRoute === "about-us" ? "bg-yellow-500" : ""
             } cursor-pointer px-4`}
           >
-            <a href="/aboutus">ABOUT US</a>
+            <a href="/about-us">ABOUT US</a>
           </li>
           <li
             onClick={() => handleActiveSelect("usersAccount")}

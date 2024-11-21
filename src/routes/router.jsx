@@ -10,6 +10,9 @@ import Parse from 'parse/dist/parse.min.js';
 import Patient from "../pages/Patient"
 import Employee from "../pages/Employee"
 import Services from "../pages/Services"
+import Gallery from "../pages/Gallery"
+import ContactUs from "../pages/ContactUs"
+import AboutUs from "../pages/AboutUs"
 
 const router = () => {
   const user = Parse.User.current();
@@ -26,6 +29,9 @@ const router = () => {
             <Route path="/patient" element={<Patient />}/>
             <Route path="/employee" element={<Employee />}/>
             <Route path="/services" element={<Services />}/>
+            <Route path="/gallery" element={<Gallery />}/>
+            <Route path="/contact-us" element={<ContactUs />}/>
+            <Route path="/about-us" element={<AboutUs />}/>
         </Route>
     </Routes>
   )
