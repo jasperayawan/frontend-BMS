@@ -59,7 +59,7 @@ const Header = () => {
             <a href="/gallery" className="px-4">GALLERY</a>
           </li>
           <li
-            onClick={() => handleActiveSelect("contactus")}
+            onClick={() => handleActiveSelect("contact-us")}
             className={`${
               isActive === "contact-us" || currentRoute === "contact-us" ? "bg-yellow-500" : ""
             } cursor-pointer px-4`}
@@ -75,20 +75,20 @@ const Header = () => {
             <a href="/about-us">ABOUT US</a>
           </li>
           <li
-            onClick={() => handleActiveSelect("usersAccount")}
+            onClick={() => handleActiveSelect("users")}
             className={`${
-              isActive === "usersAccount" || currentRoute === "usersAccount" ? "bg-yellow-500" : ""
+              isActive === "users" || currentRoute === "users" ? "bg-yellow-500" : ""
             } cursor-pointer px-4`}
           >
-            <a href="/usersAccount">USERS ACCOUNT</a>
+            <a href="/users">USERS ACCOUNT</a>
           </li>
           <li
-            onClick={() => handleActiveSelect("myAccount")}
+            onClick={() => handleActiveSelect("myaccount")}
             className={`${
-              isActive === "myAccount" || currentRoute === "myAccount" ? "bg-yellow-500" : ""
+              isActive === "myaccount" || currentRoute === "myaccount" ? "bg-yellow-500" : ""
             } cursor-pointer px-4`}
           >
-            <a href="/myAccount">MY ACCOUNT</a>
+            <a href="/myaccount">MY ACCOUNT</a>
           </li>
         </ul>
       )}

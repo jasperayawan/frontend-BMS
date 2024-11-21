@@ -13,6 +13,8 @@ import Services from "../pages/Services"
 import Gallery from "../pages/Gallery"
 import ContactUs from "../pages/ContactUs"
 import AboutUs from "../pages/AboutUs"
+import Users from "../pages/Users"
+import MyAccount from "../pages/MyAccount"
 
 const router = () => {
   const user = Parse.User.current();
@@ -32,6 +34,8 @@ const router = () => {
             <Route path="/gallery" element={<Gallery />}/>
             <Route path="/contact-us" element={<ContactUs />}/>
             <Route path="/about-us" element={<AboutUs />}/>
+            <Route path="/users" element={<Users />}/>
+            <Route path="/myaccount" element={<MyAccount />}/>
         </Route>
     </Routes>
   )
