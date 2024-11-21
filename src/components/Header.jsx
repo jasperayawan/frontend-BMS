@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Parse from "parse/dist/parse.min.js";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isActive, setIsActive] = useState("");
   const isAuthenticated = Parse.User.current();
   const location = useLocation();
   const currentRoute = location.pathname.split("/").pop();
+  const Navigate = useNavigate();
 
   const handleActiveSelect = (activeData) => {
     setIsActive(activeData);
@@ -15,9 +16,7 @@ const Header = () => {
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-row justify-between items-center px-10 py-4 h-[150px] bg-yellow-500">
-        <a href="/">
-          <img src="/sanfranciscologo.svg" alt="San Francisco Logo" />
-        </a>
+          <img onClick={() => Navigate('/')} src="/sanfranciscologo.svg" alt="San Francisco Logo" className="z-50"/>
         <h2 className="text-white text-[32px] text-center">
           BARANGAY SAN FRANCISCO HEALTH CENTER
           <br /> MANAGEMENT SYSTEM
