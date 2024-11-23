@@ -4,7 +4,7 @@ import Parse from 'parse/dist/parse.min.js';
 import { Toaster } from 'react-hot-toast';
 import Header from './components/Header';
 
-Parse.initialize('123','1234');
+Parse.initialize(import.meta.env.VITE_APPLICATION_ID);
 Parse.serverURL = 'http://localhost:8001/parse';
 
 

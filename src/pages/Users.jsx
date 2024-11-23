@@ -1,40 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { ADMIN, USER } from '../helper/api';
+import axios from 'axios'
+import { toBase64 } from '../utils/toBase64';
+import Parse from 'parse/dist/parse.min.js';
+import toast from 'react-hot-toast';
 
 const Users = () => {
-  const [users, setUsers] = useState([
-    {
-      id: 'MS-001',
-      userType: 'ADMIN',
-      name: 'JUAN DELA CRUZ',
-      address: 'GATAS, PAGADIAN CITY',
-      email: 'CRUZ.JUAN@GMAIL.COM',
-      status: 'ACTIVE',
-      dateRegistered: '12/22/2022',
-      birthdate: '06/05/1997',
-      age: 25,
-      bloodType: 'O+',
-      contact: '09765398271',
-    },
-    {
-      id: 'MS-002',
-      userType: 'SECRETARY',
-      name: 'LILA DIVES',
-      address: 'DANLUGAN PAGADIAN CITY',
-      email: 'LILADIVS@GMAIL.COM',
-      status: 'ACTIVE',
-      dateRegistered: '01/27/2023',
-    },
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [newUser, setNewUser] = useState({
     id: '',
     profilePicture: null,
     name: '',
-    userType: '',
+    role: '',
     birthdate: '',
     age: '',
     bloodType: '',
@@ -45,6 +28,7 @@ const Users = () => {
     password: '',
     status: 'ACTIVE',
   });
+  const maxFileSize = 5 * 1024 * 1024; 
 
   const handleSearch = (e) => setSearchQuery(e.target.value);
 
@@ -60,25 +44,60 @@ const Users = () => {
 
   const handleAddUserClick = () => setShowAddModal(true);
 
-  const handleAddUserSubmit = (e) => {
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    
+    // File size validation
+    if (file && file.size > maxFileSize) {
+      setError('File size exceeds the 5MB limit.');
+      setNewUser((prev) => ({ ...prev, profilePicture: null }));
+    } else if (file) {
+      setError('');
+      setNewUser((prev) => ({ ...prev, profilePicture: file }));
+    }
+  };
+
+  const handleAddUserSubmit = async (e) => {
     e.preventDefault();
-    setUsers([...users, { ...newUser, id: `MS-${users.length + 1}` }]);
-    setShowAddModal(false);
-    setNewUser({
-      id: '',
-      profilePicture: null,
-      name: '',
-      userType: '',
-      birthdate: '',
-      age: '',
-      bloodType: '',
-      address: '',
-      contact: '',
-      email: '',
-      username: '',
-      password: '',
-      status: 'ACTIVE',
-    });
+    setLoading(true)
+    const imageBase64 = newUser.profilePicture ? await toBase64(newUser.profilePicture) : null;
+
+    const formData = {
+      profilePicture: imageBase64,
+      name: newUser.name,
+      role: newUser.role,
+      birthdate: newUser.birthdate,
+      age: newUser.age, 
+      bloodType: newUser.bloodType,
+      address: newUser.address,
+      contact: newUser.contact,
+      email: newUser.email,
+      username: newUser.username,
+      password: newUser.password,
+      status: newUser.status
+    }
+
+    try {
+      const response = await axios.post(ADMIN, formData);
+      setUsers([...users, response.data]);
+      setShowAddModal(false);
+      setNewUser({
+        name: '',
+        role: '',
+        email: '',
+        birthdate: '',
+        address: '',
+        contact: '',
+        status: 'ACTIVE',
+      });
+      toast.success('User added successfully!');
+      window.location.reload();
+    } catch (error) {
+      console.error('Error adding user:', error.response.data.error);
+      toast.success('Failed to add user. Please try again.');
+    } finally {
+      setLoading(false)
+    }
   };
 
   const handleInputChange = (e) => {
@@ -86,12 +105,40 @@ const Users = () => {
     setNewUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleDeleteUser = (id) => setUsers(users.filter((user) => user.id !== id));
+  const handleDeleteUser = async (id) => {
 
-  const filteredUsers = users.filter((user) =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+    try{
+      const result = await axios.delete(USER + `/${id}`);
+      console.log(result.data.message)
+      setUsers(users.filter((user) => user.id !== id))
+    }
+    catch(err){
+      console.log(err.response.data.error)
+    }
+  };
+
+  const filteredUsers = Array.isArray(users) && users.filter((user) =>
+    user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.email && user.email.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
+
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const result = await Parse.Cloud.run('getUsers', {});
+        setUsers(result); 
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
+  
+
 
   return (
     <div className="container mx-auto p-8">
@@ -119,6 +166,7 @@ const Users = () => {
         <thead className="bg-orange-500 text-white">
           <tr>
             <th className="px-4 py-2">USER ID</th>
+            <th className="px-4 py-2">PROFILE</th>
             <th className="px-4 py-2">USER TYPE</th>
             <th className="px-4 py-2">NAME</th>
             <th className="px-4 py-2">EMAIL</th>
@@ -129,7 +177,10 @@ const Users = () => {
           {filteredUsers.map((user) => (
             <tr key={user.id} className="bg-orange-100 hover:bg-orange-200">
               <td className="px-4 py-2">{user.id}</td>
-              <td className="px-4 py-2">{user.userType}</td>
+              <td className="px-4 py-2">
+                <img src={user.profilePicture} alt="profile pic" className='w-8 h-8 rounded-full' />
+              </td>
+              <td className="px-4 py-2">{user.role}</td>
               <td className="px-4 py-2">{user.name}</td>
               <td className="px-4 py-2">{user.email}</td>
               <td className="px-4 py-2">
@@ -191,11 +242,10 @@ const Users = () => {
                 <input
                   type="file"
                   name="profilePicture"
-                  onChange={(e) =>
-                    setNewUser((prev) => ({ ...prev, profilePicture: e.target.files[0] }))
-                  }
+                  onChange={handleFileChange}
                   className="w-full p-2 border rounded"
                 />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
               </div>
               <div className="mb-2">
                 <label className="block">Name</label>
@@ -211,8 +261,8 @@ const Users = () => {
               <div className="mb-2">
                 <label className="block">User Type</label>
                 <select
-                  name="userType"
-                  value={newUser.userType}
+                  name="role"
+                  value={newUser.role}
                   onChange={handleInputChange}
                   required
                   className="w-full p-2 border rounded"
@@ -333,7 +383,7 @@ const Users = () => {
                   Cancel
                 </button>
                 <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">
-                  Add User
+                  {loading ? 'Loading...' : 'Add User'}
                 </button>
               </div>
             </form>

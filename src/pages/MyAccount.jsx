@@ -1,25 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Parse from 'parse/dist/parse.min.js';
 
 const MyAccount = () => {
-  const [account, setAccount] = useState({
-    id: "MS-001",
-    name: "JUAN DELA CRUZ",
-    userType: "ADMIN",
-    birthdate: "06/05/1997",
-    age: 28,
-    bloodType: "O+",
-    address: "DANLUGAN PAGADIAN CITY",
-    contactNo: "09546726352",
-    email: "CRUZ.JUAN@GMAIL.COM",
-    username: "JUANDELACRUZ",
-    password: "password123",
-    profileImage: null,
-  });
+  const [account, setAccount] = useState({});
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [formData, setFormData] = useState(account);
   const [previewImage, setPreviewImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const user = Parse.User.current();
 
   const handleEditToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -49,6 +39,21 @@ const MyAccount = () => {
     setIsPasswordVisible((prev) => !prev);
   };
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setLoading(true);
+      try {
+        const result = await Parse.Cloud.run('myAccount', { id: user?.id });
+        setAccount(result)
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
+
   return (
     <div className="container mx-auto p-8">
       <div className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
@@ -56,9 +61,9 @@ const MyAccount = () => {
         <div className="flex items-center space-x-4 mb-4">
           {/* Profile Picture */}
           <div className="w-24 h-24 bg-gray-300 rounded-full overflow-hidden">
-            {account.profileImage ? (
+            {account.profilePicture ? (
               <img
-                src={account.profileImage instanceof File ? previewImage : account.profileImage}
+                src={account.profilePicture instanceof File ? previewImage : account.profilePicture}
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
@@ -72,7 +77,7 @@ const MyAccount = () => {
           <div>
             <p><strong>ID:</strong> {account.id}</p>
             <p><strong>NAME:</strong> {account.name}</p>
-            <p><strong>USER TYPE:</strong> {account.userType}</p>
+            <p><strong>USER TYPE:</strong> {account.role}</p>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
@@ -83,7 +88,7 @@ const MyAccount = () => {
           </div>
           <div>
             <p><strong>ADDRESS:</strong> {account.address}</p>
-            <p><strong>CONTACT NO.:</strong> {account.contactNo}</p>
+            <p><strong>CONTACT NO.:</strong> {account.contact}</p>
           </div>
         </div>
         <div className="mt-4">
