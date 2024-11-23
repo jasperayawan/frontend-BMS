@@ -1,59 +1,98 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { toBase64 } from "../utils/toBase64";
+import Parse from 'parse/dist/parse.min.js';
+import { ORGANIZATION } from "../helper/api";
+import axios from 'axios'
+import toast from "react-hot-toast";
 
 const AboutUs = () => {
-  const [team, setTeam] = useState([
-    {
-      id: 1,
-      name: "Rosalie A. Soriano",
-      role: "Punong Barangay",
-      image: null,
-    },
-    {
-      id: 2,
-      name: "Joselito S. Dela Cruz",
-      role: "SB Member",
-      image: null,
-    },
-    {
-      id: 3,
-      name: "Vincent Q. Valdez",
-      role: "SB Member",
-      image: null,
-    },
-  ]);
-
+  const [team, setTeam] = useState([]);
   const [form, setForm] = useState({ id: null, name: "", role: "", image: null });
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const maxFileSize = 5 * 1024 * 1024; 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
-  const handleImageChange = (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setForm({ ...form, image: file ? URL.createObjectURL(file) : null });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isEditing) {
-      setTeam(
-        team.map((member) =>
-          member.id === form.id ? { ...form, id: member.id } : member
-        )
-      );
-    } else {
-      setTeam([...team, { ...form, id: Date.now() }]);
+  
+    // Check if a file is selected
+    if (file) {
+      // File size validation
+      if (file.size > maxFileSize) {
+        setError('File size exceeds the 5MB limit.');
+        setForm({ ...form, image: null }); // Reset the image if the file is invalid
+      } else {
+        setError(''); // Clear error if file size is valid
+        setForm({ ...form, image: file }); // Store the actual file in the state
+      }
     }
-    setForm({ id: null, name: "", role: "", image: null });
-    setIsEditing(false);
-    setIsModalOpen(false);
+  };
+  
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true)
+    try {
+
+      const imageBase64 = form.image ? await toBase64(form.image) : null;
+
+      const formData = {
+        id: form.id,
+        name: form.name,
+        role: form.role,
+        image: imageBase64
+      };
+
+  
+      // Call Parse Cloud Function to save member data
+      const result = await Parse.Cloud.run('addOrUpdateMember', formData);
+  
+      if (result.success) {
+        if (isEditing) {
+          // Update the local state
+          setTeam(
+            team.map((member) =>
+              member.objectId === form.id ? { ...form, id: member.objectId } : member
+            )
+          );
+        } else {
+          // Add new member to the team
+          setTeam([...team, { ...form, id: Date.now() }]);
+        }
+  
+        setForm({ id: null, name: '', role: '', image: null });
+        setIsEditing(false);
+        setIsModalOpen(false); // Close the modal after submit
+      } else {
+        alert('Error saving member: ' + result.message);
+      }
+      window.location.reload();
+    } catch (error) {
+      console.error('Error saving member:', error);
+      toast.error('Failed to save member');
+    } finally {
+      setLoading(false)
+    }
   };
 
-  const handleDelete = (id) => {
-    setTeam(team.filter((member) => member.id !== id));
+  const handleDelete = async (id) => {
+    setTeam(team.filter((member) => member.objectId !== id));
+
+    try{
+      const res = await axios.delete(`${ORGANIZATION}/${id}`)
+      toast.success(res.data.message)
+    }
+    catch(error){
+      console.log(error)
+      toast.error(error.response.data.error)
+    }
   };
 
   const handleEdit = (member) => {
@@ -67,6 +106,20 @@ const AboutUs = () => {
     setIsEditing(false);
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    const fetchOrganization = async () => {
+      try{
+        const result = await axios.get(ORGANIZATION);
+        setTeam(result.data)
+        
+      }
+      catch(err){
+        console.log(err.response.data.error)
+      }
+    }
+    fetchOrganization();
+  },[])
 
   return (
     <div className="relative p-8">
@@ -82,8 +135,8 @@ const AboutUs = () => {
 
       {/* Team Members */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
-        {team.map((member) => (
-          <div key={member.id} className="text-center relative">
+        {team.map((member, i) => (
+          <div key={i} className="text-center relative">
             <div className="relative inline-block">
               <img
                 src={member.image || "https://via.placeholder.com/150"}
@@ -91,7 +144,7 @@ const AboutUs = () => {
                 className="w-24 h-24 mx-auto rounded-full"
               />
               <button
-                onClick={() => handleDelete(member.id)}
+                onClick={() => handleDelete(member.objectId)}
                 className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
               >
                 ✕
@@ -143,9 +196,10 @@ const AboutUs = () => {
                 <label className="block text-gray-700">Image</label>
                 <input
                   type="file"
-                  onChange={handleImageChange}
+                  onChange={handleFileChange}
                   className="w-full"
                 />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
               </div>
               <div className="flex justify-end space-x-4">
                 <button
@@ -159,7 +213,7 @@ const AboutUs = () => {
                   type="submit"
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                 >
-                  {isEditing ? "Update" : "Add"}
+                  {isEditing ? loading ? 'Loading...' : "Update" : loading ? 'Loading...' : 'Add'}
                 </button>
               </div>
             </form>
