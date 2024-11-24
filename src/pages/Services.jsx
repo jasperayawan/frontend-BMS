@@ -1,18 +1,20 @@
-import React, { useState } from "react";
-import { servicesData as initialData } from "../helper/DummyData";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { SERVICES } from "../helper/api";
 
 const Services = () => {
-  const [servicesData, setServicesData] = useState(initialData);
+  const [servicesData, setServicesData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState(""); // Can be 'add', 'view', or 'edit'
   const [selectedService, setSelectedService] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [newService, setNewService] = useState({
-    id: servicesData.length + 1,
+    id: null,
     image: "",
     title: "",
-    desc: ""
+    desc: "",
   });
-  const [imagePreview, setImagePreview] = useState(null); // For image preview
+  const [imagePreview, setImagePreview] = useState(null);
 
   // Open modal for different actions
   const openModal = (type, service = null) => {
@@ -28,7 +30,11 @@ const Services = () => {
   const closeModal = () => {
     setModalOpen(false);
     setSelectedService(null);
-    setNewService({ id: servicesData.length + 1, image: "", title: "", desc: "" });
+    setNewService({
+      image: "",
+      title: "",
+      desc: "",
+    });
     setImagePreview(null);
   };
 
@@ -42,56 +48,132 @@ const Services = () => {
         if (isEdit) {
           setSelectedService((prevService) => ({
             ...prevService,
-            image: reader.result
+            image: reader.result,
           }));
         } else {
           setNewService((prevService) => ({
             ...prevService,
-            image: reader.result
+            image: reader.result,
           }));
         }
       };
       reader.readAsDataURL(file);
+    } else if (!file && isEdit && selectedService.image) {
+      // If the file input is empty and it's an edit, retain the original image
+      setImagePreview(selectedService.image);
+    } else if (!file && !isEdit && newService.image) {
+      // If the file input is empty and it's a new service, retain the image preview if it exists
+      setImagePreview(newService.image);
     }
   };
 
   // Handle adding a new service
-  const handleAddService = () => {
-    if (newService.title && newService.desc && newService.image) {
-      setServicesData([...servicesData, { ...newService, id: servicesData.length + 1 }]);
-      closeModal();
+  const handleAddService = async () => {
+    setLoading(true);
+    try {
+      if (newService.title && newService.desc && newService.image) {
+
+        const formData = {
+          title: newService.title,
+          desc: newService.desc,
+          imageBase64: newService.image,
+        };
+
+        const response = await axios.post(SERVICES, formData);
+
+        // Update the services list
+        setServicesData([...servicesData, response.data.service]);
+        closeModal();
+      }
+    } catch (error) {
+      console.error(
+        "Error adding service:",
+        error.response?.data?.message || error.message
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   // Handle editing a service
-  const handleEditService = () => {
-    setServicesData(
-      servicesData.map((service) =>
-        service.id === selectedService.id ? selectedService : service
-      )
-    );
-    closeModal();
+  const handleEditService = async () => {
+    setLoading(true)
+    try {
+      const updatedService = {
+        title: selectedService.title,
+        desc: selectedService.desc,
+        imageBase64: selectedService.image,
+      };
+
+      // PUT request to update service
+      const response = await axios.put(
+        SERVICES + `/${selectedService.objectId}`,
+        updatedService
+      );
+
+      // Update the service in the list
+      setServicesData(
+        servicesData.map((service) =>
+          service.objectId === response.data.service.id
+            ? response.data.service
+            : service
+        )
+      );
+      closeModal();
+    } catch (error) {
+      console.error(
+        "Error editing service:",
+        error.response?.data?.message || error.message
+      );
+    } finally {
+      setLoading(false)
+    }
   };
 
   // Handle deleting a service
-  const handleDeleteService = (id) => {
-    setServicesData(servicesData.filter((service) => service.id !== id));
+  const handleDeleteService = async (id) => {
+    setLoading(true)
+    try {
+      await axios.delete(SERVICES + `/${id}`);
+      setServicesData(servicesData.filter((service) => service.objectId !== id));
+    } catch (error) {
+      console.error(
+        "Error deleting service:",
+        error.response?.data?.message || error.message
+      );
+    } finally {
+      setLoading(false)
+    }
   };
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(SERVICES);
+        setServicesData(response.data);
+      } catch (error) {
+        console.error("Error fetching services", error);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
 
   return (
     <div className="container mx-auto py-10">
       <div className="flex flex-col mx-3">
-      <h1 className="text-2xl flex justify-center items-center font-semibold">
-      Services
+        <h1 className="text-2xl flex justify-center items-center font-semibold">
+          Services
         </h1>
 
-            {/* Add new service button */}
-            <button
-            onClick={() => openModal("add")}
-            className="bg-blue-500 text-white w-[max-content] px-4 py-2 rounded hover:bg-blue-600 mb-5"
-            >
-            Add Service
-            </button>
+        {/* Add new service button */}
+        <button
+          onClick={() => openModal("add")}
+          className="bg-blue-500 text-white w-[max-content] px-4 py-2 rounded hover:bg-blue-600 mb-5"
+        >
+          Add Service
+        </button>
       </div>
 
       {/* Services Table */}
@@ -106,44 +188,49 @@ const Services = () => {
           </tr>
         </thead>
         <tbody>
-          {servicesData.map((service) => (
-            <tr key={service.id}>
-              <td className="border border-gray-300 px-4 py-2">{service.id}</td>
-              <td className="border border-gray-300 px-4 py-2">
-                <img
-                  src={service.image}
-                  alt={service.title}
-                  className="h-16 w-16 object-cover"
-                />
-              </td>
-              <td className="border border-gray-300 px-4 py-2">{service.title}</td>
-              <td className="border border-gray-300 px-4 py-2">
-                {service.desc.length > 50
-                  ? `${service.desc.slice(0, 50)}...`
-                  : service.desc}
-              </td>
-              <td className="border border-gray-300 px-4 py-2">
-                <button
-                  onClick={() => openModal("view", service)}
-                  className="bg-green-500 text-white px-2 py-1 rounded mr-2 hover:bg-green-600"
-                >
-                  View
-                </button>
-                <button
-                  onClick={() => openModal("edit", service)}
-                  className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDeleteService(service.id)}
-                  className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
+          {Array.isArray(servicesData) &&
+            servicesData.map((service, i) => (
+              <tr key={i}>
+                <td className="border border-gray-300 px-4 py-2">
+                  {service.objectId}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  <img
+                    src={service.image}
+                    alt={service.title}
+                    className="h-16 w-16 object-cover"
+                  />
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {service.title}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  {service.desc.length > 50
+                    ? `${service.desc.slice(0, 50)}...`
+                    : service.desc}
+                </td>
+                <td className="border border-gray-300 px-4 py-2">
+                  <button
+                    onClick={() => openModal("view", service)}
+                    className="bg-green-500 text-white px-2 py-1 rounded mr-2 hover:bg-green-600"
+                  >
+                    View
+                  </button>
+                  <button
+                    onClick={() => openModal("edit", service)}
+                    className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDeleteService(service.objectId)}
+                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                  >
+                    {loading ? 'Loading...' : 'Delete'}
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
 
@@ -175,7 +262,9 @@ const Services = () => {
                   alt={selectedService.title}
                   className="h-[150px] w-full object-cover mb-4"
                 />
-                <h3 className="font-semibold text-lg">{selectedService.title}</h3>
+                <h3 className="font-semibold text-lg">
+                  {selectedService.title}
+                </h3>
                 <p>{selectedService.desc}</p>
               </div>
             )}
@@ -210,7 +299,7 @@ const Services = () => {
                       ? setNewService({ ...newService, title: e.target.value })
                       : setSelectedService({
                           ...selectedService,
-                          title: e.target.value
+                          title: e.target.value,
                         })
                   }
                   className="border px-2 py-1 mb-2"
@@ -227,7 +316,7 @@ const Services = () => {
                       ? setNewService({ ...newService, desc: e.target.value })
                       : setSelectedService({
                           ...selectedService,
-                          desc: e.target.value
+                          desc: e.target.value,
                         })
                   }
                   className="border px-2 py-1 mb-2"
@@ -237,14 +326,14 @@ const Services = () => {
                     onClick={handleAddService}
                     className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                   >
-                    Add Service
+                    {loading ? "Loading..." : "Add Service"}
                   </button>
                 ) : (
                   <button
                     onClick={handleEditService}
                     className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                   >
-                    Edit Service
+                    {loading ? 'Loading...' : 'Edit Service'}
                   </button>
                 )}
               </div>
