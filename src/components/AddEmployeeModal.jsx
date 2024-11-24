@@ -7,7 +7,8 @@ const AddEmployeeModal = ({
   setAddEmployeeModal,
   addEmployeeModal,
   handleInputChange,
-  employeeObj
+  employeeObj,
+  loading
 }) => {
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
@@ -131,7 +132,7 @@ const AddEmployeeModal = ({
                     BIRTHDATE
                   </h5>
                   <input
-                    type="text"
+                    type="date"
                     name="birthdate"
                     value={employeeObj.birthdate || ""}
                     onChange={handleInputChange}
@@ -141,7 +142,7 @@ const AddEmployeeModal = ({
                 <div className="flex flex-col justify-start items-start gap-x-4">
                   <h5 className="text-[12px] font-semibold uppercase">AGE</h5>
                   <input
-                    type="text"
+                    type="number"
                     name="age"
                     value={employeeObj.age || ""}
                     onChange={handleInputChange}
@@ -179,7 +180,7 @@ const AddEmployeeModal = ({
                     CONTACT NO.
                   </h5>
                   <input
-                    type="text"
+                    type="number"
                     name="contactNo"
                     value={employeeObj.contactNo || ""}
                     onChange={handleInputChange}
@@ -242,7 +243,7 @@ const AddEmployeeModal = ({
               <div className="flex flex-col items-start dtContainer">
                 <h6 className="text-[12px] font-semibold">CONTACT NO.</h6>
                 <input
-                  type="text"
+                  type="number"
                   name="companyContact"
                     value={employeeObj.companyContact || ""}
                   onChange={handleInputChange}
@@ -318,7 +319,7 @@ const AddEmployeeModal = ({
               type="submit"
               className="px-6 py-2 rounded-md border-[1px] border-yellow-500 bg-yellow-500 no-print"
             >
-              SAVE
+              {loading ? 'Loading...' : 'SAVE'}
             </button>
             <button
               onClick={() => setAddEmployeeModal(!addEmployeeModal)}

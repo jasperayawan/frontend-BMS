@@ -1,6 +1,13 @@
 import React from 'react'
+import { format } from "date-fns";
 
-const EmployeeModal = ({ employeeData, setView, view }) => {
+const EmployeeModal = ({ viewEmployee, setView, view }) => {
+
+
+  const formattedBirthdate = viewEmployee.birthdate
+    ? format(new Date(viewEmployee.birthdate.iso), "yyyy-MM-dd")
+    : "";
+
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
       <div className="bg-white rounded-[12px] min-w-[500px] h-[400px] relative p-4 overflow-y-auto">
@@ -10,60 +17,60 @@ const EmployeeModal = ({ employeeData, setView, view }) => {
         <div className="flex gap-x-6 formContainer">
           <div className="flex flex-col gap-y-2 InitInnerformContainer">
             <img
-              src={employeeData.image}
+              src={viewEmployee.profilePic}
               alt=""
               className="h-[150px] w-[150px] profilePic"
             />
             <div className="flex flex-col justify-start items-start gap-x-1">
                 <p className="text-[12px] font-semibold">USER ID NO.</p>
-                <span className="text-[12px]">{employeeData.userIdNo}</span>
+                <span className="text-[12px]">{viewEmployee.userId}</span>
               </div>
           </div>
           <div className="flex flex-col gap-y-5 secondInnerformContainer">
             <div className="flex flex-row gap-x-4 space-x-5 secondInnerformContainer_child">
               <div className="flex flex-col">
                 <h5 className="text-[12px] font-semibold">Last Name</h5>
-                <p className="text-[14px]">{employeeData.lastName}</p>
+                <p className="text-[14px]">{viewEmployee.lastName}</p>
               </div>
               <div className="flex flex-col">
                 <h5 className="text-[12px] font-semibold">First Name</h5>
-                <p className="text-[14px]">{employeeData.firstName}</p>
+                <p className="text-[14px]">{viewEmployee.firstName}</p>
               </div>
               <div className="flex flex-col">
                 <h5 className="text-[12px] font-semibold">Middle Initial</h5>
-                <p className="text-[14px]">{employeeData.middleInitial}</p>
+                <p className="text-[14px]">{viewEmployee.middleInitial}</p>
               </div>
               <div className="flex flex-col">
                 <h5 className="text-[12px] font-semibold">MARITAL Status</h5>
-                <p className="text-[14px]">{employeeData.maritalStatus}</p>
+                <p className="text-[14px]">{viewEmployee.maritalStatus}</p>
               </div>
               <div className="flex flex-col">
                 <h5 className="text-[12px] font-semibold">BLOODTYPE</h5>
-                <p className="text-[14px]">{employeeData.bloodType}</p>
+                <p className="text-[14px]">{viewEmployee.bloodType}</p>
               </div>
             </div>
             <div className="flex flex-row gap-x-1 space-x-5 secondInnerformContainer_child">
               <div className="flex flex-col justify-start items-start gap-x-4">
                 <h5 className="text-[12px] font-semibold uppercase">POSITION</h5>
-                <p className="text-[14px]">{employeeData.position}</p>
+                <p className="text-[14px]">{viewEmployee.position}</p>
               </div>
               <div className="flex flex-col justify-start items-start gap-x-4">
                 <h5 className="text-[12px] font-semibold uppercase">BIRTHDATE</h5>
-                <p className="text-[14px]">{employeeData.birthdate}</p>
+                <p className="text-[14px]">{formattedBirthdate}</p>
               </div>
               <div className="flex flex-col justify-start items-start gap-x-4">
                 <h5 className="text-[12px] font-semibold uppercase">
                   AGE
                 </h5>
-                <p className="text-[14px]">{employeeData.age}</p>
+                <p className="text-[14px]">{viewEmployee.age}</p>
               </div>
               <div className="flex flex-col justify-start items-start gap-x-4">
                 <h5 className="text-[12px] font-semibold uppercase">NATIONALITY</h5>
-                <p className="text-[14px]">{employeeData.nationality}</p>
+                <p className="text-[14px]">{viewEmployee.nationality}</p>
               </div>
               <div className="flex flex-col justify-start items-start gap-x-4">
                 <h5 className="text-[12px] font-semibold uppercase">ADDRESS</h5>
-                <p className="text-[14px]">{employeeData.address}</p>
+                <p className="text-[14px]">{viewEmployee.address}</p>
               </div>
             </div>
             <div className="flex flex-row gap-x-1 space-x-5 secondInnerformContainer_child">
@@ -71,11 +78,11 @@ const EmployeeModal = ({ employeeData, setView, view }) => {
                 <h5 className="text-[12px] font-semibold uppercase">
                   CONTACT NO.
                 </h5>
-                <p className="text-[14px]">{employeeData.contactNo}</p>
+                <p className="text-[14px]">{viewEmployee.contactNo}</p>
               </div>
               <div className="flex flex-col justify-start items-start gap-x-4">
                 <h5 className="text-[12px] font-semibold uppercase">EMAIL</h5>
-                <p className="text-[14px]">{employeeData.email}</p>
+                <p className="text-[14px]">{viewEmployee.email}</p>
               </div>
             </div>
           </div>
@@ -93,31 +100,31 @@ const EmployeeModal = ({ employeeData, setView, view }) => {
             <div className="flex flex-col items-start dtContainer">
               <h6 className="text-[12px] font-semibold">LICENSE ID</h6>
               <p className="text-[12px]">
-                {employeeData.workReferences[0].licenceIdNo}
+                {viewEmployee.licenseId}
               </p>
             </div>
             <div className="flex flex-col items-start dtContainer">
               <h6 className="text-[12px] font-semibold">PROFESSION</h6>
               <p className="text-[12px]">
-                {employeeData.workReferences[0].profession}
+                {viewEmployee.profession}
               </p>
             </div>
             <div className="flex flex-col items-start dtContainer">
               <h6 className="text-[12px] font-semibold">COMPANY NAME</h6>
               <p className="text-[12px]">
-                {employeeData.workReferences[0].companyName}
+                {viewEmployee.companyName}
               </p>
             </div>
             <div className="flex flex-col items-start dtContainer">
               <h6 className="text-[12px] font-semibold">CONTACT NO.</h6>
               <p className="text-[12px]">
-                {employeeData.workReferences[0].contactNo}
+                {viewEmployee.companyContact}
               </p>
             </div>
             <div className="flex flex-col items-start dtContainer">
               <h6 className="text-[12px] font-semibold">WORK ADDRESS</h6>
               <p className="text-[12px]">
-                {employeeData.workReferences[0].workAddress}
+                {viewEmployee.workAddress}
               </p>
             </div>
           </div>
@@ -136,25 +143,25 @@ const EmployeeModal = ({ employeeData, setView, view }) => {
             <div className="flex flex-col items-start dtContainer">
               <h6 className="text-[12px] font-semibold">NAME</h6>
               <p className="text-[12px]">
-                {employeeData.emergencyContactPerson[0].name}
+                {viewEmployee.emergencyName}
               </p>
             </div>
             <div className="flex flex-col items-start dtContainer">
               <h6 className="text-[12px] font-semibold">RELATIONSHIP</h6>
               <p className="text-[12px]">
-                {employeeData.emergencyContactPerson[0].relationship}
+                {viewEmployee.emergencyRelationship}
               </p>
             </div>
             <div className="flex flex-col items-start dtContainer">
               <h6 className="text-[12px] font-semibold">ADDRESS</h6>
               <p className="text-[12px]">
-                {employeeData.emergencyContactPerson[0].address}
+                {viewEmployee.emergencyAddress}
               </p>
             </div>
             <div className="flex flex-col items-start dtContainer">
               <h6 className="text-[12px] font-semibold">CONTACT NO.</h6>
               <p className="text-[12px]">
-                {employeeData.emergencyContactPerson[0].contactNo}
+                {viewEmployee.emergencyContact}
               </p>
             </div>
           </div>

@@ -6,3 +6,4 @@ export const ORGANIZATION = baseUrl + '/api/organization'
 export const CONTACTUS = baseUrl + '/api/contactus';
 export const GALLERY = baseUrl + '/api/gallery';
 export const SERVICES = baseUrl + '/api/services'
+export const EMPLOYEE = baseUrl + '/api/employee'
