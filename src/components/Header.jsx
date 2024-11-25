@@ -98,19 +98,21 @@ const Header = () => {
           >
             <a href="/about-us">ABOUT US</a>
           </li>
-          {(isAuthenticated?.get("role") === "SECRETARY" ||
-            isAuthenticated?.get("role") === "ADMIN") && (
-              <li
-                onClick={() => handleActiveSelect("users")}
-                className={`${
-                  isActive === "users" || currentRoute === "users"
-                    ? "bg-yellow-500"
-                    : ""
-                } cursor-pointer px-4`}
-              >
-                <a href="/users">USERS ACCOUNT</a>
-              </li>
+          {(isAuthenticated?.get("role") !== "SECRETARY" &&
+              isAuthenticated?.get("role") !== "PATIENT" &&
+              isAuthenticated?.get("role") === "ADMIN") && (
+                <li
+                  onClick={() => handleActiveSelect("users")}
+                  className={`${
+                    isActive === "users" || currentRoute === "users"
+                      ? "bg-yellow-500"
+                      : ""
+                  } cursor-pointer px-4`}
+                >
+                  <a href="/users">USERS ACCOUNT</a>
+                </li>
             )}
+
 
           <li
             onClick={() => handleActiveSelect("myaccount")}
