@@ -170,7 +170,7 @@ const Services = () => {
         </h1>
 
         {/* Add new service button */}
-        {user?.get('role') !== 'SECRETARY' || 'ADMIN' && (
+        {user?.get('role') === 'SECRETARY' && user?.get('role') === 'ADMIN' && (
           <button
             onClick={() => openModal("add")}
             className="bg-blue-500 text-white w-[max-content] px-4 py-2 rounded hover:bg-blue-600 mb-5"
@@ -220,7 +220,7 @@ const Services = () => {
                   >
                     View
                   </button>
-                  {user?.get('role') !== 'SECRETARY' || 'ADMIN' && (
+                  {user?.get('role') === 'SECRETARY' && user?.get('role') ===  'ADMIN' && (
                     <button
                     onClick={() => openModal("edit", service)}
                     className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600"
@@ -228,7 +228,7 @@ const Services = () => {
                     Edit
                   </button>
                   )}
-                  {user?.get('role') !== 'SECRETARY' || 'ADMIN' && (
+                  {user?.get('role') === 'SECRETARY' && user?.get('role') ===  'ADMIN' && (
                     <button
                       onClick={() => handleDeleteService(service.objectId)}
                       className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
