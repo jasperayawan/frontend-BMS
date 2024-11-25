@@ -25,15 +25,18 @@ const Header = () => {
       </div>
       {isAuthenticated && (
         <ul className="flex justify-between items-center px-20 py-1 border-b-[1px] border-yellow-600">
-          <li
-            onClick={() => handleActiveSelect("patient")}
-            className={`${
-              isActive === "patient" || currentRoute === "patient" ? "bg-yellow-500" : ""
-            } cursor-pointer px-4`}
-          >
-            <a href="/patient">PATIENT</a>
-          </li>
-          <li
+          {isAuthenticated?.get('role') !== 'ADMIN' || 'SECRETARY' && (
+            <li
+              onClick={() => handleActiveSelect("patient")}
+              className={`${
+                isActive === "patient" || currentRoute === "patient" ? "bg-yellow-500" : ""
+              } cursor-pointer px-4`}
+            >
+              <a href="/patient">PATIENT</a>
+            </li>
+          )}
+          {isAuthenticated?.get('role') !== 'ADMIN' || 'SECRETARY' && (
+            <li
             onClick={() => handleActiveSelect("employee")}
             className={`${
               isActive === "employee" || currentRoute === "employee" ? "bg-yellow-500" : ""
@@ -41,6 +44,7 @@ const Header = () => {
           >
             <a href="/employee">EMPLOYEE</a>
           </li>
+          )}
           <li
             onClick={() => handleActiveSelect("services")}
             className={`${
@@ -73,7 +77,7 @@ const Header = () => {
           >
             <a href="/about-us">ABOUT US</a>
           </li>
-          {isAuthenticated?.get('role') !== 'SECRETARY' && (
+          {isAuthenticated?.get('role') !== 'SECRETARY' || 'ADMIN' && (
             <li
             onClick={() => handleActiveSelect("users")}
             className={`${

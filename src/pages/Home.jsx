@@ -9,6 +9,7 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [announcementImages, setAnnouncementImages] = useState([]);
   const [announcement, setAnnouncement] = useState("")
+  const user = Parse.User.current();
   const [userInfo, setUserInfo] = useState({
     username: "",
     email: "",
@@ -103,7 +104,7 @@ const Home = () => {
         </div>
       )}
       <div className="flex flex-col justify-center items-center gap-y-10">
-        <h1 className="text-4xl">WELCOME {userInfo.username}!</h1>
+        <h1 className="text-4xl">WELCOME {user?.get('role')}!</h1>
         <div className="mx-auto max-w-5xl w-full flex flex-col">
           <div className="bg-zinc-200 rounded-md p-5">
             <h2 className="text-2xl text-center mb-3 text-red-500 font-semibold">

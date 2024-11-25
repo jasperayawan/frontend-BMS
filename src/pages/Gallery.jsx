@@ -168,7 +168,7 @@ const Gallery = () => {
           GALLERY
         </h1>
         {/* Add New Gallery Button */}
-        {user?.get("role") !== "SECRETARY" && (
+        {user?.get("role") !== "SECRETARY" || 'ADMIN' && (
           <button
             onClick={() => setShowModal(true)}
             className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition"
@@ -191,7 +191,7 @@ const Gallery = () => {
                 className="h-56 w-full object-cover rounded-md"
               />
               <h3>{gallery.name}</h3>
-              {user?.get("role") !== "SECRETARY" && (
+              {user?.get("role") !== "SECRETARY" || 'ADMIN' && (
                 <button
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent triggering folder selection
@@ -254,7 +254,7 @@ const Gallery = () => {
                       alt={`File ${idx}`}
                       className="h-40 w-full object-cover rounded-md"
                     />
-                    {user?.get("role") !== "SECRETARY" && (
+                    {user?.get("role") !== "SECRETARY" || 'ADMIN' && (
                       <button
                         onClick={() => handleRemoveFile(selectedFolder, idx)}
                         className="absolute top-2 right-2 bg-red-500 text-white text-sm px-2 py-1 rounded-full hover:bg-red-600 transition"
@@ -267,7 +267,7 @@ const Gallery = () => {
               </div>
 
               <div className="mt-4">
-                {user?.get("role") !== "SECRETARY" && (
+                {user?.get("role") !== "SECRETARY" || 'ADMIN' && (
                   <>
                     <input
                       type="file"

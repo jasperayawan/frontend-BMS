@@ -127,7 +127,7 @@ const AboutUs = () => {
       <h1 className="text-3xl font-bold text-center mb-6">Barangay Officials</h1>
 
       {/* Add New Member Button */}
-      {user?.get('role') !== 'SECRETARY' && (
+      {user?.get('role') !== 'SECRETARY' || 'ADMIN' && (
         <button
         onClick={openAddModal}
         className="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
@@ -146,7 +146,7 @@ const AboutUs = () => {
                 alt={member.name}
                 className="w-24 h-24 mx-auto rounded-full"
               />
-              {user?.get('role') !== 'SECRETARY' && (
+              {user?.get('role') !== 'SECRETARY' || 'ADMIN' && (
                 <button
                 onClick={() => handleDelete(member.objectId)}
                 className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
@@ -158,7 +158,7 @@ const AboutUs = () => {
             </div>
             <h2 className="font-semibold mt-4">{member.name}</h2>
             <p className="text-gray-600">{member.role}</p>
-            {user?.get('role') !== 'SECRETARY' && (
+            {user?.get('role') !== 'SECRETARY' || 'ADMIN' && (
               <button
               onClick={() => handleEdit(member)}
               className="mt-2 text-blue-600 hover:underline"
