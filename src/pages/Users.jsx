@@ -271,6 +271,7 @@ const Users = () => {
                   <option value="ADMIN">ADMIN</option>
                   <option value="SECRETARY">SECRETARY</option>
                   <option value="NURSE">NURSE</option>
+                  <option value="PATIENT">PATIENT</option>
                 </select>
               </div>
               <div className="mb-2">

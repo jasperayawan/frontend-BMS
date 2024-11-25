@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { SERVICES } from "../helper/api";
+import Parse from "parse/dist/parse.min.js";
 
 const Services = () => {
   const [servicesData, setServicesData] = useState([]);
@@ -8,6 +9,7 @@ const Services = () => {
   const [modalType, setModalType] = useState(""); // Can be 'add', 'view', or 'edit'
   const [selectedService, setSelectedService] = useState(null);
   const [loading, setLoading] = useState(false);
+  const user = Parse.User.current()
   const [newService, setNewService] = useState({
     id: null,
     image: "",
@@ -168,12 +170,14 @@ const Services = () => {
         </h1>
 
         {/* Add new service button */}
-        <button
-          onClick={() => openModal("add")}
-          className="bg-blue-500 text-white w-[max-content] px-4 py-2 rounded hover:bg-blue-600 mb-5"
-        >
-          Add Service
-        </button>
+        {user?.get('role') !== 'SECRETARY' && (
+          <button
+            onClick={() => openModal("add")}
+            className="bg-blue-500 text-white w-[max-content] px-4 py-2 rounded hover:bg-blue-600 mb-5"
+          >
+            Add Service
+          </button>
+        )}
       </div>
 
       {/* Services Table */}
@@ -216,18 +220,22 @@ const Services = () => {
                   >
                     View
                   </button>
-                  <button
+                  {user?.get('role') !== 'SECRETARY' && (
+                    <button
                     onClick={() => openModal("edit", service)}
                     className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600"
                   >
                     Edit
                   </button>
-                  <button
-                    onClick={() => handleDeleteService(service.objectId)}
-                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                  >
-                    {loading ? 'Loading...' : 'Delete'}
-                  </button>
+                  )}
+                  {user?.get('role') !== 'SECRETARY' && (
+                    <button
+                      onClick={() => handleDeleteService(service.objectId)}
+                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                    >
+                      {loading ? 'Loading...' : 'Delete'}
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

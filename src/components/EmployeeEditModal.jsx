@@ -16,7 +16,7 @@ const EmployeeEditModal = ({
     : "";
 
   return (
-    <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
+    <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center z-50">
       <div className="bg-white rounded-[12px] min-w-[500px] h-[400px] relative p-4 overflow-y-auto">
         <div className="absolute top-2 right-2"></div>
         <form className="w-full" onSubmit={handleEditModal}>

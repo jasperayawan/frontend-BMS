@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CONTACTUS } from "../helper/api";
 import toast from "react-hot-toast";
-
+import Parse from "parse/dist/parse.min.js";
 
 // API call functions
 const createContactus = async (data) => {
@@ -23,6 +23,7 @@ const deleteContactus = async (id) => {
 // Main component
 const ContactUs = () => {
   const [contactInfo, setContactInfo] = useState({});
+  const user = Parse.User.current();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
@@ -189,7 +190,8 @@ const ContactUs = () => {
         </div>
 
         {/* Buttons */}
-        <div className="flex justify-between mt-8">
+        {user?.get('role') !== 'SECRETARY' && (
+          <div className="flex justify-between mt-8">
           <button onClick={handleEdit} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Edit
           </button>
@@ -197,6 +199,7 @@ const ContactUs = () => {
             Delete
           </button>
         </div>
+        )}
 
         {/* Edit Modal */}
         {isEditing && (

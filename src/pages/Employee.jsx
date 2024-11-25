@@ -6,6 +6,7 @@ import AddEmployeeModal from "../components/AddEmployeeModal";
 import axios from "axios";
 import { EMPLOYEE } from "../helper/api";
 import toast from "react-hot-toast";
+import Parse from "parse/dist/parse.min.js";
 
 const Employee = () => {
   const [searchType, setSearchType] = useState("ALL");
@@ -20,6 +21,7 @@ const Employee = () => {
   const [isEditModal, setIsEditModal] = useState(false);
   const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [editData, setEditData] = useState(null);
+  const user = Parse.User.current()
 
   const [image, setImage] = useState(null);
   const [addEmployeeModal, setAddEmployeeModal] = useState(false);
@@ -470,15 +472,17 @@ const Employee = () => {
                       </td>
                       <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
                         <div className="flex gap-x-2">
-                          <button
-                            onClick={() => {
-                              setEditData(data);
-                              setIsEditModal(!isEditModal);
-                            }}
-                            className="bg-zinc-700 text-white font-bold py-2 px-4 rounded"
-                          >
-                            Edit
-                          </button>
+                          {user?.get('role') !== 'SECRETARY' && (
+                            <button
+                              onClick={() => {
+                                setEditData(data);
+                                setIsEditModal(!isEditModal);
+                              }}
+                              className="bg-zinc-700 text-white font-bold py-2 px-4 rounded"
+                            >
+                              Edit
+                            </button>
+                          )}
                           <button
                             onClick={() => handleOpenModal(data)}
                             className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
@@ -502,15 +506,16 @@ const Employee = () => {
               </tbody>
             </table>
           </div>
-
-          <div className="flex justify-center mt-5 gap-x-3">
-            <button
-              onClick={() => setAddEmployeeModal(!addEmployeeModal)}
-              className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              ADD
-            </button>
-          </div>
+          {user?.get('role') !== 'SECRETARY' && (
+            <div className="flex justify-center mt-5 gap-x-3">
+              <button
+                onClick={() => setAddEmployeeModal(!addEmployeeModal)}
+                className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
+                ADD
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

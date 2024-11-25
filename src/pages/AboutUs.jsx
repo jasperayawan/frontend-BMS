@@ -11,7 +11,8 @@ const AboutUs = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
+  const user = Parse.User.current();
   const maxFileSize = 5 * 1024 * 1024; 
 
   const handleChange = (e) => {
@@ -126,12 +127,14 @@ const AboutUs = () => {
       <h1 className="text-3xl font-bold text-center mb-6">Barangay Officials</h1>
 
       {/* Add New Member Button */}
-      <button
+      {user?.get('role') !== 'SECRETARY' && (
+        <button
         onClick={openAddModal}
         className="absolute top-4 right-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
       >
         Add New Member
       </button>
+      )}
 
       {/* Team Members */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
@@ -143,21 +146,27 @@ const AboutUs = () => {
                 alt={member.name}
                 className="w-24 h-24 mx-auto rounded-full"
               />
-              <button
+              {user?.get('role') !== 'SECRETARY' && (
+                <button
                 onClick={() => handleDelete(member.objectId)}
                 className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
               >
                 ✕
               </button>
+              )}
+              
             </div>
             <h2 className="font-semibold mt-4">{member.name}</h2>
             <p className="text-gray-600">{member.role}</p>
-            <button
+            {user?.get('role') !== 'SECRETARY' && (
+              <button
               onClick={() => handleEdit(member)}
               className="mt-2 text-blue-600 hover:underline"
             >
               Edit
             </button>
+            )}
+            
           </div>
         ))}
       </div>

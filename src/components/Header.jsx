@@ -73,7 +73,8 @@ const Header = () => {
           >
             <a href="/about-us">ABOUT US</a>
           </li>
-          <li
+          {isAuthenticated?.get('role') !== 'SECRETARY' && (
+            <li
             onClick={() => handleActiveSelect("users")}
             className={`${
               isActive === "users" || currentRoute === "users" ? "bg-yellow-500" : ""
@@ -81,6 +82,7 @@ const Header = () => {
           >
             <a href="/users">USERS ACCOUNT</a>
           </li>
+          )}
           <li
             onClick={() => handleActiveSelect("myaccount")}
             className={`${
