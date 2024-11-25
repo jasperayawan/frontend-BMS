@@ -30,8 +30,8 @@ const Header = () => {
       </div>
       {isAuthenticated && (
         <ul className="flex justify-between items-center px-20 py-1 border-b-[1px] border-yellow-600">
-          {isAuthenticated?.get("role") === "ADMIN" &&
-            isAuthenticated?.get("role") === "SECRETARY" && (
+          {(isAuthenticated?.get("role") === "ADMIN" ||
+            isAuthenticated?.get("role") === "SECRETARY") && (
               <li
                 onClick={() => handleActiveSelect("patient")}
                 className={`${
@@ -43,8 +43,8 @@ const Header = () => {
                 <a href="/patient">PATIENT</a>
               </li>
             )}
-          {isAuthenticated?.get("role") === "ADMIN" &&
-            isAuthenticated?.get("role") === "SECRETARY" && (
+          {(isAuthenticated?.get("role") === "ADMIN" ||
+            isAuthenticated?.get("role") === "SECRETARY") && (
               <li
                 onClick={() => handleActiveSelect("employee")}
                 className={`${
@@ -98,8 +98,8 @@ const Header = () => {
           >
             <a href="/about-us">ABOUT US</a>
           </li>
-          {isAuthenticated?.get("role") === "SECRETARY" &&
-            isAuthenticated?.get("role") === "ADMIN" && (
+          {(isAuthenticated?.get("role") === "SECRETARY" ||
+            isAuthenticated?.get("role") === "ADMIN") && (
               <li
                 onClick={() => handleActiveSelect("users")}
                 className={`${

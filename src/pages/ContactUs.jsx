@@ -190,7 +190,7 @@ const ContactUs = () => {
         </div>
 
         {/* Buttons */}
-        {user?.get('role') === 'SECRETARY' && user?.get('role') === 'ADMIN' && (
+        {(user?.get('role') === 'SECRETARY' || user?.get('role') === 'ADMIN') && (
           <div className="flex justify-between mt-8">
           <button onClick={handleEdit} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
             Edit
