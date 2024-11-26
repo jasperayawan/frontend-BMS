@@ -20,7 +20,7 @@ const Header = () => {
           onClick={() => Navigate("/")}
           src="/sanfranciscologo.svg"
           alt="San Francisco Logo"
-          className="z-50"
+          className="z-50 cursor-pointer"
         />
         <h2 className="text-white text-[32px] text-center">
           BARANGAY SAN FRANCISCO HEALTH CENTER
@@ -31,6 +31,7 @@ const Header = () => {
       {isAuthenticated && (
         <ul className="flex justify-between items-center px-20 py-1 border-b-[1px] border-yellow-600">
           {(isAuthenticated?.get("role") === "ADMIN" ||
+            isAuthenticated?.get("role") === "NURSE" ||
             isAuthenticated?.get("role") === "SECRETARY") && (
               <li
                 onClick={() => handleActiveSelect("patient")}

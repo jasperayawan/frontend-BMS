@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { useState } from 'react'
+import { RESETPASS } from '../helper/api';
 
 
 export const useResetPass = () => {
@@ -13,7 +14,7 @@ export const useResetPass = () => {
         }
 
         try{
-            const res = await axios.post("http://localhost:8001/api/resetpass/reset-password", formData);
+            const res = await axios.post(RESETPASS, formData);
             console.log(res.data);
         }
         catch(error){

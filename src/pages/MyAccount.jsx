@@ -191,7 +191,7 @@ const MyAccount = () => {
                 <input
                   type="text"
                   name="contactNo"
-                  value={formData.contactNo}
+                  value={formData.contact}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border rounded"
                 />

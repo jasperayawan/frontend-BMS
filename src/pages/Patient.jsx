@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { PatientData } from "../helper/DummyData";
 import PatientModal from "../components/PatientModal";
+import { PATIENT } from "../helper/api";
+import AddPatientModal from "../components/patient/AddPatientModal";
 
 const Patient = () => {
   const [searchType, setSearchType] = useState("ALL");
@@ -8,8 +10,112 @@ const Patient = () => {
   const [isPrint, setIsPrint] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [patientData, setPatientData] = useState(null);
+  const [isAddPatientModal, setIsAddPatientModal] = useState(false);
+  const [formData, setFormData] = useState({
+    // Patient fields
+    firstname: "",
+    lastname: "",
+    middleInitial: "",
+    civilStatus: "Single",
+    purok: "",
+    barangay: "",
+    municipality: "",
+    province: "",
+    bod: "",
+    age: "",
+    nationality: "",
+    religion: "",
+    patientIdNo: "",
+    birthPlace: "",
+    bloodType: "O+",
+    contact: "",
+    occupation: "",
+    email: "",
+    password: "",
+    houseHoldMonthlyIncome: "",
+    livingChild: 0,
+    nonLivingChild: 0,
+    healthcareAssistance: "",
+
+    // Emergency contact fields
+    emergencyFirstName: "",
+    emergencyLastName: "",
+    emergencyInitial: "",
+    emergencyRelationship: "",
+    emergencyAddress: "",
+    emergencyBod: "",
+    emergencyAge: "",
+    emergencyOccupation: "",
+    emergencyCivilStatus: "Single",
+    emergencyNationality: "",
+    emergencyReligion: "",
+    emergencyContact: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const componentRef = useRef(null);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setIsSubmitting(true); // Start submission
+
+    try {
+      const response = await axios.post(PATIENT, formData);
+
+      if (response.status === 201) {
+        alert("Patient profile successfully created!");
+        // Optionally, reset the form
+        setFormData({
+          firstname: "",
+          lastname: "",
+          middleInitial: "",
+          civilStatus: "Single",
+          purok: "",
+          barangay: "",
+          municipality: "",
+          province: "",
+          bod: "",
+          age: "",
+          nationality: "",
+          religion: "",
+          patientIdNo: "",
+          birthPlace: "",
+          bloodType: "O+",
+          contact: "",
+          occupation: "",
+          email: "",
+          password: "",
+          houseHoldMonthlyIncome: "",
+          livingChild: 0,
+          nonLivingChild: 0,
+          healthcareAssistance: "",
+          emergencyFirstName: "",
+          emergencyLastName: "",
+          emergencyInitial: "",
+          emergencyRelationship: "",
+          emergencyAddress: "",
+          emergencyBod: "",
+          emergencyAge: "",
+          emergencyOccupation: "",
+          emergencyCivilStatus: "Single",
+          emergencyNationality: "",
+          emergencyReligion: "",
+          emergencyContact: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error creating patient profile:", error);
+      alert("An error occurred while creating the patient profile.");
+    } finally {
+      setIsSubmitting(false); // End submission
+    }
+  };
 
   const handleOpenModal = (data) => {
     setIsModalOpen(true);
@@ -166,6 +272,17 @@ const Patient = () => {
           componentRef={componentRef}
         />
       )}
+
+      {isAddPatientModal && (
+        <AddPatientModal
+          handleSubmit={handleSubmit}
+          formData={formData}
+          isSubmitting={isSubmitting}
+          handleInputChange={handleInputChange}
+          setIsAddPatientModal={setIsAddPatientModal}
+        />
+      )}
+
       <div className="flex flex-col gap-y-10">
         <h1 className="text-2xl flex justify-center items-center font-semibold">
           PATIENT LIST
@@ -279,12 +396,18 @@ const Patient = () => {
             </table>
           </div>
 
-          <div className="flex justify-center mt-5">
+          <div className="flex justify-center gap-x-2 mt-5">
             <button
               onClick={handlePrint}
               className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Print
+            </button>
+            <button
+              onClick={() => setIsAddPatientModal(!isAddPatientModal)}
+              className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Add new Patient
             </button>
           </div>
         </div>

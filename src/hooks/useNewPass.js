@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { RESETPASSCONFIRM } from '../helper/api';
 
 
 export const useNewPass = () => {
@@ -16,7 +17,7 @@ export const useNewPass = () => {
         }
 
         try{
-            const res = await axios.post('http://localhost:8001/api/resetpass/reset-password/confirm', formData);
+            const res = await axios.post(RESETPASSCONFIRM, formData);
             navigate('/')
             console.log(res.data)
         }
