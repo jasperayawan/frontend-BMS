@@ -3,6 +3,9 @@ import { PatientData } from "../helper/DummyData";
 import PatientModal from "../components/PatientModal";
 import { PATIENT } from "../helper/api";
 import AddPatientModal from "../components/patient/AddPatientModal";
+import axios from 'axios'
+import { toBase64 } from "../utils/toBase64";
+import toast from "react-hot-toast";
 
 const Patient = () => {
   const [searchType, setSearchType] = useState("ALL");
@@ -13,6 +16,7 @@ const Patient = () => {
   const [isAddPatientModal, setIsAddPatientModal] = useState(false);
   const [formData, setFormData] = useState({
     // Patient fields
+    profilePicture: null,
     firstname: "",
     lastname: "",
     middleInitial: "",
@@ -51,6 +55,7 @@ const Patient = () => {
     emergencyReligion: "",
     emergencyContact: "",
   });
+  const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const componentRef = useRef(null);
@@ -59,19 +64,31 @@ const Patient = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setIsSubmitting(true); // Start submission
+    if (!formData.profilePicture) {
+      toast.error('Please upload a profile picture.');
+      return; 
+    }
+    setIsSubmitting(true); 
 
     try {
-      const response = await axios.post(PATIENT, formData);
 
+      const imageBase64 = formData.profilePicture ? await toBase64(formData.profilePicture) : null;
+
+      const formDatas = {
+        ...formData,
+        profilePicture: imageBase64,
+      };
+
+      
+      const response = await axios.post(PATIENT, formDatas);
       if (response.status === 201) {
-        alert("Patient profile successfully created!");
+        toast.success("Patient profile successfully created!");
         // Optionally, reset the form
         setFormData({
+          profilePicture: null,
           firstname: "",
           lastname: "",
           middleInitial: "",
@@ -108,6 +125,8 @@ const Patient = () => {
           emergencyReligion: "",
           emergencyContact: "",
         });
+
+        setIsAddPatientModal(false)
       }
     } catch (error) {
       console.error("Error creating patient profile:", error);
@@ -261,6 +280,21 @@ const Patient = () => {
     return false;
   });
 
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    const maxFileSize = 5 * 1024 * 1024;
+
+    // File size validation
+    if (file && file.size > maxFileSize) {
+      setError('File size exceeds the 5MB limit.');
+      setFormData((prev) => ({ ...prev, profilePicture: null }));
+    } else if (file) {
+      setError('');
+      setFormData((prev) => ({ ...prev, profilePicture: file }));
+    }
+  };
+
   return (
     <div className="flex justify-center items-center mt-20">
       {isModalOpen && (
@@ -280,6 +314,8 @@ const Patient = () => {
           isSubmitting={isSubmitting}
           handleInputChange={handleInputChange}
           setIsAddPatientModal={setIsAddPatientModal}
+          handleFileChange={handleFileChange}
+          error={error}
         />
       )}
 

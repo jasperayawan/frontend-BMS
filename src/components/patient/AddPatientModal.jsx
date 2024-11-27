@@ -1,15 +1,26 @@
 import React from 'react'
 
-const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChange, setIsAddPatientModal }) => {
+const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChange, setIsAddPatientModal, handleFileChange, error }) => {
   return (
-    <div className="fixed inset-0 bg-black/30 w-full h-full flex justify-center items-center">
+    <div className="fixed inset-0 bg-black/30 w-full h-full flex justify-center items-center z-50">
           <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg w-full max-w-4xl max-h-[600px] overflow-y-auto">
             {/* Patient Information */}
             <div className="mb-6">
               <h2 className="text-lg font-bold text-gray-700 border-b-2 border-orange-500 mb-4">
                 Patient Information
               </h2>
+              <div className="mb-4">
+                <label className="block text-sm font-medium">Profile Picture</label>
+                <input
+                  type="file"
+                  name="profilePicture"
+                  onChange={handleFileChange}
+                  className="w-full p-2 border rounded"
+                />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+              </div>
               <div className="grid grid-cols-2 gap-6">
+              
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Last Name</label>
                   <input
@@ -140,6 +151,26 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Patient ID NO.</label>
+                <input
+                  type="text"
+                  name="patientIdNo"
+                  value={formData.patientIdNo}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700">Birth Place</label>
+                <input
+                  type="text"
+                  name="birthPlace"
+                  value={formData.birthPlace}
+                  onChange={handleInputChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-6 mb-6">
@@ -182,15 +213,93 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Household Monthly Income</label>
-                <input
-                  type="number"
-                  name="houseHoldMonthlyIncome"
-                  value={formData.houseHoldMonthlyIncome}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
-                />
-              </div>
+                  <label className="block text-sm font-medium text-gray-700">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Household Monthly Income</label>
+                  <input
+                    type="number"
+                    name="houseHoldMonthlyIncome"
+                    value={formData.houseHoldMonthlyIncome}
+                    onChange={handleInputChange}
+                    className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">No. Living child</label>
+                  <input
+                    type="number"
+                    name="livingChild"
+                    value={formData.livingChild}
+                    onChange={handleInputChange}
+                    className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">No. Non Living child</label>
+                  <input
+                    type="number"
+                    name="nonLivingChild"
+                    value={formData.nonLivingChild}
+                    onChange={handleInputChange}
+                    className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Health Care Assistance</label>
+                  <div className="mt-2 flex justify-start items-center gap-x-2">
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="healthcareAssistance"
+                        value="4ps"
+                        checked={formData.healthcareAssistance === "4ps"}
+                        onChange={handleInputChange}
+                        className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                      />
+                      <span className="ml-2 text-gray-700">4Ps</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="healthcareAssistance"
+                        value="indigent"
+                        checked={formData.healthcareAssistance === "indigent"}
+                        onChange={handleInputChange}
+                        className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                      />
+                      <span className="ml-2 text-gray-700">Indigent</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="radio"
+                        name="healthcareAssistance"
+                        value="private"
+                        checked={formData.healthcareAssistance === "private"}
+                        onChange={handleInputChange}
+                        className="h-4 w-4 text-orange-500 border-gray-300 focus:ring-orange-500"
+                      />
+                      <span className="ml-2 text-gray-700">Private</span>
+                    </label>
+                  </div>
+                </div>
             </div>
 
             {/* Emergency Contact */}
@@ -220,7 +329,17 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Emergency Relationship</label>
+                  <label className="block text-sm font-medium text-gray-700">Middle Initial</label>
+                  <input
+                    type="text"
+                    name="emergencyInitial"
+                    value={formData.emergencyInitial}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Relationship</label>
                   <input
                     type="text"
                     name="emergencyRelationship"
@@ -234,7 +353,7 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   <input
                     type="text"
                     name="emergencyAddress"
-                    value={formData.emergencyRelationship}
+                    value={formData.emergencyAddress}
                     onChange={handleInputChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
@@ -244,7 +363,7 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   <input
                     type="date"
                     name="emergencyBod"
-                    value={formData.emergencyRelationship}
+                    value={formData.emergencyBod}
                     onChange={handleInputChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
@@ -254,7 +373,7 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   <input
                     type="number"
                     name="emergencyAge"
-                    value={formData.emergencyRelationship}
+                    value={formData.emergencyAge}
                     onChange={handleInputChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
@@ -263,17 +382,19 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   <label className="block text-sm font-medium text-gray-700">Occupation</label>
                   <input
                     type="text"
-                    name="emergencyOcccupation"
-                    value={formData.emergencyRelationship}
+                    name="emergencyOccupation"
+                    value={formData.emergencyOccupation}
                     onChange={handleInputChange}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                    className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
                 </div>
+                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Civil Status</label>
                   <select
                     name="emergencyCivilStatus"
-                    value={formData.civilStatus}
+                    value={formData.emergencyCivilStatus}
                     onChange={handleInputChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   >
@@ -287,7 +408,7 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   <input
                     type="text"
                     name="emergencyNationality"
-                    value={formData.emergencyRelationship}
+                    value={formData.emergencyNationality}
                     onChange={handleInputChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
@@ -297,7 +418,7 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   <input
                     type="text"
                     name="emergencyReligion"
-                    value={formData.emergencyRelationship}
+                    value={formData.emergencyReligion}
                     onChange={handleInputChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
@@ -307,7 +428,7 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   <input
                     type="text"
                     name="emergencyContact"
-                    value={formData.emergencyRelationship}
+                    value={formData.emergencyContact}
                     onChange={handleInputChange}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
@@ -329,7 +450,7 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
               onClick={() => setIsAddPatientModal(false)}
               className={`px-4 py-2 font-bold text-white rounded-md bg-orange-500`}
             >
-              close
+              cancel
             </button>
             </div>
           </form>
