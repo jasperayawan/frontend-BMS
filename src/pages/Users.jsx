@@ -128,7 +128,8 @@ const Users = () => {
       setLoading(true);
       try {
         const result = await Parse.Cloud.run('getUsers', {});
-        setUsers(result); 
+        const filteredUsers = result.filter(user => user.role !== 'PATIENT');
+        setUsers(filteredUsers);
       } catch (err) {
         console.error(err);
       } finally {
@@ -271,7 +272,6 @@ const Users = () => {
                   <option value="ADMIN">ADMIN</option>
                   <option value="SECRETARY">SECRETARY</option>
                   <option value="NURSE">NURSE</option>
-                  <option value="PATIENT">PATIENT</option>
                 </select>
               </div>
               <div className="mb-2">

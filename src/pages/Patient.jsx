@@ -6,6 +6,7 @@ import AddPatientModal from "../components/patient/AddPatientModal";
 import axios from 'axios'
 import { toBase64 } from "../utils/toBase64";
 import toast from "react-hot-toast";
+import AddNewPrenatal from "../components/healthcare_services/AddNewPrenatal";
 
 const Patient = () => {
   const [searchType, setSearchType] = useState("ALL");
@@ -14,6 +15,12 @@ const Patient = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [patientData, setPatientData] = useState(null);
   const [isAddPatientModal, setIsAddPatientModal] = useState(false);
+  const [isAddNewPrenatal, setIsAddNewPrenatal] = useState(false)
+  const [isHealthCareModal, setIsHealthCareModal] = useState(false)
+  const [isPatientSelect, setIsPatientSelect] = useState(false)
+  const [patientDataSelected, setPatientDataSelected] = useState({})
+  const [healthCare, setHealthCare] = useState("");
+  const [isPrenatal, setIsPrenatal] = useState(false)
   const [formData, setFormData] = useState({
     // Patient fields
     profilePicture: null,
@@ -295,6 +302,17 @@ const Patient = () => {
     }
   };
 
+  const handlePatientSelection = (data) => {
+    setPatientDataSelected(data)
+  }
+
+  const handleChangeHealthCare = (event) => {
+    setHealthCare(event.target.value);
+  };
+
+  console.log('isPrenatal', isPrenatal)
+  console.log('healthCare', healthCare)
+
   return (
     <div className="flex justify-center items-center mt-20">
       {isModalOpen && (
@@ -304,6 +322,7 @@ const Patient = () => {
           isModalOpen={isModalOpen}
           handlePrint={handlePrint}
           componentRef={componentRef}
+          setIsPatientSelect={setIsPatientSelect}
         />
       )}
 
@@ -319,7 +338,33 @@ const Patient = () => {
         />
       )}
 
-      <div className="flex flex-col gap-y-10">
+      {isHealthCareModal && (
+        <div className="fixed inset-0 w-full bg-black/20 h-screen flex justify-center items-center z-50">
+          <div className="relative bg-white border flex flex-col space-y-4 p-5">
+          <label for="healthCare">Select Health Care Service:</label>
+            <select onChange={handleChangeHealthCare} value={healthCare} name="healthCare" id="healthCare">
+              <option value="">--Select--</option>
+              <option value="PRENATAL">PRENATAL</option>
+              <option value="IMMUNIZATION">IMMUNIZATION</option>
+              <option value="FAMILY PLANNING">FAMILY PLANNING</option>
+              <option value="OTHER SERVICES">OTHER SERVICES</option>
+            </select>
+
+            <button onClick={() => {
+              setIsHealthCareModal(false)
+              setIsPrenatal(true)
+            }} className="border px-4 py-2 uppercase">ok</button>
+          </div>
+        </div>
+      )}
+
+      {(healthCare === 'PRENATAL' && isPrenatal) && (
+        <AddNewPrenatal setHealthCare={setHealthCare} setIsPrenatal={setIsPrenatal}/>
+      )}
+
+
+      {(healthCare === " " || !isPrenatal) && (
+        <div className="flex flex-col gap-y-10">
         <h1 className="text-2xl flex justify-center items-center font-semibold">
           PATIENT LIST
         </h1>
@@ -386,8 +431,11 @@ const Patient = () => {
                   filteredData.map((data) => (
                     <tr
                       key={data.id}
-                      onClick={() => handleOpenModal(data)}
-                      className="bg-white border-b dark:bg-gray-200 dark:border-gray-700 cursor-pointer"
+                      onClick={() => {
+                        handlePatientSelection(data) 
+                        setIsPatientSelect(true)
+                      }}
+                      className={`${patientDataSelected.id === data.id ? 'bg-yellow-500' : 'bg-zinc-100'} border-b  dark:border-gray-700 cursor-pointer`}
                     >
                       <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
                         {data.id}
@@ -435,19 +483,39 @@ const Patient = () => {
           <div className="flex justify-center gap-x-2 mt-5">
             <button
               onClick={handlePrint}
-              className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
             >
               Print
             </button>
             <button
               onClick={() => setIsAddPatientModal(!isAddPatientModal)}
-              className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
             >
-              Add new Patient
+              Add
             </button>
+            <button
+              className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
+            >
+              EDIT
+            </button>
+            <button
+              onClick={() => setIsHealthCareModal(!isHealthCareModal)}
+              className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
+            >
+              Healthcare Services
+            </button>
+            {isPatientSelect && (
+              <button
+                onClick={() => handleOpenModal(patientDataSelected)}
+                className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
+              >
+                VIEW
+              </button>
+            )}
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

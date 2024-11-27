@@ -6,11 +6,12 @@ const PatientModal = ({
   isModalOpen,
   handlePrint,
   componentRef,
+  setIsPatientSelect
 }) => {
   const [isPatientHistory, setIsPatientHistory] = useState(false);
   const [historyIndex, setHistoryIndex] = useState(0);
 
-  console.log(patientData);
+
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
       {isPatientHistory ? (
@@ -388,9 +389,12 @@ const PatientModal = ({
                 className="px-6 py-2 rounded-md bg-yellow-500 text-white no-print"
               >
                 PRINT
-              </button>
+              </button> 
               <button
-                onClick={() => setIsModalOpen(!isModalOpen)}
+                onClick={() => {
+                  setIsModalOpen(!isModalOpen)
+                  setIsPatientSelect(false)
+                }}
                 className="px-6 py-2 rounded-md border-[1px] border-yellow-500 text-yellow-500 no-print"
               >
                 BACK
