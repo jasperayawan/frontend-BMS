@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Print Patient Data</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+      }
+
+      /* Table Styles */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+
+      th, td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      /* Header Styles */
+      .print-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+
+      .print-header img {
+        max-width: 100px;
+      }
+
+      .print-header h2 {
+        color: #000000;
+        text-align: center;
+        margin: 0;
+      }
+
+      /* Profile Picture */
+      .profilePic {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+      }
+
+      /* Form Layout Containers */
+      .formContainer {
+        display: flex;
+        gap: 1.5rem;
+      }
+
+      .InitInnerformContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .secondInnerformContainer {
+        display: flex;
+        flex-direction: column;
+        line-height: 1px;
+      }
+
+      .cuttLine {
+        display: flex;
+        align-items: start;
+      }
+
+      .secondInnerformContainer_child {
+        display: flex;
+        flex-direction: row;
+        column-gap: 2rem;
+        margin-right: calc(1.25rem * var(--tw-space-x-reverse));
+        margin-left: calc(1.25rem * calc(1 - var(--tw-space-x-reverse)));
+      }
+
+      .secondInnerformContainer_child h5 {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin: 5px 0;
+      }
+
+      /* Second Form Container */
+      .secondFormContainer {
+        display: flex;
+        flex-direction: column;
+        line-height: 1px;
+      }
+
+      .secondFormContainer_child {
+        display: flex;
+        flex-direction: row;
+        column-gap: 16px;
+      }
+
+      .secondFormContainer_childData {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      /* Data Container */
+      .dtContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+      }
+
+      .dtContainer h6 {
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin: 5px 0;
+      }
+
+      .dtContainer p {
+        font-size: 12px;
+        margin: 3px 0;
+      }
+
+      /* Print-specific styles */
+      @media print {
+        .no-print {
+          display: none;
+        }
+
+        body {
+          padding: 0;
+          margin: 0;
+        }
+
+        .print-header {
+          padding: 15px;
+          margin-bottom: 20px;
+        }
+
+        /* Ensure page breaks don't occur in the middle of important content */
+        table {
+          page-break-inside: avoid;
+        }
+
+        .formContainer {
+          page-break-inside: avoid;
+        }
+      }
+
+      /* Additional utility classes */
+      .text-center {
+        text-align: center;
+      }
+
+      .font-bold {
+        font-weight: bold;
+      }
+
+      .mt-4 {
+        margin-top: 1rem;
+      }
+
+      .mb-4 {
+        margin-bottom: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="print-header">
+      <img src="/sanfranciscologo.svg" alt="San Francisco Logo" />
+      <h2>
+        BARANGAY SAN FRANCISCO HEALTH CENTER<br/> 
+        MANAGEMENT SYSTEM
+      </h2>
+      <img src="/pagadianlogo.svg" alt="Pagadian Logo" />
+    </div>
+    <div id="content-placeholder"></div>
+
+    <!-- Optional: Add footer -->
+    <div class="footer text-center mt-4 no-print">
+      <p>Generated on: <span id="print-date"></span></p>
+    </div>
+
+    <script>
+      // Add current date to footer
+      document.getElementById('print-date').textContent = new Date().toLocaleDateString();
+      
+      // Auto-print when loaded
+      window.onload = function() {
+        // Small delay to ensure styles are applied
+        setTimeout(function() {
+          window.print();
+        }, 500);
+      };
+    </script>
+  </body>
+</html> 

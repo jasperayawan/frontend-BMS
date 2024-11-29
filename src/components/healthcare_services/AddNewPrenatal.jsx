@@ -2,7 +2,7 @@ import { Calendar } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
-const AddNewPrenatal = ({ setHealthCare, setIsPrenatal }) => {
+const AddNewPrenatal = ({ setHealthCare, setIsPrenatal, setIsHealthcareActive }) => {
   const [formData, setFormData] = useState({
     patientId: "BSE-2023-006",
     lastName: "LOCKHEART",
@@ -37,6 +37,14 @@ const AddNewPrenatal = ({ setHealthCare, setIsPrenatal }) => {
   const handleSave = () => {
     toast.success("Record saved successfully!");
   };
+
+
+  const handleCancel = () => {
+    setHealthCare('default');
+    setIsPrenatal(false)
+    setIsHealthcareActive(false)
+  };
+
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -349,15 +357,13 @@ const AddNewPrenatal = ({ setHealthCare, setIsPrenatal }) => {
           >
             SAVE
           </button>
-          <button  
-            onClick={() => {
-                setHealthCare(" ")
-                setIsPrenatal(false)
-            }}
-            className="px-4 py-2 border-2 rounded"
-          >
-            CANCEL
-          </button>
+          <button
+              type="button"
+              onClick={handleCancel}
+              className="px-4 py-2 border rounded"
+            >
+              Cancel
+            </button>
         </div>
       </div>
     </div>
