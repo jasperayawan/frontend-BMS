@@ -52,6 +52,19 @@ const AddPatientModal = ({ handleSubmit, formData, isSubmitting, handleInputChan
                   />
                 </div>
                 <div>
+                  <label className="block text-sm font-medium text-gray-700">Sex</label>
+                  <select
+                    name="sex"
+                    value={formData.sex}
+                    onChange={handleInputChange}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  >
+                    <option value="">Select Sex</option>
+                    <option value="M">Male</option>
+                    <option value="F">Female</option>
+                  </select>
+                </div>
+                <div>
                   <label className="block text-sm font-medium text-gray-700">Civil Status</label>
                   <select
                     name="civilStatus"

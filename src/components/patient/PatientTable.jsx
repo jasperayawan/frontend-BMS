@@ -24,25 +24,25 @@ const PatientTable = ({
         </thead>
         <tbody>
           {filteredData.length > 0 ? (
-            filteredData.map((data) => (
+            filteredData.map((data, index) => (
               <tr
-                key={data.id}
+                key={index}
                 onClick={() => handlePatientSelection(data)}
                 className={`${
-                  patientDataSelected.id === data.id ? 'bg-yellow-500' : 'bg-zinc-100'
+                  patientDataSelected.objectId === data.objectId ? 'bg-yellow-500' : 'bg-zinc-100'
                 } border-b dark:border-gray-700 cursor-pointer`}
               >
-                <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.id}</td>
+                <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{index + 1}</td>
                 <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.patientIdNo}</td>
                 <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
-                  {data.lastName} {data.firstName}
+                  {data.lastname} {data.firstname}
                 </td>
                 <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.sex}</td>
                 <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.bloodType}</td>
-                <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.birthdate}</td>
+                <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.bod}</td>
                 <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.purok}</td>
-                <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.contactUs}</td>
-                <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.dateRegistered}</td>
+                <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{data.contact}</td>
+                <td className="px-4 py-2 text-gray-900 whitespace-nowrap">{new Date(data.createdAt).toLocaleDateString()}</td>
               </tr>
             ))
           ) : (

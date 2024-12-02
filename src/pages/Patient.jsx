@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { PatientData } from "../helper/DummyData";
 import PatientModal from "../components/PatientModal";
 import { PATIENT } from "../helper/api";
@@ -10,14 +10,17 @@ import AddNewPrenatal from "../components/healthcare_services/AddNewPrenatal";
 import PatientTable from '../components/patient/PatientTable';
 import printTemplate from '../templates/PatientPrintTemplate.html?raw';
 import AddNewImmunization from "../components/healthcare_services/AddNewImmunization";
-// import AddNewFamilyPlanning from "../components/healthcare_services/AddNewFamilyPlanning";
+import EditFamilyPlanning from "../components/healthcare_services/EditFamilyPlanning";
+import AddNewFamilyPlanning from "../components/healthcare_services/AddNewFamilyPlanning";
+import AddNewOtherServices from "../components/healthcare_services/AddNewOtherServices";
+import { usePatient } from "../hooks/usePatient";
 
 const Patient = () => {
   const [searchType, setSearchType] = useState("ALL");
   const [searchInput, setSearchInput] = useState("");
   const [isPrint, setIsPrint] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [patientData, setPatientData] = useState(null);
+  const [patientDataView, setPatientDataView] = useState(null);
   const [isAddPatientModal, setIsAddPatientModal] = useState(false);
   const [isAddNewPrenatal, setIsAddNewPrenatal] = useState(false)
   const [isHealthCareModal, setIsHealthCareModal] = useState(false)
@@ -29,12 +32,17 @@ const Patient = () => {
   const [isFamilyPlanning, setIsFamilyPlanning] = useState(false)
   const [isOtherServices, setIsOtherServices] = useState(false)
   const [isHealthcareActive, setIsHealthcareActive] = useState(false);
+  const [isEditHealthCareModal, setIsEditHealthCareModal] = useState(false);
+  const [isEditFamilyPlanning, setIsEditFamilyPlanning] = useState(false);  
+  const [healthCareAddorEdit, setHealthCareAddorEdit] = useState(false);
+  const { patientData, getPatients, isLoading } = usePatient();
   const [formData, setFormData] = useState({
     // Patient fields
     profilePicture: null,
     firstname: "",
     lastname: "",
     middleInitial: "",
+    sex: "",
     civilStatus: "Single",
     purok: "",
     barangay: "",
@@ -107,6 +115,7 @@ const Patient = () => {
           firstname: "",
           lastname: "",
           middleInitial: "",
+          sex: "",
           civilStatus: "Single",
           purok: "",
           barangay: "",
@@ -140,7 +149,7 @@ const Patient = () => {
           emergencyReligion: "",
           emergencyContact: "",
         });
-
+        window.location.reload();
         setIsAddPatientModal(false)
       }
     } catch (error) {
@@ -153,7 +162,7 @@ const Patient = () => {
 
   const handleOpenModal = (data) => {
     setIsModalOpen(true);
-    setPatientData(data);
+    setPatientDataView(data);
   };
 
   const handlePrint = () => {
@@ -189,11 +198,11 @@ const Patient = () => {
     }
   };
 
-  const filteredData = PatientData.filter((data) => {
+  const filteredData = Array.isArray(patientData) ? patientData.filter((data) => {
     if (searchType === "ALL") {
       return true;
     } else if (searchType === "NAME") {
-      return data.lastName.toLowerCase().includes(searchInput.toLowerCase());
+      return data.lastname.toLowerCase().includes(searchInput.toLowerCase());
     } else if (searchType === "BLOODTYPE") {
       return data.bloodType.toLowerCase().includes(searchInput.toLowerCase());
     } else if (searchType === "PUROK") {
@@ -204,7 +213,7 @@ const Patient = () => {
         .includes(searchInput.toLowerCase());
     }
     return false;
-  });
+  }) : [];
 
 
   const handleFileChange = (e) => {
@@ -231,25 +240,62 @@ const Patient = () => {
 
 
   const handleHealthcareSelection = () => {
-    setIsHealthCareModal(false)
+    setIsHealthCareModal(false);
     setIsHealthcareActive(true);
 
     if (healthCare === 'PRENATAL') {
-      setIsPrenatal(true)
+      if(healthCareAddorEdit === 'EDIT'){
+        // return null
+        setIsHealthCareModal(false)
+        setIsEditHealthCareModal(false)
+      } else {
+        setIsPrenatal(true);
+      }
     } else if (healthCare === 'IMMUNIZATION') {
-      setIsImmunization(true)
+      if(healthCareAddorEdit === 'EDIT'){
+        // return null
+        setIsHealthCareModal(false)
+        setIsEditHealthCareModal(false)
+      } else {
+        setIsImmunization(true);
+      }
     } else if (healthCare === 'FAMILY PLANNING') {
-      setIsFamilyPlanning(true)
+      if(healthCareAddorEdit === 'EDIT'){
+        setIsEditFamilyPlanning(true);
+        setIsHealthCareModal(false)
+        setIsEditHealthCareModal(false)
+      } else {
+        setIsFamilyPlanning(true);
+      }
     } else if (healthCare === 'OTHER SERVICES') {
-      setIsOtherServices(true)
+      if(healthCareAddorEdit === 'EDIT'){
+        setIsHealthCareModal(false)
+        setIsEditHealthCareModal(false)
+      } else {
+        setIsOtherServices(true);
+      }
+    }
+  };
+
+  const handleHealthcareServicesModal = (data) => {
+    if (data === 'EDIT') {
+      setIsEditHealthCareModal(true);
+    } else if (data === 'HEALTHCARE SERVICES') {
+      setIsHealthCareModal(true)
     }
   }
+
+
+  useEffect(() => {
+    getPatients();
+  }, []);
+  
 
   return (
     <div className="flex justify-center items-center mt-20">
       {isModalOpen && (
         <PatientModal
-          patientData={patientData}
+          patientData={patientDataView}
           setIsModalOpen={setIsModalOpen}
           isModalOpen={isModalOpen}
           handlePrint={handlePrint}
@@ -273,6 +319,35 @@ const Patient = () => {
       {isHealthCareModal && (
         <div className="fixed inset-0 w-full bg-black/20 h-screen flex justify-center items-center z-50">
           <div className="relative bg-white border flex flex-col space-y-4 p-5">
+            <button 
+              onClick={() => setIsHealthCareModal(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+            >
+              ✕
+            </button>
+            <label for="healthCare">Select Health Care Service:</label>
+            <select onChange={handleChangeHealthCare} value={healthCare} name="healthCare" id="healthCare">
+              <option value="">--Select--</option>
+              <option value="PRENATAL">PRENATAL</option>
+              <option value="IMMUNIZATION">IMMUNIZATION</option>
+              <option value="FAMILY PLANNING">FAMILY PLANNING</option>
+              <option value="OTHER SERVICES">OTHER SERVICES</option>
+            </select>
+
+            <button onClick={handleHealthcareSelection} className="border px-4 py-2 uppercase">ok</button>
+          </div>
+        </div>
+      )}
+
+      {isEditHealthCareModal && (
+        <div className="fixed inset-0 w-full bg-black/20 h-screen flex justify-center items-center z-50">
+          <div className="relative bg-white border flex flex-col space-y-4 p-5">
+            <button 
+              onClick={() => setIsHealthCareModal(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+            >
+              ✕
+            </button>
             <label for="healthCare">Select Health Care Service:</label>
             <select onChange={handleChangeHealthCare} value={healthCare} name="healthCare" id="healthCare">
               <option value="">--Select--</option>
@@ -295,9 +370,26 @@ const Patient = () => {
         <AddNewImmunization setHealthCare={setHealthCare} setIsImmunization={setIsImmunization} setIsHealthcareActive={setIsHealthcareActive} />
       )}
 
-      {/* {(healthCare === 'FAMILY PLANNING' && isFamilyPlanning) && (
-        <AddNewFamilyPlanning setHealthCare={setHealthCare} setIsFamilyPlanning={setIsFamilyPlanning}/>
-      )} */}
+      {(isFamilyPlanning) && (
+        <AddNewFamilyPlanning setHealthCare={setHealthCare} setIsFamilyPlanning={setIsFamilyPlanning} setIsHealthcareActive={setIsHealthcareActive} />
+      )}
+
+      {isEditFamilyPlanning && (
+        <EditFamilyPlanning
+          setHealthCare={setHealthCare}
+          patientDataSelected={patientDataSelected}
+          setIsFamilyPlanning={setIsEditFamilyPlanning}
+          setIsHealthcareActive={setIsHealthcareActive}
+        />
+      )}
+
+      {(isOtherServices) && (
+        <AddNewOtherServices 
+          setHealthCare={setHealthCare} 
+          setIsOtherServices={setIsOtherServices} 
+          setIsHealthcareActive={setIsHealthcareActive} 
+        />
+      )}
 
       {!isHealthcareActive && (
         <div className="flex flex-col gap-y-10">
@@ -351,14 +443,21 @@ const Patient = () => {
                 className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
               >
                 Add
-              </button>
+              </button> 
               <button
+                onClick={() => { 
+                  handleHealthcareServicesModal('EDIT') 
+                  setHealthCareAddorEdit('EDIT')
+                }}
                 className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
               >
                 EDIT
               </button>
               <button
-                onClick={() => setIsHealthCareModal(!isHealthCareModal)}
+                onClick={() => {
+                  handleHealthcareServicesModal('HEALTHCARE SERVICES')
+                  setHealthCareAddorEdit('ADD')
+                }}
                 className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
               >
                 Healthcare Services
