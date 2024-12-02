@@ -14,6 +14,7 @@ import EditFamilyPlanning from "../components/healthcare_services/EditFamilyPlan
 import AddNewFamilyPlanning from "../components/healthcare_services/AddNewFamilyPlanning";
 import AddNewOtherServices from "../components/healthcare_services/AddNewOtherServices";
 import { usePatient } from "../hooks/usePatient";
+import EditImmunization from "../components/healthcare_services/EditImmunization";
 
 const Patient = () => {
   const [searchType, setSearchType] = useState("ALL");
@@ -34,6 +35,7 @@ const Patient = () => {
   const [isHealthcareActive, setIsHealthcareActive] = useState(false);
   const [isEditHealthCareModal, setIsEditHealthCareModal] = useState(false);
   const [isEditFamilyPlanning, setIsEditFamilyPlanning] = useState(false);  
+  const [isEditImmunization, setIsEditImmunization] = useState(false);
   const [healthCareAddorEdit, setHealthCareAddorEdit] = useState(false);
   const { patientData, getPatients, isLoading } = usePatient();
   const [formData, setFormData] = useState({
@@ -253,7 +255,7 @@ const Patient = () => {
       }
     } else if (healthCare === 'IMMUNIZATION') {
       if(healthCareAddorEdit === 'EDIT'){
-        // return null
+        setIsEditImmunization(true);
         setIsHealthCareModal(false)
         setIsEditHealthCareModal(false)
       } else {
@@ -363,15 +365,23 @@ const Patient = () => {
       )}
 
       {(isPrenatal) && (
-        <AddNewPrenatal setHealthCare={setHealthCare} setIsPrenatal={setIsPrenatal} setIsHealthcareActive={setIsHealthcareActive} />
+        <AddNewPrenatal patientDataSelected={patientDataSelected} setHealthCare={setHealthCare} setIsPrenatal={setIsPrenatal} setIsHealthcareActive={setIsHealthcareActive} />
       )}
 
       {(isImmunization) && (
-        <AddNewImmunization setHealthCare={setHealthCare} setIsImmunization={setIsImmunization} setIsHealthcareActive={setIsHealthcareActive} />
+        <AddNewImmunization patientDataSelected={patientDataSelected} setHealthCare={setHealthCare} setIsImmunization={setIsImmunization} setIsHealthcareActive={setIsHealthcareActive} />
       )}
 
       {(isFamilyPlanning) && (
-        <AddNewFamilyPlanning setHealthCare={setHealthCare} setIsFamilyPlanning={setIsFamilyPlanning} setIsHealthcareActive={setIsHealthcareActive} />
+        <AddNewFamilyPlanning patientDataSelected={patientDataSelected} setHealthCare={setHealthCare} setIsFamilyPlanning={setIsFamilyPlanning} setIsHealthcareActive={setIsHealthcareActive} />
+      )}
+
+      {(isOtherServices) && (
+        <AddNewOtherServices 
+          setHealthCare={setHealthCare} 
+          setIsOtherServices={setIsOtherServices} 
+          setIsHealthcareActive={setIsHealthcareActive} 
+        />
       )}
 
       {isEditFamilyPlanning && (
@@ -383,11 +393,12 @@ const Patient = () => {
         />
       )}
 
-      {(isOtherServices) && (
-        <AddNewOtherServices 
-          setHealthCare={setHealthCare} 
-          setIsOtherServices={setIsOtherServices} 
-          setIsHealthcareActive={setIsHealthcareActive} 
+      {isEditImmunization && (
+        <EditImmunization
+          setHealthCare={setHealthCare}
+          patientDataSelected={patientDataSelected}
+          setIsImmunization={setIsEditImmunization}
+          setIsHealthcareActive={setIsHealthcareActive}
         />
       )}
 

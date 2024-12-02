@@ -5,17 +5,17 @@ import { useState } from 'react';
 export const usePrenatal = () => {
     const [isLoading, setIsLoading] = useState(false);
 
-    const createNewPrenatal = async () => {
-        setIsLoading(true)
-    
-        try{
-            const res = await axios.post(PRENATAL);
-            console.log(res.data);
-        }
-        catch(error){
-            console.log(error)   
+    const createNewPrenatal = async (formData) => {
+        try {
+            setIsLoading(true);
+            const response = await axios.post(PRENATAL, formData);
+            console.log(response.data)
+            return response.data;
+        } catch (error) {
+            console.error('Error creating prenatal record:', error);
+            throw error;
         } finally {
-            setIsLoading(false)
+            setIsLoading(false);
         }
     }
 

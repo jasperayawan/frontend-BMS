@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useImmunization } from '../../hooks/useImmunization';
 
-const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunization, setIsHealthcareActive }) => {
-  const { createNewImmunization, isLoading } = useImmunization();
+const EditImmunization = ({ patientDataSelected, setHealthCare, setIsImmunization, setIsHealthcareActive }) => {
+  const { updateImmunization, getImmunizationByPatient, isLoading } = useImmunization();
   const [formData, setFormData] = useState({
     userId: patientDataSelected?.objectId,
     lastName: '',
@@ -30,6 +30,33 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
     remarks: ''
   }]);
 
+  useEffect(() => {
+    const fetchImmunizationData = async () => {
+      try {
+        const data = await getImmunizationByPatient(patientDataSelected?.objectId);
+        if (data) {
+          setFormData({
+            userId: data.userId,
+            lastName: data.lastName,
+            firstName: data.firstName,
+            middleName: data.middleName,
+            birthDate: data.birthDate,
+            age: data.age,
+            birthPlace: data.birthPlace,
+            birthWeight: data.birthWeight,
+            birthLength: data.birthLength,
+          });
+          setVaccinationHistory(data.vaccinationHistory || []);
+          setMicronutrientHistory(data.micronutrientHistory || []);
+        }
+      } catch (error) {
+        console.error('Error fetching immunization data:', error);
+      }
+    };
+
+    fetchImmunizationData();
+  }, [patientDataSelected?.objectId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -47,8 +74,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
         micronutrientHistory
       };
 
-      
-      await createNewImmunization(payload);
+      await updateImmunization(payload);
       setHealthCare('default');
       setIsImmunization(false);
       setIsHealthcareActive(false);
@@ -76,16 +102,17 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
   const addMicronutrientRecord = () => {
     setMicronutrientHistory([...micronutrientHistory, {
       date: '',
-      micronutrientType: '',
+      micronutrientType: '', 
       doses: '',
       remarks: ''
     }]);
   };
 
+
   return (
     <div className="min-h-screen p-4 md:p-8 w-full">
       <div className="bg-white p-6 rounded-lg shadow-lg mx-auto w-full max-w-4xl">
-        <h2 className="text-2xl font-bold mb-4">Immunization Record</h2>
+        <h2 className="text-2xl font-bold mb-4">Edit Immunization Record</h2>
         
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Child Information */}
@@ -189,7 +216,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                 <input
                   type="text"
                   value={patientDataSelected?.contact}
-                 readOnly
+                  readOnly
                   className="border p-2 rounded"
                 />
               </div>
@@ -230,7 +257,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                       type="radio"
                       id="indigent"
                       value="indigent"
-                      checked={patientDataSelected?.healthcareAssistance === "indigent"}  
+                      checked={patientDataSelected?.healthcareAssistance === "indigent"}
                       readOnly
                       className="border p-2 rounded"
                     />
@@ -409,7 +436,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
               onClick={handleCancel}
               className="px-4 py-2 border rounded"
             >
-             {isLoading ? 'Loading...' : 'Cancel'}
+              {isLoading ? 'Loading...' : 'Cancel'}
             </button>
             <button
               type="submit"
@@ -424,4 +451,4 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
   );
 };
 
-export default AddNewImmunization;
+export default EditImmunization;
