@@ -1,11 +1,10 @@
 import { Calendar } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { usePrenatal } from "../../hooks/usePrenatal";
 
-const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, setIsHealthcareActive }) => {
-  const { createNewPrenatal, isLoading } = usePrenatal();
-
+const EditPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, setIsHealthcareActive }) => {
+  const { updatePrenatal, getPrenatalByUserId, isLoading } = usePrenatal();
   const [formData, setFormData] = useState({
     userId: patientDataSelected?.objectId,
     // Prenatal Periods
@@ -54,7 +53,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
         heartBurn: false,
       },
     },
-    // Review of System
+    // Updated to use arrays of objects
     reviewOfSystem: [
       { name: "HEENT", value: false },
       { name: "CHEST/HEART", value: false },
@@ -63,7 +62,6 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
       { name: "EXTREMITIES", value: false },
       { name: "SKIN", value: false }
     ],
-    // Family History
     familyHistory: [
       { name: "CVA", value: false },
       { name: "HYPERTENSION", value: false },
@@ -72,7 +70,6 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
       { name: "DIABETES", value: false },
       { name: "SKIN", value: false }
     ],
-    // Past History
     pastHistory: [
       { name: "ALLERGIES", value: false },
       { name: "DRUG INTAKE", value: false },
@@ -113,6 +110,45 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
     ]
   });
 
+  useEffect(() => {
+    const fetchPrenatalData = async () => {
+      try {
+        const data = await getPrenatalByUserId(patientDataSelected?.objectId);
+        if (data) {
+          const maternalRecords = data.maternalRecords || [
+            { date: "", complaints: "", mcnServicesGiven: "", providerName: "", followUp: "" },
+            { date: "", complaints: "", mcnServicesGiven: "", providerName: "", followUp: "" },
+            { date: "", complaints: "", mcnServicesGiven: "", providerName: "", followUp: "" }
+          ];
+          setFormData({ ...data, maternalRecords });
+        }
+      } catch (error) {
+        toast.error("Error fetching prenatal data");
+      }
+    };
+
+    if (patientDataSelected?.objectId) {
+      fetchPrenatalData();
+    }
+  }, [patientDataSelected?.objectId]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await updatePrenatal(formData);
+      toast.success("Prenatal record updated successfully");
+      handleCancel();
+    } catch (error) {
+      toast.error("Error updating prenatal record");
+    }
+  };
+
+  const handleCancel = () => {
+    setHealthCare('default');
+    setIsPrenatal(false);
+    setIsHealthcareActive(false);
+  };
+
   // Define vitalSigns object
   const vitalSigns = {
     bloodPressure: formData.bloodPressure,
@@ -124,29 +160,14 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
 
   const symptoms = [
     "Edema",
-    "Constipation",
+    "Constipation", 
     "Nausea/Vomiting",
     "Leg Cramps",
     "Hemorrhoids",
     "Heartburn"
   ];
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await createNewPrenatal(formData);
-      toast.success("Prenatal record created successfully");
-      handleCancel();
-    } catch (error) {
-      toast.error("Error creating prenatal record");
-    }
-  };
-
-  const handleCancel = () => {
-    setHealthCare('default');
-    setIsPrenatal(false)
-    setIsHealthcareActive(false)
-  };
+  
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -183,68 +204,68 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
 
         {/* Prenatal Periods */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
-      <h2 className="text-lg font-semibold mb-4">Prenatal Periods</h2>
-      <div className="space-y-6">
-        {[
-          { trimester: 'trimesterOne', date: 'dateOne', week: 'weekOne', condition: 'coditionOne' },
-          { trimester: 'trimesterTwo', date: 'dateTwo', week: 'weekTwo', condition: 'coditionTwo' },
-          { trimester: 'trimesterThree', date: 'dateThree', week: 'weekThree', condition: 'coditionThree' }
-        ].map((period, index) => (
-          <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
-            <div>
-              <label className="block mb-2">PRENATAL PERIOD</label>
-              <select 
-                value={formData[period.trimester]}
-                onChange={(e) => setFormData({...formData, [period.trimester]: e.target.value})}
-                className="w-full p-2 border rounded"
-              >
-                <option value="">Select period</option>
-                <option value="first">First Trimester</option>
-                <option value="second">Second Trimester</option>
-                <option value="third">Third Trimester</option>
-              </select>
-            </div>
-            
-            <div>
-              <label className="block mb-2">DATE</label>
-              <div className="flex items-center">
-                <input 
-                  type="date"
-                  value={formData[period.date]}
-                  onChange={(e) => setFormData({...formData, [period.date]: e.target.value})}
-                  className="w-full p-2 border rounded" 
-                />
+          <h2 className="text-lg font-semibold mb-4">Prenatal Periods</h2>
+          <div className="space-y-6">
+            {[
+              { trimester: 'trimesterOne', date: 'dateOne', week: 'weekOne', condition: 'coditionOne' },
+              { trimester: 'trimesterTwo', date: 'dateTwo', week: 'weekTwo', condition: 'coditionTwo' },
+              { trimester: 'trimesterThree', date: 'dateThree', week: 'weekThree', condition: 'coditionThree' }
+            ].map((period, index) => (
+              <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                <div>
+                  <label className="block mb-2">PRENATAL PERIOD</label>
+                  <select 
+                    value={formData[period.trimester]}
+                    onChange={(e) => setFormData({...formData, [period.trimester]: e.target.value})}
+                    className="w-full p-2 border rounded"
+                  >
+                    <option value="">Select period</option>
+                    <option value="first">First Trimester</option>
+                    <option value="second">Second Trimester</option>
+                    <option value="third">Third Trimester</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block mb-2">DATE</label>
+                  <div className="flex items-center">
+                    <input 
+                      type="date"
+                      value={formData[period.date]}
+                      onChange={(e) => setFormData({...formData, [period.date]: e.target.value})}
+                      className="w-full p-2 border rounded" 
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block mb-2">WEEKS</label>
+                  <input 
+                    type="text"
+                    value={formData[period.week]}
+                    onChange={(e) => setFormData({...formData, [period.week]: e.target.value})}
+                    className="w-full p-2 border rounded"
+                    placeholder="Enter weeks" 
+                  />
+                </div>
+
+                <div>
+                  <label className="block mb-2">PATIENT'S CONDITION</label>
+                  <select 
+                    value={formData[period.condition]}
+                    onChange={(e) => setFormData({...formData, [period.condition]: e.target.value})}
+                    className="w-full p-2 border rounded"
+                  >
+                    <option value="">Select condition</option>
+                    <option value="normal">Normal</option>
+                    <option value="high-risk">High Risk</option>
+                    <option value="critical">Critical</option>
+                  </select>
+                </div>
               </div>
-            </div>
-
-            <div>
-              <label className="block mb-2">WEEKS</label>
-              <input 
-                type="text"
-                value={formData[period.week]}
-                onChange={(e) => setFormData({...formData, [period.week]: e.target.value})}
-                className="w-full p-2 border rounded"
-                placeholder="Enter weeks" 
-              />
-            </div>
-
-            <div>
-              <label className="block mb-2">PATIENT'S CONDITION</label>
-              <select 
-                value={formData[period.condition]}
-                onChange={(e) => setFormData({...formData, [period.condition]: e.target.value})}
-                className="w-full p-2 border rounded"
-              >
-                <option value="">Select condition</option>
-                <option value="normal">Normal</option>
-                <option value="high-risk">High Risk</option>
-                <option value="critical">Critical</option>
-              </select>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
 
         {/* Hospital and Expected Delivery */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
@@ -300,8 +321,8 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
           <div className="w-full">
             {/* Header row */}
             <div className="grid grid-cols-4 gap-4 mb-4">
-              <div className="col-span-1"></div> {/* Empty cell for symptom names */}
-              {["0-13 wks", "14-27 wks", "28-40 wks"].map((period) => (
+              <div className="col-span-1"></div>
+              {Object.keys(formData.symptoms).map((period) => (
                 <div key={period} className="text-center font-medium">
                   {period}
                 </div>
@@ -312,27 +333,30 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
             {symptoms.map((symptom) => (
               <div key={symptom} className="grid grid-cols-4 gap-4 mb-3">
                 <div className="col-span-1">{symptom}</div>
-                {["0-13wks", "14-27wks", "28-40wks"].map((period) => (
-                  <div key={`${symptom}_${period}`} className="flex justify-center">
-                    <input 
-                      type="checkbox"
-                      checked={formData.symptoms[period][symptom.toLowerCase().replace(/[^a-z]/g, '')] || false}
-                      onChange={(e) => {
-                        setFormData({
-                          ...formData,
-                          symptoms: {
-                            ...formData.symptoms,
-                            [period]: {
-                              ...formData.symptoms[period],
-                              [symptom.toLowerCase().replace(/[^a-z]/g, '')]: e.target.checked,
-                            },
-                          },
-                        });
-                      }}
-                      className="w-4 h-4"
-                    />
-                  </div>
-                ))}
+                {Object.keys(formData.symptoms).map((period) => {
+                  const symptomKey = symptom.toLowerCase().replace(/[^a-z]/g, '');
+                  return (
+                    <div key={`${symptom}_${period}`} className="flex justify-center">
+                      <input 
+                        type="checkbox"
+                        checked={formData.symptoms[period][symptomKey] || false}
+                        onChange={(e) => {
+                          setFormData({
+                            ...formData,
+                            symptoms: {
+                              ...formData.symptoms,
+                              [period]: {
+                                ...formData.symptoms[period],
+                                [symptomKey]: e.target.checked
+                              }
+                            }
+                          });
+                        }}
+                        className="w-4 h-4"
+                      />
+                    </div>
+                  );
+                })}
               </div>
             ))}
           </div>
@@ -343,7 +367,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-lg font-semibold mb-4">REVIEW OF SYSTEM</h2>
             <div className="space-y-3">
-              {formData.reviewOfSystem.map((item, index) => (
+              {formData.reviewOfSystem?.map((item, index) => (
                 <div key={item.name} className="flex items-center justify-between">
                   <span>{item.name}</span>
                   <div className="flex gap-4">
@@ -385,7 +409,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-lg font-semibold mb-4">FAMILY HISTORY</h2>
             <div className="space-y-3">
-              {formData.familyHistory.map((item, index) => (
+              {formData.familyHistory?.map((item, index) => (
                 <div key={item.name} className="flex items-center justify-between">
                   <span>{item.name}</span>
                   <div className="flex gap-4">
@@ -427,7 +451,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-lg font-semibold mb-4">PAST HISTORY</h2>
             <div className="space-y-3">
-              {formData.pastHistory.map((item, index) => (
+              {formData.pastHistory?.map((item, index) => (
                 <div key={item.name} className="flex items-center justify-between">
                   <span>{item.name}</span>
                   <div className="flex gap-4">
@@ -485,7 +509,6 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
         </div>
 
         {/** Prenatal records table */}
-
         <div className="bg-white p-6 rounded-lg shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
@@ -583,19 +606,19 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
             type="submit"
             className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-green-700"
           >
-            {isLoading ? 'Loading...' : 'SAVE'}
+            {isLoading ? 'Loading...' : 'UPDATE'}
           </button>
           <button
-              type="button"
-              onClick={handleCancel}
-              className="px-4 py-2 border rounded"
-            >
-              Cancel
-            </button>
+            type="button"
+            onClick={handleCancel}
+            className="px-4 py-2 border rounded"
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>
   );
 };
 
-export default AddNewPrenatal;
+export default EditPrenatal;

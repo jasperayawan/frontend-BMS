@@ -15,6 +15,7 @@ import AddNewFamilyPlanning from "../components/healthcare_services/AddNewFamily
 import AddNewOtherServices from "../components/healthcare_services/AddNewOtherServices";
 import { usePatient } from "../hooks/usePatient";
 import EditImmunization from "../components/healthcare_services/EditImmunization";
+import EditPrenatal from "../components/healthcare_services/EditPrenatal";
 
 const Patient = () => {
   const [searchType, setSearchType] = useState("ALL");
@@ -36,6 +37,7 @@ const Patient = () => {
   const [isEditHealthCareModal, setIsEditHealthCareModal] = useState(false);
   const [isEditFamilyPlanning, setIsEditFamilyPlanning] = useState(false);  
   const [isEditImmunization, setIsEditImmunization] = useState(false);
+  const [isEditPrenatal, setIsEditPrenatal] = useState(false);
   const [healthCareAddorEdit, setHealthCareAddorEdit] = useState(false);
   const { patientData, getPatients, isLoading } = usePatient();
   const [formData, setFormData] = useState({
@@ -247,7 +249,7 @@ const Patient = () => {
 
     if (healthCare === 'PRENATAL') {
       if(healthCareAddorEdit === 'EDIT'){
-        // return null
+        setIsEditPrenatal(true);
         setIsHealthCareModal(false)
         setIsEditHealthCareModal(false)
       } else {
@@ -398,6 +400,15 @@ const Patient = () => {
           setHealthCare={setHealthCare}
           patientDataSelected={patientDataSelected}
           setIsImmunization={setIsEditImmunization}
+          setIsHealthcareActive={setIsHealthcareActive}
+        />
+      )}
+
+      {isEditPrenatal && (
+        <EditPrenatal
+          setHealthCare={setHealthCare}
+          patientDataSelected={patientDataSelected}
+          setIsPrenatal={setIsEditPrenatal}
           setIsHealthcareActive={setIsHealthcareActive}
         />
       )}

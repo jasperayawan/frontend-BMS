@@ -19,8 +19,29 @@ export const usePrenatal = () => {
         }
     }
 
+    const getPrenatalByUserId = async (userId) => {
+        try {
+            const response = await axios.get(`${PRENATAL}/user/${userId}`);
+            console.log(response.data.data[0])
+            return response.data.data[0];
+        } catch (error) {
+            throw error;
+        }
+    };
+
+    const updatePrenatal = async (data) => {
+        try {
+            const response = await axios.put(`${PRENATAL}/${data.id}`, data);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    };
+
     return {
         createNewPrenatal,
-        isLoading
+        isLoading,
+        getPrenatalByUserId,
+        updatePrenatal,
     }
 }
