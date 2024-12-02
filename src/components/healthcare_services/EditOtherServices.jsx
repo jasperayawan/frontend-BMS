@@ -1,36 +1,54 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useOtherServices from '../../hooks/useOtherServices';
 import toast from 'react-hot-toast';
 
-const AddNewOtherServices = ({ patientDataSelected, setHealthCare, setIsOtherServices, setIsHealthcareActive }) => {
-  const { formData, handleInputChange, createNewOtherServices, isLoading } = useOtherServices();
+const EditOtherServices = ({ 
+  setHealthCare, 
+  patientDataSelected, 
+  setIsOtherServices, 
+  setIsHealthcareActive 
+}) => {
+  const { 
+    formData, 
+    handleInputChange, 
+    updateOtherServices, 
+    isLoading,
+    getOtherService,
+    otherServices,
+    setFormData 
+  } = useOtherServices();
+
+useEffect(() => {
+    if (otherServices) {
+      setFormData(otherServices);
+    }
+  }, [otherServices, setFormData])
+
+  useEffect(() => {
+    getOtherService(patientDataSelected?.objectId)
+  }, [patientDataSelected])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const serviceData = {
-        ...formData,
-        userId: patientDataSelected?.objectId
-      };
-      
-      const response = await createNewOtherServices(serviceData);
+      const response = await updateOtherServices(patientDataSelected?.objectId, formData);
       
       if (response.success) {
-        toast.success('Service record created successfully');
+        toast.success('Service record updated successfully');
         // Reset states
         setHealthCare('default');
         setIsOtherServices(false);
         setIsHealthcareActive(false);
       }
     } catch (error) {
-      toast.error('Error creating service record: ' + error.message);
+      toast.error('Error updating service record: ' + error.message);
     }
   };
 
   return (
     <div className="min-h-screen flex justify-center items-center">
       <div className="bg-white p-6 rounded-lg w-[800px]">
-        <h2 className="text-2xl font-bold mb-4">Other Services Form</h2>
+        <h2 className="text-2xl font-bold mb-4">Edit Other Services</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -254,7 +272,7 @@ const AddNewOtherServices = ({ patientDataSelected, setHealthCare, setIsOtherSer
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
             >
-              {isLoading ? 'Submitting...' : 'Submit'}
+              {isLoading ? 'Updating...' : 'Update'}
             </button>
           </div>
         </form>
@@ -263,4 +281,4 @@ const AddNewOtherServices = ({ patientDataSelected, setHealthCare, setIsOtherSer
   );
 };
 
-export default AddNewOtherServices; 
+export default EditOtherServices;

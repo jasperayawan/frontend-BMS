@@ -16,6 +16,7 @@ import AddNewOtherServices from "../components/healthcare_services/AddNewOtherSe
 import { usePatient } from "../hooks/usePatient";
 import EditImmunization from "../components/healthcare_services/EditImmunization";
 import EditPrenatal from "../components/healthcare_services/EditPrenatal";
+import EditOtherServices from "../components/healthcare_services/EditOtherServices";
 
 const Patient = () => {
   const [searchType, setSearchType] = useState("ALL");
@@ -38,6 +39,7 @@ const Patient = () => {
   const [isEditFamilyPlanning, setIsEditFamilyPlanning] = useState(false);  
   const [isEditImmunization, setIsEditImmunization] = useState(false);
   const [isEditPrenatal, setIsEditPrenatal] = useState(false);
+  const [isEditOtherServices, setIsEditOtherServices] = useState(false);
   const [healthCareAddorEdit, setHealthCareAddorEdit] = useState(false);
   const { patientData, getPatients, isLoading } = usePatient();
   const [formData, setFormData] = useState({
@@ -273,6 +275,7 @@ const Patient = () => {
       }
     } else if (healthCare === 'OTHER SERVICES') {
       if(healthCareAddorEdit === 'EDIT'){
+        setIsEditOtherServices(true);
         setIsHealthCareModal(false)
         setIsEditHealthCareModal(false)
       } else {
@@ -380,6 +383,7 @@ const Patient = () => {
 
       {(isOtherServices) && (
         <AddNewOtherServices 
+          patientDataSelected={patientDataSelected}
           setHealthCare={setHealthCare} 
           setIsOtherServices={setIsOtherServices} 
           setIsHealthcareActive={setIsHealthcareActive} 
@@ -409,6 +413,15 @@ const Patient = () => {
           setHealthCare={setHealthCare}
           patientDataSelected={patientDataSelected}
           setIsPrenatal={setIsEditPrenatal}
+          setIsHealthcareActive={setIsHealthcareActive}
+        />
+      )}
+
+      {isEditOtherServices && (
+        <EditOtherServices
+          setHealthCare={setHealthCare}
+          patientDataSelected={patientDataSelected}
+          setIsOtherServices={setIsEditOtherServices}
           setIsHealthcareActive={setIsHealthcareActive}
         />
       )}
