@@ -1,5 +1,5 @@
-// const baseUrl = "http://localhost:8001"
-const baseUrl = 'https://54.79.236.189'
+const baseUrl = "http://localhost:8001"
+// const baseUrl = 'https://54.79.236.189'
 
 export const ADMIN = baseUrl + '/api/admin/';
 export const USER = baseUrl + '/api/user';
@@ -11,7 +11,7 @@ export const EMPLOYEE = baseUrl + '/api/employee'
 export const PATIENT = baseUrl + '/api/patient'
 export const PRENATAL = baseUrl + '/api/prenatal'
 export const IMMUNIZATION = baseUrl + '/api/immunization'
-export const FAMILY_PLANNING = baseUrl + '/api/family-planning'
+export const FAMILY_PLANNING = baseUrl + '/api/familyPlanning'
 export const OTHER_SERVICES = baseUrl + '/api/otherServices'
 export const RESETPASSCONFIRM = baseUrl + '/api/resetpass/reset-password/confirm'
 export const RESETPASS = baseUrl + '/api/resetpass/reset-password'

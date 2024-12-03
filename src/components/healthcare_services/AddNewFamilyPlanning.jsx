@@ -2,92 +2,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toBase64 } from '../../utils/toBase64';
 import toast from 'react-hot-toast';
+import { useFamilyPlanning } from '../../hooks/useFamilyPlanning';
 
-const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthcareActive }) => {
-  const [formData, setFormData] = useState({
-    // Patient Information
-    patientIdNo: '',
-    lastname: '',
-    firstname: '',
-    middlename: '',
-    sex: '',
-    birthdate: '',
-    age: '',
-    contactNo: '',
-    address: '',
-    civilStatus: 'Single',
-    // Spouse Information
-    spouseLastname: '',
-    spouseFirstname: '',
-    spouseMiddlename: '',
-    spouseBirthdate: '',
-    spouseAge: '',
-    // Other Information
-    livingChildren: 0,
-    nonLivingChildren: 0,
-    householdMonthlyIncome: '',
-    occupation: '',
-    // Type of Client
-    newAcceptor: false,
-    currentUser: false,
-    changingMethod: false,
-    changingClinic: false,
-    dropoutRestart: false,
-    spacingReason: false,
-    medicalCondition: false,
-    sideEffects: false,
-    limitingReason: false,
-    otherReason: false,
-    // Method Currently Used
-    coc: false,
-    pop: false,
-    injectable: false,
-    implant: false,
-    inteval: false,
-    postPartum: false,
-    condom: false,
-    bomCmm: false,
-    bbt: false,
-    stm: false,
-    lam: false,
-    otherMethod: false,
-    // VAW Risks
-    unpleasantRelationship: false,
-    partnerDisapproval: false,
-    domesticViolence: false,
-    referredToDSWD: false,
-    referredToWCPU: false,
-    referredToOthers: false,
-  });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        const base64 = await toBase64(file);
-        setFormData(prev => ({
-          ...prev,
-          image: base64
-        }));
-      } catch (error) {
-        toast.error('Error processing image');
-      }
-    }
-  };
+const AddNewFamilyPlanning = ({ patientDataSelected, setHealthCare, setIsFamilyPlanning, setIsHealthcareActive }) => {
+  const { formData, handleInputChange, createNewFamilyPlanning, isLoading } = useFamilyPlanning();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Add your API endpoint here
-      // await axios.post('/api/family-planning', formData);
+      await createNewFamilyPlanning(formData, patientDataSelected?.objectId);
       toast.success('Family planning record added successfully!');
       setHealthCare('default');
       setIsFamilyPlanning(false);
@@ -96,6 +20,7 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
       toast.error('Error submitting form');
     }
   };
+
 
   return (
     <div className="min-h-screen p-4 md:p-8 w-full">
@@ -112,8 +37,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="text"
                   name="patientIdNo"
-                  value={formData.patientIdNo}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.patientIdNo}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -122,8 +47,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="text"
                   name="lastname"
-                  value={formData.lastname}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.lastname}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -132,8 +57,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="text"
                   name="firstname"
-                  value={formData.firstname}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.firstname}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -142,8 +67,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="text"
                   name="middlename"
-                  value={formData.middlename}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.middleInitial}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -151,8 +76,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <label className="block">Sex</label>
                 <select
                   name="sex"
-                  value={formData.sex}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.sex}
+                  readOnly
                   className="w-full border rounded p-2"
                 >
                   <option value="">Select Sex</option>
@@ -165,8 +90,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="date"
                   name="birthdate"
-                  value={formData.birthdate}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.bod}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -175,8 +100,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="number"
                   name="age"
-                  value={formData.age}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.age}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -185,8 +110,17 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="tel"
                   name="contactNo"
-                  value={formData.contactNo}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.contact}
+                  readOnly
+                  className="w-full border rounded p-2"
+                />
+              </div>
+              <div>
+                <label className="block">Address</label>
+                <input
+                  type="text"
+                  value={patientDataSelected.birthPlace}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -194,8 +128,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <label className="block">Civil Status</label>
                 <select
                   name="civilStatus"
-                  value={formData.civilStatus}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.civilStatus}
+                  readOnly
                   className="w-full border rounded p-2"
                 >
                   <option value="Single">Single</option>
@@ -204,16 +138,6 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                   <option value="Divorced">Divorced</option>
                   <option value="Separated">Separated</option>
                 </select>
-              </div>
-              <div className="md:col-span-3">
-                <label className="block">Address</label>
-                <textarea
-                  name="address"
-                  value={formData.address}
-                  onChange={handleInputChange}
-                  className="w-full border rounded p-2"
-                  rows="2"
-                />
               </div>
             </div>
 
@@ -225,8 +149,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="text"
                   name="spouseLastname"
-                  value={formData.spouseLastname}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.emergencyLastName}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -235,8 +159,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="text"
                   name="spouseFirstname"
-                  value={formData.spouseFirstname}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.emergencyFirstName}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -245,8 +169,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="text"
                   name="spouseMiddlename"
-                  value={formData.spouseMiddlename}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.emergencyInitial}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -255,8 +179,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="date"
                   name="spouseBirthdate"
-                  value={formData.spouseBirthdate}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.emergencyBod}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -265,8 +189,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="number"
                   name="spouseAge"
-                  value={formData.spouseAge}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.emergencyAge}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -280,8 +204,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="number"
                   name="livingChildren"
-                  value={formData.livingChildren}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.livingChild}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -290,8 +214,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="number"
                   name="nonLivingChildren"
-                  value={formData.nonLivingChildren}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.nonLivingChild}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -300,8 +224,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="number"
                   name="householdMonthlyIncome"
-                  value={formData.householdMonthlyIncome}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.houseHoldMonthlyIncome}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -310,8 +234,8 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
                 <input
                   type="text"
                   name="occupation"
-                  value={formData.occupation}
-                  onChange={handleInputChange}
+                  value={patientDataSelected.occupation}
+                  readOnly
                   className="w-full border rounded p-2"
                 />
               </div>
@@ -437,7 +361,7 @@ const AddNewFamilyPlanning = ({ setHealthCare, setIsFamilyPlanning, setIsHealthc
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded"
             >
-              Submit
+              {isLoading ? 'Submitting...' : 'Submit'}
             </button>
           </div>
         </form>
