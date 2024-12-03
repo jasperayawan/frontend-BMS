@@ -39,47 +39,49 @@ const AboutUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
     try {
+      const imageBase64 = form.image instanceof File ? await toBase64(form.image) : form.image;
+      
+      if (isEditing) {
+        const response = await axios.put(`${ORGANIZATION}/${form.id}`, {
+          name: form.name,
+          role: form.role,
+          image: imageBase64
+        });
 
-      const imageBase64 = form.image ? await toBase64(form.image) : null;
-
-      const formData = {
-        id: form.id,
-        name: form.name,
-        role: form.role,
-        image: imageBase64
-      };
-
-  
-      // Call Parse Cloud Function to save member data
-      const result = await Parse.Cloud.run('addOrUpdateMember', formData);
-  
-      if (result.success) {
-        if (isEditing) {
-          // Update the local state
-          setTeam(
-            team.map((member) =>
-              member.objectId === form.id ? { ...form, id: member.objectId } : member
-            )
-          );
-        } else {
-          // Add new member to the team
-          setTeam([...team, { ...form, id: Date.now() }]);
+        if (response.data) {
+          setTeam(team.map(member => 
+            member.objectId === form.id ? response.data : member
+          ));
+          toast.success('Member updated successfully');
         }
-  
-        setForm({ id: null, name: '', role: '', image: null });
-        setIsEditing(false);
-        setIsModalOpen(false); // Close the modal after submit
       } else {
-        alert('Error saving member: ' + result.message);
+        const formData = {
+          id: isEditing ? form.id : null,
+          name: form.name,
+          role: form.role,
+          image: imageBase64
+        };
+
+        const result = await Parse.Cloud.run('addOrUpdateMember', formData);
+        
+        if (result.success) {
+          setTeam([...team, { ...formData, id: Date.now() }]);
+          toast.success('Member added successfully');
+        }
       }
-      window.location.reload();
+
+      setForm({ id: null, name: '', role: '', image: null });
+      setIsEditing(false);
+      setIsModalOpen(false);
+      window.location.reload(); // Refresh to show updated data
+      
     } catch (error) {
       console.error('Error saving member:', error);
-      toast.error('Failed to save member');
+      toast.error(error.response?.data?.error || 'Failed to save member');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -97,7 +99,13 @@ const AboutUs = () => {
   };
 
   const handleEdit = (member) => {
-    setForm(member);
+    // Set form data with existing member data
+    setForm({
+      id: member.objectId,
+      name: member.name,
+      role: member.role,
+      image: member.image // Keep existing image
+    });
     setIsEditing(true);
     setIsModalOpen(true);
   };
