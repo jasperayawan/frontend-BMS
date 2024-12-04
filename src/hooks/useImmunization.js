@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
 import { IMMUNIZATION } from '../helper/api';
+import toast from 'react-hot-toast';
 
 export const useImmunization = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -45,12 +46,14 @@ export const useImmunization = () => {
         }
     };
 
-    const updateImmunization = async (payload) => {
+    const updateImmunization = async (payload, immunizationId) => {
         try {
-            const response = await axios.put(`${IMMUNIZATION}/${payload.userId}`, payload);
+            const response = await axios.put(`${IMMUNIZATION}/${immunizationId}`, payload);
+            toast.success('Immunization record updated successfully');
             return response.data;
         } catch (error) {
             console.error('Error updating immunization:', error);
+            toast.error('Failed to update immunization record');
             throw error;
         }
     };

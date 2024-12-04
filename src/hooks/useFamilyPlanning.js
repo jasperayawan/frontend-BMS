@@ -84,12 +84,28 @@ export const useFamilyPlanning = () => {
     }
   };
 
+  const updateFamilyPlanningById = async (planningId, payload) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.put(`${FAMILY_PLANNING}/${planningId}`,payload);
+      toast.success('Family planning record updated successfully');
+      return response.data;
+    } catch (error) {
+      console.error('Error updating family planning record:', error);
+      toast.error('Failed to update family planning record');
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
     formData,
     familyPlanningData,
     isLoading,
     handleInputChange,
     createNewFamilyPlanning,
-    fetchFamilyPlanningByUserId
+    fetchFamilyPlanningByUserId,
+    updateFamilyPlanningById
   };
 };

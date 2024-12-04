@@ -5,6 +5,7 @@ const EditImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizatio
   const { updateImmunization, getImmunizationByPatient, isLoading } = useImmunization();
   const [formData, setFormData] = useState({
     userId: patientDataSelected?.objectId,
+    immunizationId: '',
     lastName: '',
     firstName: '',
     middleName: '',
@@ -29,14 +30,14 @@ const EditImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizatio
     doses: '',
     remarks: ''
   }]);
-
+  
   useEffect(() => {
     const fetchImmunizationData = async () => {
       try {
         const data = await getImmunizationByPatient(patientDataSelected?.objectId);
         if (data) {
           setFormData({
-            userId: data.userId,
+            immunizationId: data.objectId,
             lastName: data.lastName,
             firstName: data.firstName,
             middleName: data.middleName,
@@ -74,7 +75,7 @@ const EditImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizatio
         micronutrientHistory
       };
 
-      await updateImmunization(payload);
+      await updateImmunization(payload, formData?.immunizationId);
       setHealthCare('default');
       setIsImmunization(false);
       setIsHealthcareActive(false);

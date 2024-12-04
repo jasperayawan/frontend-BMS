@@ -51,8 +51,11 @@ const EditFamilyPlanning = ({
   });
 
   const [showModal, setShowModal] = useState(false);
-  const { fetchFamilyPlanningByUserId, familyPlanningData } =
-    useFamilyPlanning();
+  const { 
+    fetchFamilyPlanningByUserId, 
+    familyPlanningData,
+    updateFamilyPlanningById 
+  } = useFamilyPlanning();
   const [isEdit, setIsEdit] = useState(false);
   const [isSelected, setIsSelected] = useState("");
 
@@ -125,76 +128,55 @@ const EditFamilyPlanning = ({
 
   const handleSave = async () => {
     try {
-      // Create the data object with all form fields
-      const dataToSave = {
-        // Basic patient info
-        patientIdNo: formData.patientIdNo,
-        email: formData.email,
-        lastName: formData.lastName,
-        firstName: formData.firstName,
-        middleInitial: formData.middleInitial,
-        civilStatus: formData.civilStatus,
-        // ... other basic fields ...
+      // Create the payload with the form data
+      const payload = {
+        // Type of Client
+        newAcceptor: formData.newAcceptor,
+        currentUser: formData.currentUser,
+        changingMethod: formData.changingMethod,
+        changingClinic: formData.changingClinic,
+        dropoutRestart: formData.dropoutRestart,
+        spacingReason: formData.spacingReason,
+        medicalCondition: formData.medicalCondition,
+        sideEffects: formData.sideEffects,
+        limitingReason: formData.limitingReason,
+        otherReason: formData.otherReason,
 
-        // Emergency contact info
-        emergencyContact: formData.emergencyContact,
+        // Method Currently Used
+        coc: formData.coc,
+        pop: formData.pop,
+        injectable: formData.injectable,
+        implant: formData.implant,
+        inteval: formData.inteval,
+        postPartum: formData.postPartum,
+        condom: formData.condom,
+        bomCmm: formData.bomCmm,
+        bbt: formData.bbt,
+        stm: formData.stm,
+        lam: formData.lam,
+        otherMethod: formData.otherMethod,
 
-        // Family planning specific fields
-        newAcceptor: formData.newAcceptor || false,
-        currentUser: formData.currentUser || false,
-        changingMethod: formData.changingMethod || false,
-        changingClinic: formData.changingClinic || false,
-        dropoutRestart: formData.dropoutRestart || false,
-        spacingReason: formData.spacingReason || false,
-        medicalCondition: formData.medicalCondition || false,
-        sideEffects: formData.sideEffects || false,
-        limitingReason: formData.limitingReason || false,
-        otherReason: formData.otherReason || false,
-
-        // Method fields
-        coc: formData.coc || false,
-        pop: formData.pop || false,
-        injectable: formData.injectable || false,
-        implant: formData.implant || false,
-        inteval: formData.inteval || false,
-        postPartum: formData.postPartum || false,
-        condom: formData.condom || false,
-        bomCmm: formData.bomCmm || false,
-        bbt: formData.bbt || false,
-        stm: formData.stm || false,
-        lam: formData.lam || false,
-        otherMethod: formData.otherMethod || false,
-
-        // VAW Risk fields
-        unpleasantRelationship: formData.unpleasantRelationship || false,
-        partnerDisapproval: formData.partnerDisapproval || false,
-        domesticViolence: formData.domesticViolence || false,
-        referredToDSWD: formData.referredToDSWD || false,
-        referredToWCPU: formData.referredToWCPU || false,
-        referredToOthers: formData.referredToOthers || false,
+        // VAW Risks
+        unpleasantRelationship: formData.unpleasantRelationship,
+        partnerDisapproval: formData.partnerDisapproval,
+        domesticViolence: formData.domesticViolence,
+        referredToDSWD: formData.referredToDSWD,
+        referredToWCPU: formData.referredToWCPU,
+        referredToOthers: formData.referredToOthers,
       };
 
-      // Replace with your API endpoint
-      const response = await fetch('/api/saveFamilyPlanning', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSave),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save data');
-      }
-
-      // Handle successful save
-      console.log('Data saved successfully');
-      setShowModal(false); // Close the modal
-      // You might want to show a success message or redirect
+      // Call the update function with the family planning ID and payload
+      await updateFamilyPlanningById(familyPlanningData.objectId, payload);
+      
+      // Close the modal after successful update
+      setShowModal(false);
+      
+      // Refresh the data
+      await fetchFamilyPlanningByUserId(patientDataSelected?.objectId);
       
     } catch (error) {
-      console.error('Error saving data:', error);
-      // You might want to show an error message to the user
+      console.error('Error saving family planning data:', error);
+      // Error handling is already done in the updateFamilyPlanningById function
     }
   };
 
