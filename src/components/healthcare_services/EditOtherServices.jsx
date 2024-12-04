@@ -31,7 +31,7 @@ useEffect(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await updateOtherServices(patientDataSelected?.objectId, formData);
+      const response = await updateOtherServices(formData?.objectId, formData);
       
       if (response.success) {
         toast.success('Service record updated successfully');

@@ -51,10 +51,10 @@ const useOtherServices = () => {
     }
   };
 
-  const updateOtherServices = async (patientId, updatedData) => {
+  const updateOtherServices = async (otherServicesId, updatedData) => {
     setIsLoading(true);
     try {
-      const response = await axios.put(`${OTHER_SERVICES}/${patientId}`, updatedData);
+      const response = await axios.put(`${OTHER_SERVICES}/${otherServicesId}`, updatedData);
       return { success: true, data: response.data };
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to update service record');
