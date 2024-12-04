@@ -32,19 +32,19 @@ const PatientHistoryDetails = ({ selectedRow, handleBackClick, patientDataSelect
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block mb-2">PATIENT ID NO.</label>
-              <p className="p-2 border rounded">{selectedRow?.patientIdNo || '-'}</p>
+              <p className="p-2 border rounded">{patientDataSelected?.patientIdNo || '-'}</p>
             </div>
             <div>
               <label className="block mb-2">LASTNAME</label>
-              <p className="p-2 border rounded">{selectedRow?.lastname || '-'}</p>
+              <p className="p-2 border rounded">{patientDataSelected?.lastname || '-'}</p>
             </div>
             <div>
               <label className="block mb-2">FIRSTNAME</label>
-              <p className="p-2 border rounded">{selectedRow?.firstname || '-'}</p>
+              <p className="p-2 border rounded">{patientDataSelected?.firstname || '-'}</p>
             </div>
             <div>
               <label className="block mb-2">MIDDLE INITIAL</label>
-              <p className="p-2 border rounded">{selectedRow?.middleInitial || '-'}</p>
+              <p className="p-2 border rounded">{patientDataSelected?.middleInitial || '-'}</p>
             </div>
           </div>
         </div>
