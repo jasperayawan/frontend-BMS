@@ -77,7 +77,6 @@ export const useFamilyPlanning = () => {
       return response.data.record;
     } catch (error) {
       console.error('Error fetching family planning records:', error);
-      toast.error('Failed to fetch family planning records');
       throw error;
     } finally {
       setIsLoading(false);

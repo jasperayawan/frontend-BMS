@@ -120,7 +120,33 @@ const EditPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, setIs
             { date: "", complaints: "", mcnServicesGiven: "", providerName: "", followUp: "" },
             { date: "", complaints: "", mcnServicesGiven: "", providerName: "", followUp: "" }
           ];
-          setFormData({ ...data, maternalRecords });
+          const symptoms = data.symptoms || {
+            "0-13wks": {
+              edema: false,
+              constipation: false,
+              nauseaOrVomiting: false,
+              legCramps: false,
+              hemorrhoids: false,
+              heartBurn: false,
+            },
+            "14-27wks": {
+              edema: false,
+              constipation: false,
+              nauseaOrVomiting: false,
+              legCramps: false,
+              hemorrhoids: false,
+              heartBurn: false,
+            },
+            "28-40wks": {
+              edema: false,
+              constipation: false,
+              nauseaOrVomiting: false,
+              legCramps: false,
+              hemorrhoids: false,
+              heartBurn: false,
+            },
+          };
+          setFormData({ ...data, maternalRecords, symptoms });
         }
       } catch (error) {
         toast.error("Error fetching prenatal data");
