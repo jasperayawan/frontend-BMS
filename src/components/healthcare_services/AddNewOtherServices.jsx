@@ -1,9 +1,11 @@
 import React from 'react';
 import useOtherServices from '../../hooks/useOtherServices';
 import toast from 'react-hot-toast';
+import Parse from "parse/dist/parse.min.js";
 
 const AddNewOtherServices = ({ patientDataSelected, setHealthCare, setIsOtherServices, setIsHealthcareActive }) => {
   const { formData, handleInputChange, createNewOtherServices, isLoading } = useOtherServices();
+  const user = Parse.User.current();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,7 +15,7 @@ const AddNewOtherServices = ({ patientDataSelected, setHealthCare, setIsOtherSer
         userId: patientDataSelected?.objectId
       };
       
-      const response = await createNewOtherServices(serviceData);
+      const response = await createNewOtherServices(serviceData, user);
       
       if (response.success) {
         toast.success('Service record created successfully');

@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useImmunization } from "../hooks/useImmunization";
+import { usePrenatal } from "../hooks/usePrenatal";
+import { useFamilyPlanning } from "../hooks/useFamilyPlanning";
+import useOtherServices from "../hooks/useOtherServices";
 
 const PatientModal = ({
   patientData,
@@ -10,7 +14,32 @@ const PatientModal = ({
 }) => {
   const [isPatientHistory, setIsPatientHistory] = useState(false);
   const [historyIndex, setHistoryIndex] = useState(0);
-  console.log(patientData)
+  const { getImmunizationByPatient, immunizationData } = useImmunization();
+  const { getPrenatalByUserId, prenatalData } = usePrenatal();
+  const { fetchFamilyPlanningByUserId, familyPlanningData } = useFamilyPlanning();
+  const { getOtherService, otherServices } = useOtherServices();
+
+  useEffect(() => {
+    getImmunizationByPatient(patientData?.objectId)
+  }, [patientData?.objectId])
+
+  useEffect(() => {
+    getPrenatalByUserId(patientData?.objectId)
+  }, [patientData?.objectId])
+
+  useEffect(() => {
+    fetchFamilyPlanningByUserId(patientData?.objectId)
+  }, [patientData?.objectId])
+
+  useEffect(() => {
+    getOtherService(patientData?.objectId)
+  }, [patientData?.objectId])
+
+  // console.log('immunizationData', immunizationData)
+  // console.log('prenatalData', prenatalData)
+  // console.log('familyPlanningData', familyPlanningData)
+  // console.log('otherServices', otherServices)
+
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
       {isPatientHistory ? (
@@ -47,52 +76,55 @@ const PatientModal = ({
             </tr>
           </thead>
           <tbody>
-            {historyIndex === 0 ? (
+            {historyIndex === 0 && prenatalData && (
               <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.prenatal[0]?.HealthService}
+                  <span>PRENATAL</span>
                 </td>
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.prenatal[0].Year}
+                  {prenatalData?.createdAt ? new Date(prenatalData.createdAt).getFullYear() : '-'}
                 </td>
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.prenatal[0]?.NurseInCharge}
+                  {prenatalData?.nurseIncharge ? `${prenatalData.nurseIncharge.name} ${prenatalData.nurseIncharge.username}` : '-'}
                 </td>
               </tr>
-            ) : historyIndex === 1 ? (
+            )}
+            {historyIndex === 1 && immunizationData && (
               <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.immunization[0]?.HealthService}
+                  <span>IMMUNIZATION</span>
                 </td>
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.immunization[0].Year}
+                  {immunizationData?.createdAt ? new Date(immunizationData.createdAt).getFullYear() : '-'}
                 </td>
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.immunization[0]?.NurseInCharge}
+                  {immunizationData?.nurseIncharge ? `${immunizationData.nurseIncharge.name} ${immunizationData.nurseIncharge.username}` : '-'}
                 </td>
               </tr>
-            ) : historyIndex === 2 ? (
+            )}
+            {historyIndex === 2 && familyPlanningData && (
               <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.familyPlanning[0]?.HealthService}
+                  <span>FAMILY PLANNING</span>
                 </td>
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.familyPlanning[0].Year}
+                  {familyPlanningData?.createdAt ? new Date(familyPlanningData.createdAt).getFullYear() : '-'}
                 </td>
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.familyPlanning[0]?.NurseInCharge}
+                  {familyPlanningData?.nurseIncharge ? `${familyPlanningData.nurseIncharge.name} ${familyPlanningData.nurseIncharge.username}` : '-'}
                 </td>
               </tr>
-            ) : (
+            )}
+            {historyIndex === 3 && otherServices && (
               <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.otherServices[0]?.HealthService}
+                  <span>OTHER SERVICES</span>
                 </td>
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.otherServices[0].Year}
+                  {otherServices?.createdAt ? new Date(otherServices.createdAt).getFullYear() : '-'}
                 </td>
                 <td className="px-6 py-4">
-                  {patientData?.patientHistory?.otherServices[0]?.NurseInCharge}
+                  {otherServices?.nurseIncharge ? `${otherServices.nurseIncharge.name} ${otherServices.nurseIncharge.username}` : '-'}
                 </td>
               </tr>
             )}

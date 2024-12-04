@@ -464,6 +464,7 @@ const Patient = () => {
               }}
               patientDataSelected={patientDataSelected}
               componentRef={componentRef}
+              onRowDoubleClick={(data) => handleOpenModal(data)}
             />
 
             <div className="flex justify-center gap-x-2 mt-5">
@@ -497,14 +498,6 @@ const Patient = () => {
               >
                 Healthcare Services
               </button>
-              {isPatientSelect && (
-                <button
-                  onClick={() => handleOpenModal(patientDataSelected)}
-                  className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
-                >
-                  VIEW
-                </button>
-              )}
             </div>
           </div>
         </div>

@@ -4,12 +4,15 @@ import { useState } from 'react';
 
 export const usePrenatal = () => {
     const [isLoading, setIsLoading] = useState(false);
-
-    const createNewPrenatal = async (formData) => {
+    const [prenatalData, setPrenatalData] = useState(null);
+    const createNewPrenatal = async (formData, user) => {
         try {
             setIsLoading(true);
-            const response = await axios.post(PRENATAL, formData);
-            console.log(response.data)
+            const payload = {
+                nurseIncharge: user?.id,
+                ...formData
+            }
+            const response = await axios.post(PRENATAL, payload);
             return response.data;
         } catch (error) {
             console.error('Error creating prenatal record:', error);
@@ -22,6 +25,7 @@ export const usePrenatal = () => {
     const getPrenatalByUserId = async (userId) => {
         try {
             const response = await axios.get(`${PRENATAL}/user/${userId}`);
+            setPrenatalData(response.data.data[0]);
             return response.data.data[0];
         } catch (error) {
             throw error;
@@ -41,6 +45,7 @@ export const usePrenatal = () => {
         createNewPrenatal,
         isLoading,
         getPrenatalByUserId,
+        prenatalData,
         updatePrenatal,
     }
 }

@@ -7,10 +7,15 @@ export const useImmunization = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [immunizationData, setImmunizationData] = useState(null);
 
-    const createNewImmunization = async (payload) => {
+    const createNewImmunization = async (payload, user) => {
         try{
             setIsLoading(true);
-            const response = await axios.post(IMMUNIZATION, payload);
+            const formData = {
+                nurseIncharge: user?.id,
+                ...payload
+            }
+
+            const response = await axios.post(IMMUNIZATION, formData);
             console.log(response.data)
             return response.data
         }

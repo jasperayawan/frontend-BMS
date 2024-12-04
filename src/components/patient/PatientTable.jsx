@@ -4,7 +4,8 @@ const PatientTable = ({
   filteredData, 
   handlePatientSelection, 
   patientDataSelected, 
-  componentRef 
+  componentRef, 
+  onRowDoubleClick 
 }) => {
   return (
     <div ref={componentRef}>
@@ -28,6 +29,7 @@ const PatientTable = ({
               <tr
                 key={index}
                 onClick={() => handlePatientSelection(data)}
+                onDoubleClick={() => onRowDoubleClick(data)}
                 className={`${
                   patientDataSelected.objectId === data.objectId ? 'bg-yellow-500' : 'bg-zinc-100'
                 } border-b dark:border-gray-700 cursor-pointer`}

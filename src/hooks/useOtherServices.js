@@ -31,11 +31,12 @@ const useOtherServices = () => {
     }));
   };
 
-  const createNewOtherServices = async (data) => {
+  const createNewOtherServices = async (data, user) => {
     setIsLoading(true);
     try {
       const response = await axios.post(OTHER_SERVICES, {
         ...data,
+        nurseIncharge: user?.id,
         patientSignature: '',
         nurseSignature: ''
       });

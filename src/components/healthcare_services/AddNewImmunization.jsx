@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useImmunization } from '../../hooks/useImmunization';
+import Parse from "parse/dist/parse.min.js";
 
 const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunization, setIsHealthcareActive }) => {
   const { createNewImmunization, isLoading } = useImmunization();
+  const user = Parse.User.current();
   const [formData, setFormData] = useState({
     userId: patientDataSelected?.objectId,
     lastName: '',
@@ -48,7 +50,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
       };
 
       
-      await createNewImmunization(payload);
+      await createNewImmunization(payload, user);
       setHealthCare('default');
       setIsImmunization(false);
       setIsHealthcareActive(false);

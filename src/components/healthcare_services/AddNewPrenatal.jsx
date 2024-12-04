@@ -2,9 +2,10 @@ import { Calendar } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { usePrenatal } from "../../hooks/usePrenatal";
-
+import Parse from "parse/dist/parse.min.js";
 const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, setIsHealthcareActive }) => {
   const { createNewPrenatal, isLoading } = usePrenatal();
+  const user = Parse.User.current();
 
   const [formData, setFormData] = useState({
     userId: patientDataSelected?.objectId,
@@ -134,7 +135,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createNewPrenatal(formData);
+      await createNewPrenatal(formData, user);
       toast.success("Prenatal record created successfully");
       handleCancel();
     } catch (error) {
