@@ -7,6 +7,7 @@ import Parse from 'parse/dist/parse.min.js'
 export const useFamilyPlanning = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [familyPlanningData, setFamilyPlanningData] = useState(null);
+  const [familyPlanningHistory, setFamilyPlanningHistory] = useState(null);
   const user = Parse.User.current();
   const [formData, setFormData] = useState({
     // Type of Client
@@ -73,8 +74,22 @@ export const useFamilyPlanning = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(`${FAMILY_PLANNING}/user/${userId}`);
-      setFamilyPlanningData(response.data.record);
-      return response.data.record;
+      setFamilyPlanningData(response.data.records[0]);
+      return response.data.records[0];
+    } catch (error) {
+      console.error('Error fetching family planning records:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchFamilyPlanningByUserIdHistory = async (userId) => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(`${FAMILY_PLANNING}/user/${userId}`);
+      setFamilyPlanningHistory(response.data.records);
+      return response.data.records;
     } catch (error) {
       console.error('Error fetching family planning records:', error);
       throw error;
@@ -105,6 +120,8 @@ export const useFamilyPlanning = () => {
     handleInputChange,
     createNewFamilyPlanning,
     fetchFamilyPlanningByUserId,
+    fetchFamilyPlanningByUserIdHistory,
+    familyPlanningHistory,
     updateFamilyPlanningById
   };
 };

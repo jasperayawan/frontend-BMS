@@ -469,14 +469,8 @@ const Patient = () => {
 
             <div className="flex justify-center gap-x-2 mt-5">
               <button
-                onClick={handlePrint}
-                className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
-              >
-                Print
-              </button>
-              <button
                 onClick={() => setIsAddPatientModal(!isAddPatientModal)}
-                className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
+                className="border-[2px] text-sm border-zinc-500 text-black font-bold py-2 px-4 bg-zinc-200"
               >
                 Add
               </button> 
@@ -485,7 +479,7 @@ const Patient = () => {
                   handleHealthcareServicesModal('EDIT') 
                   setHealthCareAddorEdit('EDIT')
                 }}
-                className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
+                className="border-[2px] text-sm border-zinc-500 text-black font-bold py-2 px-4 bg-zinc-200"
               >
                 EDIT
               </button>
@@ -494,9 +488,15 @@ const Patient = () => {
                   handleHealthcareServicesModal('HEALTHCARE SERVICES')
                   setHealthCareAddorEdit('ADD')
                 }}
-                className="border-[2px] border-zinc-500 text-black font-bold py-2 px-4 rounded"
+                className="border-[2px] text-sm border-zinc-500 text-black font-bold py-2 px-4 bg-zinc-200"
               >
                 Healthcare Services
+              </button>
+              <button
+                onClick={handlePrint}
+                className="border-[2px] text-sm border-zinc-500 text-black font-bold py-2 px-4 bg-zinc-200"
+              >
+                Print
               </button>
             </div>
           </div>

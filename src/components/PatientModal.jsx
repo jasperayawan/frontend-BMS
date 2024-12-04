@@ -14,31 +14,27 @@ const PatientModal = ({
 }) => {
   const [isPatientHistory, setIsPatientHistory] = useState(false);
   const [historyIndex, setHistoryIndex] = useState(0);
-  const { getImmunizationByPatient, immunizationData } = useImmunization();
-  const { getPrenatalByUserId, prenatalData } = usePrenatal();
-  const { fetchFamilyPlanningByUserId, familyPlanningData } = useFamilyPlanning();
-  const { getOtherService, otherServices } = useOtherServices();
+  const { getPrenatalByUserIdHistory, prenatalHistory } = usePrenatal();
+  const { getImmunizationByPatientHistory, immunizationHistory } = useImmunization();
+  const { fetchFamilyPlanningByUserIdHistory, familyPlanningHistory } = useFamilyPlanning();
+  const { getOtherServiceHistory, otherServicesHistory } = useOtherServices();
 
   useEffect(() => {
-    getImmunizationByPatient(patientData?.objectId)
+    getImmunizationByPatientHistory(patientData?.objectId)
   }, [patientData?.objectId])
 
   useEffect(() => {
-    getPrenatalByUserId(patientData?.objectId)
+    getPrenatalByUserIdHistory(patientData?.objectId)
   }, [patientData?.objectId])
 
   useEffect(() => {
-    fetchFamilyPlanningByUserId(patientData?.objectId)
+    fetchFamilyPlanningByUserIdHistory(patientData?.objectId)
   }, [patientData?.objectId])
 
   useEffect(() => {
-    getOtherService(patientData?.objectId)
+    getOtherServiceHistory(patientData?.objectId)
   }, [patientData?.objectId])
 
-  // console.log('immunizationData', immunizationData)
-  // console.log('prenatalData', prenatalData)
-  // console.log('familyPlanningData', familyPlanningData)
-  // console.log('otherServices', otherServices)
 
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
@@ -77,18 +73,20 @@ const PatientModal = ({
           </thead>
           <tbody>
             {historyIndex === 0 && (
-              prenatalData ? (
-                <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
+              Array.isArray(prenatalHistory) && prenatalHistory.length > 0 ?  (
+                prenatalHistory.map((data, index) => (
+                <tr key={index} className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
                   <td className="px-6 py-4">
                     <span>PRENATAL</span>
                   </td>
                   <td className="px-6 py-4">
-                    {prenatalData?.createdAt ? new Date(prenatalData.createdAt).getFullYear() : '-'}
+                    {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
                   </td>
                   <td className="px-6 py-4">
-                    {prenatalData?.nurseIncharge ? `${prenatalData.nurseIncharge.name} ${prenatalData.nurseIncharge.username}` : '-'}
+                    {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
                   </td>
-                </tr>
+                  </tr>
+                ))
               ) : (
                 <tr>
                   <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
@@ -96,18 +94,20 @@ const PatientModal = ({
               )
             )}
             {historyIndex === 1 && (
-              immunizationData ? (
-                <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
+              Array.isArray(immunizationHistory) && immunizationHistory.length > 0 ? (
+                immunizationHistory.map((data, index) => (
+                <tr key={index} className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
                   <td className="px-6 py-4">
                     <span>IMMUNIZATION</span>
                   </td>
                   <td className="px-6 py-4">
-                    {immunizationData?.createdAt ? new Date(immunizationData.createdAt).getFullYear() : '-'}
+                    {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
                   </td>
                   <td className="px-6 py-4">
-                    {immunizationData?.nurseIncharge ? `${immunizationData.nurseIncharge.name} ${immunizationData.nurseIncharge.username}` : '-'}
+                    {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
                   </td>
                 </tr>
+                ))
               ) : (
                 <tr>
                   <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
@@ -115,18 +115,20 @@ const PatientModal = ({
               )
             )}
             {historyIndex === 2 && (
-              familyPlanningData ? (
-                <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
+              Array.isArray(familyPlanningHistory) && familyPlanningHistory.length > 0 ? (
+                familyPlanningHistory.map((data, index) => (
+                <tr key={index} className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
                   <td className="px-6 py-4">
                     <span>FAMILY PLANNING</span>
                   </td>
                   <td className="px-6 py-4">
-                    {familyPlanningData?.createdAt ? new Date(familyPlanningData.createdAt).getFullYear() : '-'}
+                    {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
                   </td>
                   <td className="px-6 py-4">
-                    {familyPlanningData?.nurseIncharge ? `${familyPlanningData.nurseIncharge.name} ${familyPlanningData.nurseIncharge.username}` : '-'}
+                    {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
                   </td>
                 </tr>
+                ))
               ) : (
                 <tr>
                   <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
@@ -134,18 +136,20 @@ const PatientModal = ({
               )
             )}
             {historyIndex === 3 && (
-              otherServices ? (
-                <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
+              Array.isArray(otherServicesHistory) && otherServicesHistory.length > 0 ? (
+                otherServicesHistory.map((data, index) => (
+                <tr key={index} className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
                   <td className="px-6 py-4">
                     <span>OTHER SERVICES</span>
                   </td>
                   <td className="px-6 py-4">
-                    {otherServices?.createdAt ? new Date(otherServices.createdAt).getFullYear() : '-'}
+                    {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
                   </td>
                   <td className="px-6 py-4">
-                    {otherServices?.nurseIncharge ? `${otherServices.nurseIncharge.name} ${otherServices.nurseIncharge.username}` : '-'}
+                    {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
                   </td>
                 </tr>
+                ))
               ) : (
                 <tr>
                   <td colSpan="3" className="px-6 py-4 text-center">No record found</td>

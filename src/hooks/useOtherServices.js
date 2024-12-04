@@ -21,6 +21,7 @@ const useOtherServices = () => {
     prescription: ''
   });
   const [otherServices, setOtherServices] = useState(null)
+  const [otherServicesHistory, setOtherServicesHistory] = useState(null)
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
@@ -68,7 +69,19 @@ const useOtherServices = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(`${OTHER_SERVICES}/user/${userId}`);
-      setOtherServices(response.data.data)
+      setOtherServices(response.data.data[0])
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to fetch service record');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getOtherServiceHistory = async (userId) => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`${OTHER_SERVICES}/user/${userId}`);
+      setOtherServicesHistory(response.data.data)
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Failed to fetch service record');
     } finally {
@@ -84,7 +97,9 @@ const useOtherServices = () => {
     getOtherService,
     otherServices,
     isLoading,
-    setFormData
+    setFormData,
+    getOtherServiceHistory,
+    otherServicesHistory
   };
 };
 

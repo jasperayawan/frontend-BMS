@@ -5,6 +5,8 @@ import { useState } from 'react';
 export const usePrenatal = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [prenatalData, setPrenatalData] = useState(null);
+    const [prenatalHistory, setPrenatalHistory] = useState(null);
+
     const createNewPrenatal = async (formData, user) => {
         try {
             setIsLoading(true);
@@ -32,6 +34,16 @@ export const usePrenatal = () => {
         }
     };
 
+    const getPrenatalByUserIdHistory = async (userId) => {
+        try {
+            const response = await axios.get(`${PRENATAL}/user/${userId}`);
+            setPrenatalHistory(response.data.data);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    };
+
     const updatePrenatal = async (data) => {
         try {
             const response = await axios.put(`${PRENATAL}/${data.objectId}`, data);
@@ -47,5 +59,7 @@ export const usePrenatal = () => {
         getPrenatalByUserId,
         prenatalData,
         updatePrenatal,
+        getPrenatalByUserIdHistory,
+        prenatalHistory
     }
 }
