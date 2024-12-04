@@ -308,6 +308,7 @@ const Patient = () => {
           handlePrint={handlePrint}
           componentRef={componentRef}
           setIsPatientSelect={setIsPatientSelect}
+          patientDataSelected={patientDataSelected}
         />
       )}
 
@@ -350,7 +351,7 @@ const Patient = () => {
         <div className="fixed inset-0 w-full bg-black/20 h-screen flex justify-center items-center z-50">
           <div className="relative bg-white border flex flex-col space-y-4 p-5">
             <button 
-              onClick={() => setIsHealthCareModal(false)}
+              onClick={() => setIsEditHealthCareModal(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
             >
               ✕

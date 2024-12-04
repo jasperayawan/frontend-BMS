@@ -20,7 +20,7 @@ const Header = () => {
           onClick={() => Navigate("/")}
           src="/sanfranciscologo.svg"
           alt="San Francisco Logo"
-          className="z-50 cursor-pointer"
+          className="z-30 cursor-pointer"
         />
         <h2 className="text-white text-[32px] text-center">
           BARANGAY SAN FRANCISCO HEALTH CENTER

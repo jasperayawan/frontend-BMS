@@ -3,6 +3,7 @@ import { useImmunization } from "../hooks/useImmunization";
 import { usePrenatal } from "../hooks/usePrenatal";
 import { useFamilyPlanning } from "../hooks/useFamilyPlanning";
 import useOtherServices from "../hooks/useOtherServices";
+import PatientHistoryDetails from './PatientHistoryDetails';
 
 const PatientModal = ({
   patientData,
@@ -10,14 +11,26 @@ const PatientModal = ({
   isModalOpen,
   handlePrint,
   componentRef,
-  setIsPatientSelect
+  setIsPatientSelect,
+  patientDataSelected
 }) => {
   const [isPatientHistory, setIsPatientHistory] = useState(false);
   const [historyIndex, setHistoryIndex] = useState(0);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedHistoryType, setSelectedHistoryType] = useState("");
   const { getPrenatalByUserIdHistory, prenatalHistory } = usePrenatal();
   const { getImmunizationByPatientHistory, immunizationHistory } = useImmunization();
   const { fetchFamilyPlanningByUserIdHistory, familyPlanningHistory } = useFamilyPlanning();
   const { getOtherServiceHistory, otherServicesHistory } = useOtherServices();
+
+  const symptoms = [
+    "Edema",
+    "Constipation", 
+    "Nausea/Vomiting",
+    "Leg Cramps",
+    "Hemorrhoids",
+    "Heartburn"
+  ];
 
   useEffect(() => {
     getImmunizationByPatientHistory(patientData?.objectId)
@@ -35,12 +48,24 @@ const PatientModal = ({
     getOtherServiceHistory(patientData?.objectId)
   }, [patientData?.objectId])
 
+  const handleRowClick = (data, type) => {
+    setSelectedRow({
+      ...data,
+      type: type
+    });
+    setSelectedHistoryType(type);
+  };
+
+  const handleBackClick = () => {
+    setSelectedRow(null);
+    setSelectedHistoryType("");
+  };
 
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
       {isPatientHistory ? (
         <div className="bg-white flex flex-col justify-between items-center rounded-[12px] min-w-[500px] h-[600px] relative overflow-y-auto">
-        <div className="flex flex-col">
+        <div className="flex flex-col h-full">
         <h2 className="text-center py-2">Patient History</h2>
         <div className="flex flex-row justify-between items-center">
           <span onClick={() => setHistoryIndex(0)} className={`cursor-pointer text-[12px] px-4 border-[1px] border-[#000000] ${historyIndex === 0 && 'bg-yellow-500'} rounded-t-[12px]`}>
@@ -57,112 +82,146 @@ const PatientModal = ({
           </span>
         </div>
       
-        <table className="w-full text-sm text-left rtl:text-right">
-          <thead className="bg-yellow-500">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                HEALTH SERVICES
-              </th>
-              <th scope="col" className="px-6 py-3">
-                YEAR
-              </th>
-              <th scope="col" className="px-6 py-3">
-                NURSE INCHARGE
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {historyIndex === 0 && (
-              Array.isArray(prenatalHistory) && prenatalHistory.length > 0 ?  (
-                prenatalHistory.map((data, index) => (
-                <tr key={index} className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
-                  <td className="px-6 py-4">
-                    <span>PRENATAL</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
-                  </td>
-                  <td className="px-6 py-4">
-                    {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
-                  </td>
+        {!selectedRow ? (
+         <div className="flex flex-col justify-between items-center h-full">
+           <table className="w-full text-sm text-left rtl:text-right">
+            <thead className="bg-yellow-500">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  HEALTH SERVICES
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  YEAR
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  NURSE INCHARGE
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {historyIndex === 0 && (
+                Array.isArray(prenatalHistory) && prenatalHistory.length > 0 ? (
+                  prenatalHistory.map((data, index) => (
+                    <tr 
+                      key={index} 
+                      className="bg-white border-b dark:bg-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleRowClick(data, "PRENATAL")}
+                    >
+                      <td className="px-6 py-4">
+                        <span>PRENATAL</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
+                      </td>
+                      <td className="px-6 py-4">
+                        {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
-                </tr>
-              )
-            )}
-            {historyIndex === 1 && (
-              Array.isArray(immunizationHistory) && immunizationHistory.length > 0 ? (
-                immunizationHistory.map((data, index) => (
-                <tr key={index} className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
-                  <td className="px-6 py-4">
-                    <span>IMMUNIZATION</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
-                  </td>
-                  <td className="px-6 py-4">
-                    {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
-                  </td>
-                </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
-                </tr>
-              )
-            )}
-            {historyIndex === 2 && (
-              Array.isArray(familyPlanningHistory) && familyPlanningHistory.length > 0 ? (
-                familyPlanningHistory.map((data, index) => (
-                <tr key={index} className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
-                  <td className="px-6 py-4">
-                    <span>FAMILY PLANNING</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
-                  </td>
-                  <td className="px-6 py-4">
-                    {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
-                  </td>
-                </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
-                </tr>
-              )
-            )}
-            {historyIndex === 3 && (
-              Array.isArray(otherServicesHistory) && otherServicesHistory.length > 0 ? (
-                otherServicesHistory.map((data, index) => (
-                <tr key={index} className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
-                  <td className="px-6 py-4">
-                    <span>OTHER SERVICES</span>
-                  </td>
-                  <td className="px-6 py-4">
-                    {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
-                  </td>
-                  <td className="px-6 py-4">
-                    {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
-                  </td>
-                </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
+                )
+              )}
+              {historyIndex === 1 && (
+                Array.isArray(immunizationHistory) && immunizationHistory.length > 0 ? (
+                  immunizationHistory.map((data, index) => (
+                    <tr 
+                      key={index} 
+                      className="bg-white border-b dark:bg-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleRowClick(data, "IMMUNIZATION")}
+                    >
+                      <td className="px-6 py-4">
+                        <span>IMMUNIZATION</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
+                      </td>
+                      <td className="px-6 py-4">
+                        {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
+                  </tr>
+                )
+              )}
+              {historyIndex === 2 && (
+                Array.isArray(familyPlanningHistory) && familyPlanningHistory.length > 0 ? (
+                  familyPlanningHistory.map((data, index) => (
+                    <tr 
+                      key={index} 
+                      className="bg-white border-b dark:bg-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleRowClick(data, "FAMILY PLANNING")}
+                    >
+                      <td className="px-6 py-4">
+                        <span>FAMILY PLANNING</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
+                      </td>
+                      <td className="px-6 py-4">
+                        {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
+                  </tr>
+                )
+              )}
+              {historyIndex === 3 && (
+                Array.isArray(otherServicesHistory) && otherServicesHistory.length > 0 ? (
+                  otherServicesHistory.map((data, index) => (
+                    <tr 
+                      key={index} 
+                      className="bg-white border-b dark:bg-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleRowClick(data, "OTHER SERVICES")}
+                    >
+                      <td className="px-6 py-4">
+                        <span>OTHER SERVICES</span>
+                      </td>
+                      <td className="px-6 py-4">
+                        {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
+                      </td>
+                      <td className="px-6 py-4">
+                        {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+          <button onClick={() => {
+            setIsPatientHistory(!isPatientHistory);
+            setIsModalOpen(true)
+          }} className="px-6 py-3 bg-gray-200">Back</button>
+         </div>
+        ) : (
+          <div className="w-full">
+            <div className="bg-yellow-500 p-4 mb-4">
+              <h3 className="text-lg font-bold">{selectedHistoryType} Details</h3>
+            </div>
+            <div className="p-4">
+              <PatientHistoryDetails 
+                selectedRow={selectedRow}
+                symptoms={symptoms}
+                patientDataSelected={patientDataSelected}
+                handleBackClick={handleBackClick}
+              />
+            </div>
+          </div>
+        )}
         </div>
-        <button onClick={() => {
-          setIsPatientHistory(!isPatientHistory);
-          setIsModalOpen(true)
-        }} className="px-6 py-3 bg-gray-200">Back</button>
       </div>      
       ) : (
           <div className="bg-white rounded-[12px] min-w-[500px] h-[600px] relative p-4 overflow-y-auto">
