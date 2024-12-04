@@ -76,57 +76,81 @@ const PatientModal = ({
             </tr>
           </thead>
           <tbody>
-            {historyIndex === 0 && prenatalData && (
-              <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
-                <td className="px-6 py-4">
-                  <span>PRENATAL</span>
-                </td>
-                <td className="px-6 py-4">
-                  {prenatalData?.createdAt ? new Date(prenatalData.createdAt).getFullYear() : '-'}
-                </td>
-                <td className="px-6 py-4">
-                  {prenatalData?.nurseIncharge ? `${prenatalData.nurseIncharge.name} ${prenatalData.nurseIncharge.username}` : '-'}
-                </td>
-              </tr>
+            {historyIndex === 0 && (
+              prenatalData ? (
+                <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
+                  <td className="px-6 py-4">
+                    <span>PRENATAL</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    {prenatalData?.createdAt ? new Date(prenatalData.createdAt).getFullYear() : '-'}
+                  </td>
+                  <td className="px-6 py-4">
+                    {prenatalData?.nurseIncharge ? `${prenatalData.nurseIncharge.name} ${prenatalData.nurseIncharge.username}` : '-'}
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
+                </tr>
+              )
             )}
-            {historyIndex === 1 && immunizationData && (
-              <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
-                <td className="px-6 py-4">
-                  <span>IMMUNIZATION</span>
-                </td>
-                <td className="px-6 py-4">
-                  {immunizationData?.createdAt ? new Date(immunizationData.createdAt).getFullYear() : '-'}
-                </td>
-                <td className="px-6 py-4">
-                  {immunizationData?.nurseIncharge ? `${immunizationData.nurseIncharge.name} ${immunizationData.nurseIncharge.username}` : '-'}
-                </td>
-              </tr>
+            {historyIndex === 1 && (
+              immunizationData ? (
+                <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
+                  <td className="px-6 py-4">
+                    <span>IMMUNIZATION</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    {immunizationData?.createdAt ? new Date(immunizationData.createdAt).getFullYear() : '-'}
+                  </td>
+                  <td className="px-6 py-4">
+                    {immunizationData?.nurseIncharge ? `${immunizationData.nurseIncharge.name} ${immunizationData.nurseIncharge.username}` : '-'}
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
+                </tr>
+              )
             )}
-            {historyIndex === 2 && familyPlanningData && (
-              <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
-                <td className="px-6 py-4">
-                  <span>FAMILY PLANNING</span>
-                </td>
-                <td className="px-6 py-4">
-                  {familyPlanningData?.createdAt ? new Date(familyPlanningData.createdAt).getFullYear() : '-'}
-                </td>
-                <td className="px-6 py-4">
-                  {familyPlanningData?.nurseIncharge ? `${familyPlanningData.nurseIncharge.name} ${familyPlanningData.nurseIncharge.username}` : '-'}
-                </td>
-              </tr>
+            {historyIndex === 2 && (
+              familyPlanningData ? (
+                <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
+                  <td className="px-6 py-4">
+                    <span>FAMILY PLANNING</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    {familyPlanningData?.createdAt ? new Date(familyPlanningData.createdAt).getFullYear() : '-'}
+                  </td>
+                  <td className="px-6 py-4">
+                    {familyPlanningData?.nurseIncharge ? `${familyPlanningData.nurseIncharge.name} ${familyPlanningData.nurseIncharge.username}` : '-'}
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
+                </tr>
+              )
             )}
-            {historyIndex === 3 && otherServices && (
-              <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
-                <td className="px-6 py-4">
-                  <span>OTHER SERVICES</span>
-                </td>
-                <td className="px-6 py-4">
-                  {otherServices?.createdAt ? new Date(otherServices.createdAt).getFullYear() : '-'}
-                </td>
-                <td className="px-6 py-4">
-                  {otherServices?.nurseIncharge ? `${otherServices.nurseIncharge.name} ${otherServices.nurseIncharge.username}` : '-'}
-                </td>
-              </tr>
+            {historyIndex === 3 && (
+              otherServices ? (
+                <tr className="bg-white border-b dark:bg-gray-200 dark:border-gray-700">
+                  <td className="px-6 py-4">
+                    <span>OTHER SERVICES</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    {otherServices?.createdAt ? new Date(otherServices.createdAt).getFullYear() : '-'}
+                  </td>
+                  <td className="px-6 py-4">
+                    {otherServices?.nurseIncharge ? `${otherServices.nurseIncharge.name} ${otherServices.nurseIncharge.username}` : '-'}
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td colSpan="3" className="px-6 py-4 text-center">No record found</td>
+                </tr>
+              )
             )}
           </tbody>
         </table>
