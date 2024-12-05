@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { PatientData } from "../helper/DummyData";
 import PatientModal from "../components/PatientModal";
 import { PATIENT } from "../helper/api";
 import AddPatientModal from "../components/patient/AddPatientModal";
@@ -160,7 +159,7 @@ const Patient = () => {
       }
     } catch (error) {
       console.error("Error creating patient profile:", error);
-      alert("An error occurred while creating the patient profile.");
+      toast.error(error.response.data.error);
     } finally {
       setIsSubmitting(false); // End submission
     }
