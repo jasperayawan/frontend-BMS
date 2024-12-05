@@ -9,6 +9,8 @@ const EditFamilyPlanning = ({
   patientDataSelected,
   setIsHealthcareActive,
 }) => {
+  const { fetchFamilyPlanningByUserIdHistory, familyPlanningHistory } = useFamilyPlanning()
+  const [tableIndexSelected, setTableIndexSelected] = useState(null);
   const [formData, setFormData] = useState({
     patientIdNo: "",
     email: "",
@@ -57,14 +59,15 @@ const EditFamilyPlanning = ({
     updateFamilyPlanningById 
   } = useFamilyPlanning();
   const [isEdit, setIsEdit] = useState(false);
-  const [isSelected, setIsSelected] = useState("");
+  const [selectedFamilyPlanningHistory, setSelectedFamilyPlanningHistory] = useState("");
 
-  const handleSelectRow = (data) => {
-    setIsSelected(data);
+  const handleFamilyPlanningHistory = (data, index) => {
+    setSelectedFamilyPlanningHistory(data);
+    setTableIndexSelected(index);
   };
 
   const handleEdit = (data) => {
-    if (data === "ok" && isSelected) {
+    if (data === "ok" && selectedFamilyPlanningHistory) {
       setIsEdit(true);
     } else {
       setIsEdit(false);
@@ -72,50 +75,50 @@ const EditFamilyPlanning = ({
   };
 
   useEffect(() => {
-    fetchFamilyPlanningByUserId(patientDataSelected?.objectId);
+    fetchFamilyPlanningByUserIdHistory(patientDataSelected?.objectId);
   }, []);
 
  
   useEffect(() => {
-    if (familyPlanningData) {
+    if (selectedFamilyPlanningHistory) {
       setFormData(prevData => ({
         ...prevData,
         // Type of Client
-        newAcceptor: familyPlanningData?.newAcceptor || false,
-        currentUser: familyPlanningData?.currentUser || false,
-        changingMethod: familyPlanningData?.changingMethod || false,
-        changingClinic: familyPlanningData?.changingClinic || false,
-        dropoutRestart: familyPlanningData?.dropoutRestart || false,
-        spacingReason: familyPlanningData?.spacingReason || false,
-        medicalCondition: familyPlanningData?.medicalCondition || false,
-        sideEffects: familyPlanningData?.sideEffects || false,
-        limitingReason: familyPlanningData?.limitingReason || false,
-        otherReason: familyPlanningData?.otherReason || false,
+        newAcceptor: selectedFamilyPlanningHistory?.record?.newAcceptor || false,
+        currentUser: selectedFamilyPlanningHistory?.record?.currentUser || false,
+        changingMethod: selectedFamilyPlanningHistory?.record?.changingMethod || false,
+        changingClinic: selectedFamilyPlanningHistory?.record?.changingClinic || false,
+        dropoutRestart: selectedFamilyPlanningHistory?.record?.dropoutRestart || false,
+        spacingReason: selectedFamilyPlanningHistory?.spacingReason || false,
+        medicalCondition: selectedFamilyPlanningHistory?.record?.medicalCondition || false,
+        sideEffects: selectedFamilyPlanningHistory?.record?.sideEffects || false,
+        limitingReason: selectedFamilyPlanningHistory?.record?.limitingReason || false,
+        otherReason: selectedFamilyPlanningHistory?.record?.otherReason || false,
 
         // Method Currently Used
-        coc: familyPlanningData?.coc || false,
-        pop: familyPlanningData?.pop || false,
-        injectable: familyPlanningData?.injectable || false,
-        implant: familyPlanningData?.implant || false,
-        inteval: familyPlanningData?.inteval || false,
-        postPartum: familyPlanningData?.postPartum || false,
-        condom: familyPlanningData?.condom || false,
-        bomCmm: familyPlanningData?.bomCmm || false,
-        bbt: familyPlanningData?.bbt || false,
-        stm: familyPlanningData?.stm || false,
-        lam: familyPlanningData?.lam || false,
-        otherMethod: familyPlanningData?.otherMethod || false,
+        coc: selectedFamilyPlanningHistory?.record?.coc || false,
+        pop: selectedFamilyPlanningHistory?.record?.pop || false,
+        injectable: selectedFamilyPlanningHistory?.record?.injectable || false,
+        implant: selectedFamilyPlanningHistory?.record?.implant || false,
+        inteval: selectedFamilyPlanningHistory?.record?.inteval || false,
+        postPartum: selectedFamilyPlanningHistory?.record?.postPartum || false,
+        condom: selectedFamilyPlanningHistory?.record?.condom || false,
+        bomCmm: selectedFamilyPlanningHistory?.record?.bomCmm || false,
+        bbt: selectedFamilyPlanningHistory?.record?.bbt || false,
+        stm: selectedFamilyPlanningHistory?.record?.stm || false,
+        lam: selectedFamilyPlanningHistory?.record?.lam || false,
+        otherMethod: selectedFamilyPlanningHistory?.record?.otherMethod || false,
 
         // VAW Risks
-        unpleasantRelationship: familyPlanningData?.unpleasantRelationship || false,
-        partnerDisapproval: familyPlanningData?.partnerDisapproval || false,
-        domesticViolence: familyPlanningData?.domesticViolence || false,
-        referredToDSWD: familyPlanningData?.referredToDSWD || false,
-        referredToWCPU: familyPlanningData?.referredToWCPU || false,
-        referredToOthers: familyPlanningData?.referredToOthers || false,
+        unpleasantRelationship: selectedFamilyPlanningHistory?.record?.unpleasantRelationship || false,
+        partnerDisapproval: familyPlanningData?.record?.partnerDisapproval || false,
+        domesticViolence: selectedFamilyPlanningHistory?.record?.domesticViolence || false,
+        referredToDSWD: selectedFamilyPlanningHistory?.record?.referredToDSWD || false,
+        referredToWCPU: selectedFamilyPlanningHistory?.record?.referredToWCPU || false,
+        referredToOthers: selectedFamilyPlanningHistory?.record?.referredToOthers || false,
       }));
     }
-  }, [familyPlanningData]);
+  }, [familyPlanningData, selectedFamilyPlanningHistory]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -166,7 +169,7 @@ const EditFamilyPlanning = ({
       };
 
       // Call the update function with the family planning ID and payload
-      await updateFamilyPlanningById(familyPlanningData.objectId, payload);
+      await updateFamilyPlanningById(selectedFamilyPlanningHistory?.record?.objectId, payload);
       
       // Close the modal after successful update
       setShowModal(false);
@@ -1110,24 +1113,26 @@ const EditFamilyPlanning = ({
                             </tr>
                           </thead>
                           <tbody>
-                            {familyPlanningData && (
-                              <tr
-                                onClick={() => handleSelectRow("selected")}
-                                className={`${isSelected ? 'bg-yellow-500' : ''} cursor-pointer`}
+                            {Array.isArray(familyPlanningHistory) &&
+                              familyPlanningHistory.map((item, index) => (
+                                <tr 
+                                  key={index}
+                                  onClick={() => handleFamilyPlanningHistory(item, index)}
+                                  className={`${tableIndexSelected === index ? 'bg-yellow-500' : ''} cursor-pointer`}
                               >
                                 <td className="border border-gray-300 px-6 py-4 text-sm text-gray-800">
                                   Family Planning
                                 </td>
                                 <td className="border border-gray-300 px-6 py-4 text-sm text-gray-800">
                                   {new Date(
-                                    familyPlanningData.createdAt
+                                    item.record.createdAt
                                   ).getFullYear()}
                                 </td>
                                 <td className="border border-gray-300 px-6 py-4 text-sm text-gray-800">
-                                  {familyPlanningData.nurseIncharge.username}
+                                {item.record.nurseIncharge.name} {item.record.nurseIncharge.username}
                                 </td>
-                              </tr>
-                            )}
+                                </tr>
+                              ))}
                           </tbody>
                         </table>
                         <div className="flex justify-end gap-x-3 mt-4">

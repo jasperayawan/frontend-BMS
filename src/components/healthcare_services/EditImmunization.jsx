@@ -502,7 +502,7 @@ const EditImmunization = ({
                       onClick={() => setImmunizationDialog(true)}
                       className="px-6 py-2 rounded-md bg-zinc-200 text-black no-print"
                     >
-                      UPDATE IMMUNIZATION RECORD
+                      UPDATE PATIENT RECORD
                     </button>
                   </div>
                 </div>
