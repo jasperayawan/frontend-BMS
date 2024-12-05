@@ -314,6 +314,8 @@ const Patient = () => {
 
       {isAddPatientModal && (
         <AddPatientModal
+          setFormData={setFormData}
+          setError={setError}
           handleSubmit={handleSubmit}
           formData={formData}
           isSubmitting={isSubmitting}

@@ -10,6 +10,7 @@ export const usePatient = () => {
         try {
             setIsLoading(true);
             const response = await axios.get(PATIENT);
+            response.data.patients.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
             setPatientData(response.data.patients);
         } catch (error) {
             console.error('Error fetching patient data:', error);

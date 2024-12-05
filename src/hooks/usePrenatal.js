@@ -49,6 +49,7 @@ export const usePrenatal = () => {
             const response = await axios.put(`${PRENATAL}/${data.objectId}`, data);
             return response.data;
         } catch (error) {
+            console.log(error);
             throw error;
         }
     };
