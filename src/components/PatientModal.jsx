@@ -61,6 +61,7 @@ const PatientModal = ({
     setSelectedHistoryType("");
   };
 
+
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
       {isPatientHistory ? (
@@ -213,10 +214,12 @@ const PatientModal = ({
             </div>
             <div className="p-4">
               <PatientHistoryDetails 
+                componentRef={componentRef}
                 selectedRow={selectedRow}
                 symptoms={symptoms}
                 patientDataSelected={patientDataSelected}
                 handleBackClick={handleBackClick}
+                handlePrint={handlePrint}
               />
             </div>
           </div>
@@ -298,7 +301,7 @@ const PatientModal = ({
                       <h5 className="text-[12px] font-semibold uppercase">
                         Birth Date
                       </h5>
-                      <p className="text-[14px]">{patientData.birthdate}</p>
+                      <p className="text-[14px]">{patientData.bod}</p>
                     </div>
                     <div className="flex flex-col justify-start items-start gap-x-4">
                       <h5 className="text-[12px] font-semibold uppercase">Age</h5>
@@ -349,7 +352,7 @@ const PatientModal = ({
                         House Hold Montly Income
                       </h5>
                       <p className="text-[14px]">
-                        {patientData.householdMonthlyIncome}
+                        {patientData.houseHoldMonthlyIncome}
                       </p>
                     </div>
                     <div className="flex flex-col justify-start items-start gap-x-4">
@@ -381,7 +384,7 @@ const PatientModal = ({
                         id="html"
                         name="support"
                         value="4ps"
-                        checked={patientData.healthcareAssistance === "4PS"}
+                        checked={patientData.healthcareAssistance === "4ps"}
                       />
                       <label htmlFor="html" className="text-[12px]">
                         4PS
@@ -392,7 +395,7 @@ const PatientModal = ({
                         id="css"
                         name="support"
                         value="indigent"
-                        checked={patientData.healthcareAssistance === "INDIGENT"}
+                        checked={patientData.healthcareAssistance === "indigent"}
                       />
                       <label htmlFor="indigent" className="text-[12px]">
                         INDIGENT
@@ -403,7 +406,7 @@ const PatientModal = ({
                         id="javascript"
                         name="support"
                         value="private"
-                        checked={patientData.healthcareAssistance === "PRIVATE"}
+                        checked={patientData.healthcareAssistance === "private"}
                       />
                       <label htmlFor="private" className="text-[12px]">
                         PRIVATE

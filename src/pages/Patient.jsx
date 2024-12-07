@@ -174,26 +174,38 @@ const Patient = () => {
     const printContent = componentRef.current;
     const printWindow = window.open("", "_blank");
     setIsPrint(true);
-
+    
     if (printWindow) {
       try {
-        // Replace placeholder with actual content
-        const filledTemplate = printTemplate.replace(
-          '<div id="content-placeholder"></div>',
-          printContent.innerHTML
-        );
+        // Get the Tailwind CSS stylesheet
+        const tailwindStyles = document.querySelector('style[data-tailwind]')?.innerHTML || '';
+        
+        // Replace placeholder with actual content and add Tailwind styles
+        const filledTemplate = printTemplate
+          .replace(
+            '</head>',
+            `<script src="https://cdn.tailwindcss.com"></script>
+             <style>${tailwindStyles}</style>
+             </head>`
+          )
+          .replace(
+            '<div id="content-placeholder"></div>',
+            printContent.innerHTML
+          );
 
         printWindow.document.write(filledTemplate);
         printWindow.document.close();
 
-        // Wait for resources to load before printing
+        // Wait for Tailwind to initialize and resources to load
         printWindow.onload = () => {
-          try {
-            printWindow.print();
-          } catch (error) {
-            console.error('Print failed:', error);
-          }
-          setIsPrint(false);
+          setTimeout(() => {
+            try {
+              printWindow.print();
+            } catch (error) {
+              console.error('Print failed:', error);
+            }
+            setIsPrint(false);
+          }, 500); // Small delay to ensure Tailwind is initialized
         };
 
       } catch (error) {

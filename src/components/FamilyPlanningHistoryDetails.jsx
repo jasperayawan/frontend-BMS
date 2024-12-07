@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FamilyPlanningHistoryDetails = ({ selectedRow, handleBackClick, patientDataSelected }) => {
+const FamilyPlanningHistoryDetails = ({ selectedRow, handleBackClick, patientDataSelected, componentRef, handlePrint }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8 z-50">
@@ -12,7 +12,8 @@ const FamilyPlanningHistoryDetails = ({ selectedRow, handleBackClick, patientDat
           </h1>
         </div>
 
-        {/* Patient Basic Information */}
+        <div ref={componentRef} className="flex flex-col gap-y-2 w-full">
+          {/* Patient Basic Information */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
           <div className="grid grid-cols-4 gap-4">
             <div>
@@ -198,9 +199,16 @@ const FamilyPlanningHistoryDetails = ({ selectedRow, handleBackClick, patientDat
             </div>
           </div>
         </div>
+        </div>
 
         {/* Back Button */}
         <div className="flex justify-end">
+          <button
+            onClick={handlePrint}
+            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+          >
+            Print
+          </button>
           <button
             onClick={handleBackClick}
             className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"

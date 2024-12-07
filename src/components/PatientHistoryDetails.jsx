@@ -4,17 +4,17 @@ import ImmunizationHistoryDetails from './ImmunizationHistoryDetails';
 import FamilyPlanningHistoryDetails from './FamilyPlanningHistoryDetails';
 import OtherServicesHistoryDetails from './OtherServicesHistoryDetails';
 
-const PatientHistoryDetails = ({ selectedRow, handleBackClick, patientDataSelected }) => {
+const PatientHistoryDetails = ({ selectedRow, handleBackClick, patientDataSelected, componentRef, handlePrint }) => {
   if (selectedRow?.type === "IMMUNIZATION") {
-    return <ImmunizationHistoryDetails selectedRow={selectedRow} handleBackClick={handleBackClick} patientDataSelected={patientDataSelected} />;
+    return <ImmunizationHistoryDetails selectedRow={selectedRow} componentRef={componentRef} handlePrint={handlePrint} handleBackClick={handleBackClick} patientDataSelected={patientDataSelected} />;
   }
 
   if (selectedRow?.type === "FAMILY PLANNING") {
-    return <FamilyPlanningHistoryDetails selectedRow={selectedRow} handleBackClick={handleBackClick} patientDataSelected={patientDataSelected} />;
+    return <FamilyPlanningHistoryDetails selectedRow={selectedRow} componentRef={componentRef} handlePrint={handlePrint} handleBackClick={handleBackClick} patientDataSelected={patientDataSelected} />;
   }
 
   if (selectedRow?.type === "OTHER SERVICES") {
-    return <OtherServicesHistoryDetails selectedRow={selectedRow} handleBackClick={handleBackClick} patientDataSelected={patientDataSelected} />;
+    return <OtherServicesHistoryDetails selectedRow={selectedRow} componentRef={componentRef} handlePrint={handlePrint} handleBackClick={handleBackClick} patientDataSelected={patientDataSelected} />;
   }
 
   return (
@@ -27,7 +27,8 @@ const PatientHistoryDetails = ({ selectedRow, handleBackClick, patientDataSelect
           </h1>
         </div>
 
-        {/* Patient Information */}
+        <div ref={componentRef} className="flex flex-col gap-y-2 w-full">
+          {/* Patient Information */}
         <div className="bg-white p-6 rounded-lg shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
@@ -242,8 +243,16 @@ const PatientHistoryDetails = ({ selectedRow, handleBackClick, patientDataSelect
           </div>
         </div>
 
+        </div>
+
         {/* Action Buttons */}
         <div className="flex justify-center space-x-4 py-4">
+          <button 
+            onClick={handlePrint}
+            className="px-4 py-2 border rounded hover:bg-gray-100"
+          >
+            Print
+          </button>
           <button 
             onClick={handleBackClick}
             className="px-4 py-2 border rounded hover:bg-gray-100"

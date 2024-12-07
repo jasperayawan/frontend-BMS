@@ -1,6 +1,6 @@
 import React from 'react';
 
-const OtherServicesHistoryDetails = ({ selectedRow, handleBackClick }) => {
+const OtherServicesHistoryDetails = ({ selectedRow, handleBackClick, componentRef, handlePrint }) => {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8 z-50">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -10,7 +10,7 @@ const OtherServicesHistoryDetails = ({ selectedRow, handleBackClick }) => {
           </h1>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-sm">
+        <div ref={componentRef} className="bg-white p-6 rounded-lg shadow-sm">
           {/* Basic Service Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
@@ -101,6 +101,12 @@ const OtherServicesHistoryDetails = ({ selectedRow, handleBackClick }) => {
         </div>
 
         <div className="flex justify-center space-x-4 py-4">
+          <button 
+            onClick={handlePrint}
+            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+          >
+            Print
+          </button>
           <button 
             onClick={handleBackClick}
             className="px-4 py-2 border rounded hover:bg-gray-100"
