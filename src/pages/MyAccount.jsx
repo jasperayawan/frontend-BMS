@@ -10,6 +10,7 @@ const MyAccount = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const user = Parse.User.current();
+  const [error, setError] = useState(null);
 
   const handleEditToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -30,9 +31,38 @@ const MyAccount = () => {
     }
   };
 
-  const handleSave = () => {
-    setAccount(formData);
-    setIsModalOpen(false);
+  const handleSave = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Prepare the profile picture if it's a File object
+      let profilePictureData = null;
+      if (formData.profileImage instanceof File) {
+        const reader = new FileReader();
+        profilePictureData = await new Promise((resolve) => {
+          reader.onload = (e) => resolve(e.target.result);
+          reader.readAsDataURL(formData.profileImage);
+        });
+      }
+
+      const result = await Parse.Cloud.run('updateMyAccount', {
+        id: user.id,
+        name: formData.name,
+        email: formData.email,
+        username: formData.username,
+        password: formData.password,
+        address: formData.address,
+        contact: formData.contact,
+        profilePicture: profilePictureData
+      });
+
+      setAccount(result.user);
+      setIsModalOpen(false);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -215,13 +245,17 @@ const MyAccount = () => {
                 )}
               </div>
             </div>
-            <div className="flex justify-center mt-6">
+            <div className="flex flex-col items-center mt-6">
               <button
                 onClick={handleSave}
-                className="px-4 py-2 bg-green-500 text-white rounded"
+                disabled={loading}
+                className="px-4 py-2 bg-green-500 text-white rounded disabled:bg-gray-400"
               >
-                Save Changes
+                {loading ? 'Saving...' : 'Save Changes'}
               </button>
+              {error && (
+                <p className="text-red-500 mt-2">{error}</p>
+              )}
             </div>
           </div>
         </div>
