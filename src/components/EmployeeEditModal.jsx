@@ -12,7 +12,9 @@ const EmployeeEditModal = ({
   loading
 }) => {
   const formattedBirthdate = employeeData.birthdate
-    ? format(new Date(employeeData.birthdate.iso), "yyyy-MM-dd")
+    ? typeof employeeData.birthdate === 'object' && employeeData.birthdate.iso
+      ? format(new Date(employeeData.birthdate.iso), "yyyy-MM-dd")
+      : format(new Date(employeeData.birthdate), "yyyy-MM-dd")
     : "";
 
   return (
@@ -129,7 +131,7 @@ const EmployeeEditModal = ({
                     BIRTHDATE
                   </h5>
                   <input
-                    type="data"
+                    type="date"
                     value={formattedBirthdate}
                     onChange={(e) => handleInputChangeData(e, 'birthdate')}
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"

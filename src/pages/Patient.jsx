@@ -2,12 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import PatientModal from "../components/PatientModal";
 import { PATIENT } from "../helper/api";
 import AddPatientModal from "../components/patient/AddPatientModal";
-import axios from 'axios'
+import axios from "axios";
 import { toBase64 } from "../utils/toBase64";
 import toast from "react-hot-toast";
 import AddNewPrenatal from "../components/healthcare_services/AddNewPrenatal";
-import PatientTable from '../components/patient/PatientTable';
-import printTemplate from '../templates/PatientPrintTemplate.html?raw';
+import PatientTable from "../components/patient/PatientTable";
+import printTemplate from "../templates/PatientPrintTemplate.html?raw";
 import AddNewImmunization from "../components/healthcare_services/AddNewImmunization";
 import EditFamilyPlanning from "../components/healthcare_services/EditFamilyPlanning";
 import AddNewFamilyPlanning from "../components/healthcare_services/AddNewFamilyPlanning";
@@ -24,18 +24,18 @@ const Patient = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [patientDataView, setPatientDataView] = useState(null);
   const [isAddPatientModal, setIsAddPatientModal] = useState(false);
-  const [isAddNewPrenatal, setIsAddNewPrenatal] = useState(false)
-  const [isHealthCareModal, setIsHealthCareModal] = useState(false)
-  const [isPatientSelect, setIsPatientSelect] = useState(false)
-  const [patientDataSelected, setPatientDataSelected] = useState({})
+  const [isAddNewPrenatal, setIsAddNewPrenatal] = useState(false);
+  const [isHealthCareModal, setIsHealthCareModal] = useState(false);
+  const [isPatientSelect, setIsPatientSelect] = useState(false);
+  const [patientDataSelected, setPatientDataSelected] = useState({});
   const [healthCare, setHealthCare] = useState("default");
-  const [isPrenatal, setIsPrenatal] = useState(false)
-  const [isImmunization, setIsImmunization] = useState(false)
-  const [isFamilyPlanning, setIsFamilyPlanning] = useState(false)
-  const [isOtherServices, setIsOtherServices] = useState(false)
+  const [isPrenatal, setIsPrenatal] = useState(false);
+  const [isImmunization, setIsImmunization] = useState(false);
+  const [isFamilyPlanning, setIsFamilyPlanning] = useState(false);
+  const [isOtherServices, setIsOtherServices] = useState(false);
   const [isHealthcareActive, setIsHealthcareActive] = useState(false);
   const [isEditHealthCareModal, setIsEditHealthCareModal] = useState(false);
-  const [isEditFamilyPlanning, setIsEditFamilyPlanning] = useState(false);  
+  const [isEditFamilyPlanning, setIsEditFamilyPlanning] = useState(false);
   const [isEditImmunization, setIsEditImmunization] = useState(false);
   const [isEditPrenatal, setIsEditPrenatal] = useState(false);
   const [isEditOtherServices, setIsEditOtherServices] = useState(false);
@@ -83,7 +83,7 @@ const Patient = () => {
     emergencyReligion: "",
     emergencyContact: "",
   });
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const componentRef = useRef(null);
@@ -96,20 +96,20 @@ const Patient = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.profilePicture) {
-      toast.error('Please upload a profile picture.');
+      toast.error("Please upload a profile picture.");
       return;
     }
     setIsSubmitting(true);
 
     try {
-
-      const imageBase64 = formData.profilePicture ? await toBase64(formData.profilePicture) : null;
+      const imageBase64 = formData.profilePicture
+        ? await toBase64(formData.profilePicture)
+        : null;
 
       const formDatas = {
         ...formData,
         profilePicture: imageBase64,
       };
-
 
       const response = await axios.post(PATIENT, formDatas);
       if (response.status === 201) {
@@ -155,7 +155,7 @@ const Patient = () => {
           emergencyContact: "",
         });
         window.location.reload();
-        setIsAddPatientModal(false)
+        setIsAddPatientModal(false);
       }
     } catch (error) {
       console.error("Error creating patient profile:", error);
@@ -174,16 +174,17 @@ const Patient = () => {
     const printContent = componentRef.current;
     const printWindow = window.open("", "_blank");
     setIsPrint(true);
-    
+
     if (printWindow) {
       try {
         // Get the Tailwind CSS stylesheet
-        const tailwindStyles = document.querySelector('style[data-tailwind]')?.innerHTML || '';
-        
+        const tailwindStyles =
+          document.querySelector("style[data-tailwind]")?.innerHTML || "";
+
         // Replace placeholder with actual content and add Tailwind styles
         const filledTemplate = printTemplate
           .replace(
-            '</head>',
+            "</head>",
             `<script src="https://cdn.tailwindcss.com"></script>
              <style>${tailwindStyles}</style>
              </head>`
@@ -202,36 +203,40 @@ const Patient = () => {
             try {
               printWindow.print();
             } catch (error) {
-              console.error('Print failed:', error);
+              console.error("Print failed:", error);
             }
             setIsPrint(false);
           }, 500); // Small delay to ensure Tailwind is initialized
         };
-
       } catch (error) {
-        console.error('Error preparing print document:', error);
+        console.error("Error preparing print document:", error);
         setIsPrint(false);
       }
     }
   };
 
-  const filteredData = Array.isArray(patientData) ? patientData.filter((data) => {
-    if (searchType === "ALL") {
-      return true;
-    } else if (searchType === "NAME") {
-      return data.lastname.toLowerCase().includes(searchInput.toLowerCase());
-    } else if (searchType === "BLOODTYPE") {
-      return data.bloodType.toLowerCase().includes(searchInput.toLowerCase());
-    } else if (searchType === "PUROK") {
-      return data.purok.toLowerCase().includes(searchInput.toLowerCase());
-    } else if (searchType === "HEALTHCARE SERVICES") {
-      return data.healthcareService
-        ?.toLowerCase()
-        .includes(searchInput.toLowerCase());
-    }
-    return false;
-  }) : [];
-
+  const filteredData = Array.isArray(patientData)
+    ? patientData.filter((data) => {
+        if (searchType === "ALL") {
+          return true;
+        } else if (searchType === "NAME") {
+          return data.lastname
+            .toLowerCase()
+            .includes(searchInput.toLowerCase());
+        } else if (searchType === "BLOODTYPE") {
+          return data.bloodType
+            .toLowerCase()
+            .includes(searchInput.toLowerCase());
+        } else if (searchType === "PUROK") {
+          return data.purok.toLowerCase().includes(searchInput.toLowerCase());
+        } else if (searchType === "HEALTHCARE SERVICES") {
+          return data.healthcareAssistance
+            ?.toLowerCase()
+            .includes(searchInput.toLowerCase());
+        }
+        return false;
+      })
+    : [];
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -239,56 +244,55 @@ const Patient = () => {
 
     // File size validation
     if (file && file.size > maxFileSize) {
-      setError('File size exceeds the 5MB limit.');
+      setError("File size exceeds the 5MB limit.");
       setFormData((prev) => ({ ...prev, profilePicture: null }));
     } else if (file) {
-      setError('');
+      setError("");
       setFormData((prev) => ({ ...prev, profilePicture: file }));
     }
   };
 
   const handlePatientSelection = (data) => {
-    setPatientDataSelected(data)
-  }
+    setPatientDataSelected(data);
+  };
 
   const handleChangeHealthCare = (event) => {
     setHealthCare(event.target.value);
   };
 
-
   const handleHealthcareSelection = () => {
     setIsHealthCareModal(false);
     setIsHealthcareActive(true);
 
-    if (healthCare === 'PRENATAL') {
-      if(healthCareAddorEdit === 'EDIT'){
+    if (healthCare === "PRENATAL") {
+      if (healthCareAddorEdit === "EDIT") {
         setIsEditPrenatal(true);
-        setIsHealthCareModal(false)
-        setIsEditHealthCareModal(false)
+        setIsHealthCareModal(false);
+        setIsEditHealthCareModal(false);
       } else {
         setIsPrenatal(true);
       }
-    } else if (healthCare === 'IMMUNIZATION') {
-      if(healthCareAddorEdit === 'EDIT'){
+    } else if (healthCare === "IMMUNIZATION") {
+      if (healthCareAddorEdit === "EDIT") {
         setIsEditImmunization(true);
-        setIsHealthCareModal(false)
-        setIsEditHealthCareModal(false)
+        setIsHealthCareModal(false);
+        setIsEditHealthCareModal(false);
       } else {
         setIsImmunization(true);
       }
-    } else if (healthCare === 'FAMILY PLANNING') {
-      if(healthCareAddorEdit === 'EDIT'){
+    } else if (healthCare === "FAMILY PLANNING") {
+      if (healthCareAddorEdit === "EDIT") {
         setIsEditFamilyPlanning(true);
-        setIsHealthCareModal(false)
-        setIsEditHealthCareModal(false)
+        setIsHealthCareModal(false);
+        setIsEditHealthCareModal(false);
       } else {
         setIsFamilyPlanning(true);
       }
-    } else if (healthCare === 'OTHER SERVICES') {
-      if(healthCareAddorEdit === 'EDIT'){
+    } else if (healthCare === "OTHER SERVICES") {
+      if (healthCareAddorEdit === "EDIT") {
         setIsEditOtherServices(true);
-        setIsHealthCareModal(false)
-        setIsEditHealthCareModal(false)
+        setIsHealthCareModal(false);
+        setIsEditHealthCareModal(false);
       } else {
         setIsOtherServices(true);
       }
@@ -296,18 +300,16 @@ const Patient = () => {
   };
 
   const handleHealthcareServicesModal = (data) => {
-    if (data === 'EDIT') {
+    if (data === "EDIT") {
       setIsEditHealthCareModal(true);
-    } else if (data === 'HEALTHCARE SERVICES') {
-      setIsHealthCareModal(true)
+    } else if (data === "HEALTHCARE SERVICES") {
+      setIsHealthCareModal(true);
     }
-  }
-
+  };
 
   useEffect(() => {
     getPatients();
   }, []);
-  
 
   return (
     <div className="flex justify-center items-center mt-20">
@@ -340,14 +342,19 @@ const Patient = () => {
       {isHealthCareModal && (
         <div className="fixed inset-0 w-full bg-black/20 h-screen flex justify-center items-center z-50">
           <div className="relative bg-white border flex flex-col space-y-4 p-5">
-            <button 
+            <button
               onClick={() => setIsHealthCareModal(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
             >
               ✕
             </button>
             <label for="healthCare">Select Health Care Service:</label>
-            <select onChange={handleChangeHealthCare} value={healthCare} name="healthCare" id="healthCare">
+            <select
+              onChange={handleChangeHealthCare}
+              value={healthCare}
+              name="healthCare"
+              id="healthCare"
+            >
               <option value="">--Select--</option>
               <option value="PRENATAL">PRENATAL</option>
               <option value="IMMUNIZATION">IMMUNIZATION</option>
@@ -355,7 +362,12 @@ const Patient = () => {
               <option value="OTHER SERVICES">OTHER SERVICES</option>
             </select>
 
-            <button onClick={handleHealthcareSelection} className="border px-4 py-2 uppercase">ok</button>
+            <button
+              onClick={handleHealthcareSelection}
+              className="border px-4 py-2 uppercase"
+            >
+              ok
+            </button>
           </div>
         </div>
       )}
@@ -363,14 +375,19 @@ const Patient = () => {
       {isEditHealthCareModal && (
         <div className="fixed inset-0 w-full bg-black/20 h-screen flex justify-center items-center z-50">
           <div className="relative bg-white border flex flex-col space-y-4 p-5">
-            <button 
+            <button
               onClick={() => setIsEditHealthCareModal(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
             >
               ✕
             </button>
             <label for="healthCare">Select Health Care Service:</label>
-            <select onChange={handleChangeHealthCare} value={healthCare} name="healthCare" id="healthCare">
+            <select
+              onChange={handleChangeHealthCare}
+              value={healthCare}
+              name="healthCare"
+              id="healthCare"
+            >
               <option value="">--Select--</option>
               <option value="PRENATAL">PRENATAL</option>
               <option value="IMMUNIZATION">IMMUNIZATION</option>
@@ -378,29 +395,49 @@ const Patient = () => {
               <option value="OTHER SERVICES">OTHER SERVICES</option>
             </select>
 
-            <button onClick={handleHealthcareSelection} className="border px-4 py-2 uppercase">ok</button>
+            <button
+              onClick={handleHealthcareSelection}
+              className="border px-4 py-2 uppercase"
+            >
+              ok
+            </button>
           </div>
         </div>
       )}
 
-      {(isPrenatal) && (
-        <AddNewPrenatal patientDataSelected={patientDataSelected} setHealthCare={setHealthCare} setIsPrenatal={setIsPrenatal} setIsHealthcareActive={setIsHealthcareActive} />
-      )}
-
-      {(isImmunization) && (
-        <AddNewImmunization patientDataSelected={patientDataSelected} setHealthCare={setHealthCare} setIsImmunization={setIsImmunization} setIsHealthcareActive={setIsHealthcareActive} />
-      )}
-
-      {(isFamilyPlanning) && (
-        <AddNewFamilyPlanning patientDataSelected={patientDataSelected} setHealthCare={setHealthCare} setIsFamilyPlanning={setIsFamilyPlanning} setIsHealthcareActive={setIsHealthcareActive} />
-      )}
-
-      {(isOtherServices) && (
-        <AddNewOtherServices 
+      {isPrenatal && (
+        <AddNewPrenatal
           patientDataSelected={patientDataSelected}
-          setHealthCare={setHealthCare} 
-          setIsOtherServices={setIsOtherServices} 
-          setIsHealthcareActive={setIsHealthcareActive} 
+          setHealthCare={setHealthCare}
+          setIsPrenatal={setIsPrenatal}
+          setIsHealthcareActive={setIsHealthcareActive}
+        />
+      )}
+
+      {isImmunization && (
+        <AddNewImmunization
+          patientDataSelected={patientDataSelected}
+          setHealthCare={setHealthCare}
+          setIsImmunization={setIsImmunization}
+          setIsHealthcareActive={setIsHealthcareActive}
+        />
+      )}
+
+      {isFamilyPlanning && (
+        <AddNewFamilyPlanning
+          patientDataSelected={patientDataSelected}
+          setHealthCare={setHealthCare}
+          setIsFamilyPlanning={setIsFamilyPlanning}
+          setIsHealthcareActive={setIsHealthcareActive}
+        />
+      )}
+
+      {isOtherServices && (
+        <AddNewOtherServices
+          patientDataSelected={patientDataSelected}
+          setHealthCare={setHealthCare}
+          setIsOtherServices={setIsOtherServices}
+          setIsHealthcareActive={setIsHealthcareActive}
         />
       )}
 
@@ -442,7 +479,7 @@ const Patient = () => {
 
       {!isHealthcareActive && (
         <div className="flex flex-col gap-y-10">
-          <h1 className="text-2xl flex justify-center items-center font-semibold">
+          <h1 className="text-3xl font-bold text-center text-gray-800">
             PATIENT LIST
           </h1>
           <div className="flex flex-col gap-y-3">
@@ -481,35 +518,62 @@ const Patient = () => {
               onRowDoubleClick={(data) => handleOpenModal(data)}
             />
 
-            <div className="flex justify-center gap-x-2 mt-5">
+            <div className="flex justify-center gap-2 mt-5">
               <button
                 onClick={() => setIsAddPatientModal(!isAddPatientModal)}
-                className="border-[2px] text-sm border-zinc-500 text-black font-bold py-2 px-4 bg-zinc-200"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
                 Add
-              </button> 
-              <button
-                onClick={() => { 
-                  handleHealthcareServicesModal('EDIT') 
-                  setHealthCareAddorEdit('EDIT')
-                }}
-                className="border-[2px] text-sm border-zinc-500 text-black font-bold py-2 px-4 bg-zinc-200"
-              >
-                EDIT
               </button>
+
               <button
                 onClick={() => {
-                  handleHealthcareServicesModal('HEALTHCARE SERVICES')
-                  setHealthCareAddorEdit('ADD')
+                  handleHealthcareServicesModal("EDIT");
+                  setHealthCareAddorEdit("EDIT");
                 }}
-                className="border-[2px] text-sm border-zinc-500 text-black font-bold py-2 px-4 bg-zinc-200"
+                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+              >
+                Edit
+              </button>
+
+              <button
+                onClick={() => {
+                  handleHealthcareServicesModal("HEALTHCARE SERVICES");
+                  setHealthCareAddorEdit("ADD");
+                }}
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
               >
                 Healthcare Services
               </button>
+
               <button
                 onClick={handlePrint}
-                className="border-[2px] text-sm border-zinc-500 text-black font-bold py-2 px-4 bg-zinc-200"
+                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
                 Print
               </button>
             </div>

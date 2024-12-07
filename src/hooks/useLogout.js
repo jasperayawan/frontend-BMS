@@ -3,7 +3,7 @@ import Parse from 'parse/dist/parse.min.js';
 import { useNavigate } from "react-router-dom";
 
 export const useLogout = () => {
-    const [loading, setLoading] = useState(false);
+    const [loadingLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const logout = async () => {
@@ -22,7 +22,7 @@ export const useLogout = () => {
     }
 
     return {
-        loading,
+        loadingLoading,
         logout
     }
 }

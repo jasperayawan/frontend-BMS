@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import { EmployeeData } from "../helper/DummyData";
 import EmployeeModal from "../components/EmployeeModal";
 import EmployeeEditModal from "../components/EmployeeEditModal";
 import AddEmployeeModal from "../components/AddEmployeeModal";
@@ -9,8 +8,6 @@ import toast from "react-hot-toast";
 import Parse from "parse/dist/parse.min.js";
 
 const Employee = () => {
-  const [searchType, setSearchType] = useState("ALL");
-  const [searchInput, setSearchInput] = useState("");
   const [isPrint, setIsPrint] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(null);
@@ -19,7 +16,6 @@ const Employee = () => {
   const [view, setView] = useState(false);
   const [viewClick, setViewClick] = useState(false);
   const [isEditModal, setIsEditModal] = useState(false);
-  const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [editData, setEditData] = useState(null);
   const user = Parse.User.current()
 
@@ -53,30 +49,9 @@ const Employee = () => {
 
   const componentRef = useRef(null);
 
-  const handleOpenModal = (data) => {
-    setIsModalOpen(true);
-    setView(!view);
+  const handleRowClick = (data) => {
     setViewEmployee(data);
   };
-
-  const handleSearchInputChange = (e) => {
-    setSearchInput(e.target.value);
-    const searchTerm = e.target.value.toLowerCase();
-
-    // Filter employees based on search input
-    const filtered = employee.filter(
-      (emp) =>
-        emp.firstName.toLowerCase().includes(searchTerm) ||
-        emp.lastName.toLowerCase().includes(searchTerm) ||
-        emp.userId.toString().includes(searchTerm) ||
-        emp.position.toLowerCase().includes(searchTerm) ||
-        emp.contactNo.includes(searchTerm) ||
-        emp.email.toLowerCase().includes(searchTerm)
-    );
-
-    setFilteredEmployees(filtered);
-  };
-
 
   const handlePrint = () => {
     const printContent = componentRef.current;
@@ -207,8 +182,15 @@ const Employee = () => {
     try {
       const updatedEmployeeData = { ...editData };
 
-      // If there is a new image, make sure it's included in the data.
-      
+      // Convert birthdate to Parse.Date before sending
+      if (updatedEmployeeData.birthdate) {
+        updatedEmployeeData.birthdate = {
+          __type: "Date",
+          iso: new Date(updatedEmployeeData.birthdate).toISOString()
+        };
+      }
+
+      // If there is a new image, make sure it's included in the data
       if (image) {
         const base64Image = await toBase64(image);
         updatedEmployeeData.profilePic = base64Image;
@@ -304,10 +286,19 @@ const Employee = () => {
 
   const handleInputChangeData = (e, fieldName) => {
     const { value } = e.target;
-    setEditData((prevEditData) => ({
-      ...prevEditData,
-      [fieldName]: value,
-    }));
+    
+    // Special handling for birthdate field
+    if (fieldName === 'birthdate') {
+      setEditData((prevEditData) => ({
+        ...prevEditData,
+        [fieldName]: value // Store as string initially
+      }));
+    } else {
+      setEditData((prevEditData) => ({
+        ...prevEditData,
+        [fieldName]: value,
+      }));
+    }
   };
 
   // Utility function to convert a file to Base64
@@ -332,12 +323,8 @@ const Employee = () => {
     fetchAllEmployee();
   }, []);
 
-  useEffect(() => {
-    setFilteredEmployees(employee); // Sync filteredEmployees with the fetched data
-  }, [employee]);
-
   return (
-    <div className="flex justify-center items-center mt-20">
+    <div className="container mx-auto px-4 py-8">
       {view && (
         <EmployeeModal
           viewEmployee={viewEmployee}
@@ -375,146 +362,91 @@ const Employee = () => {
         </div>
       )}
 
-      <div className="flex flex-col gap-y-10">
-        <h1 className="text-2xl flex justify-center items-center font-semibold">
+      <div className="mx-auto max-w-6xl flex flex-col gap-y-6">
+        <h1 className="text-3xl font-bold text-center text-gray-800">
           EMPLOYEE LIST
         </h1>
-        <div className="flex flex-col gap-y-3">
-        <div className="flex justify-center mb-4">
-          <div className="relative w-full max-w-md">
-            <input
-              type="text"
-              value={searchInput}
-              onChange={handleSearchInputChange}
-              placeholder="Search employees..."
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-            />
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3">
-              <svg
-                className="w-5 h-5 text-gray-400"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 3a7.5 7.5 0 006.15 12.65z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-
-          <div ref={componentRef}>
-            <table className="table-auto">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-orange-500 dark:text-slate-800">
-                <tr>
-                  <th scope="col" className="py-2">
-                    No
-                  </th>
-                  <th scope="col" className="py-2">
-                    USER ID NO.
-                  </th>
-                  <th scope="col" className="py-2">
-                    NAME
-                  </th>
-                  <th scope="col" className="py-2">
-                    POSITION
-                  </th>
-                  <th scope="col" className="py-2">
-                    CONTACT NO.
-                  </th>
-                  <th scope="col" className="py-2">
-                    EMAIL
-                  </th>
-                  <th scope="col" className="py-2">
-                    STATUS
-                  </th>
-                  <th scope="col" className="py-2">
-                    ACTION
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredEmployees.length > 0 ? (
-                  filteredEmployees.map((data, i) => (
-                    <tr
-                      key={i}
-                      onClick={() => {
-                        setViewClick(!viewClick);
-                      }}
-                      className="bg-white border-b dark:bg-gray-200 dark:border-gray-700 cursor-pointer"
-                    >
-                      <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
-                        {data.userId}
-                      </td>
-                      <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
-                        {data.firstName} {data.lastName}
-                      </td>
-                      <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
-                        {data.lastName} {data.firstName}
-                      </td>
-                      <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
-                        {data.position}
-                      </td>
-                      <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
-                        {data.contactNo}
-                      </td>
-                      <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
-                        {data.email}
-                      </td>
-                      <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
-                        ACTIVE
-                      </td>
-                      <td className="px-4 py-2 text-gray-900 whitespace-nowrap">
-                        <div className="flex gap-x-2">
-                          {user?.get('role') !== 'SECRETARY' && (
-                            <button
-                              onClick={() => {
-                                setEditData(data);
-                                setIsEditModal(!isEditModal);
-                              }}
-                              className="bg-zinc-700 text-white font-bold py-2 px-4 rounded"
-                            >
-                              Edit
-                            </button>
-                          )}
-                          <button
-                            onClick={() => handleOpenModal(data)}
-                            className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
-                          >
-                            VIEW
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td
-                      colSpan="9"
-                      className="px-4 py-2 text-center text-gray-500"
-                    >
-                      No Employee found.
+        
+        {/* Table Container */}
+        <div className="overflow-x-auto shadow-lg rounded-lg" ref={componentRef}>
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gradient-to-r from-orange-400 to-orange-600">
+              <tr>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">No</th>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">User ID</th>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Name</th>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Position</th>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Contact</th>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Email</th>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Status</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {employee.length > 0 ? (
+                employee.map((data, i) => (
+                  <tr
+                    key={i}
+                    onClick={() => handleRowClick(data)}
+                    className={`hover:bg-gray-50 transition-colors duration-200 cursor-pointer
+                      ${viewEmployee?.objectId === data.objectId ? 'bg-orange-50' : ''}`}
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{i + 1}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.userId}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {data.lastName} {data.firstName}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.position}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.contactNo}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.email}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        Active
+                      </span>
                     </td>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
+                    No Employee found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Combined Buttons */}
+        <div className="flex justify-end gap-2 mt-6">
+          <button
+            onClick={() => viewEmployee?.objectId && setView(true)}
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+          >
+            View
+          </button>
           {user?.get('role') !== 'SECRETARY' && (
-            <div className="flex justify-center mt-5 gap-x-3">
+            <>
+              <button
+                onClick={() => {
+                  if (viewEmployee?.objectId) {
+                    setEditData(viewEmployee);
+                    setIsEditModal(!isEditModal);
+                  }
+                }}
+                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+              >
+                Edit
+              </button>
               <button
                 onClick={() => setAddEmployeeModal(!addEmployeeModal)}
-                className="bg-yellow-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
               >
-                ADD
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+                </svg>
+                Add Employee
               </button>
-            </div>
+            </>
           )}
         </div>
       </div>
