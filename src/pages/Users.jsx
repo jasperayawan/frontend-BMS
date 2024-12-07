@@ -7,7 +7,6 @@ import toast from 'react-hot-toast';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -29,8 +28,6 @@ const Users = () => {
     status: 'ACTIVE',
   });
   const maxFileSize = 5 * 1024 * 1024; 
-
-  const handleSearch = (e) => setSearchQuery(e.target.value);
 
   const handleUserClick = (user) => {
     setSelectedUser(user);
@@ -117,10 +114,7 @@ const Users = () => {
     }
   };
 
-  const filteredUsers = Array.isArray(users) && users.filter((user) =>
-    user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email && user.email.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+  const filteredUsers = Array.isArray(users) ? users : [];
 
 
   useEffect(() => {
@@ -142,66 +136,71 @@ const Users = () => {
 
 
   return (
-    <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold text-center mb-6">Users Page</h1>
-      <div className="flex justify-between items-center mb-4">
-        <div>
-          <label htmlFor="search" className="mr-2">Search By:</label>
-          <input
-            type="text"
-            id="search"
-            value={searchQuery}
-            onChange={handleSearch}
-            placeholder="Search by name or email"
-            className="px-4 py-2 border border-gray-300 rounded"
-          />
+    <div className="container mx-auto p-8 max-w-7xl">
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">User Management</h1>
+          <button
+            onClick={handleAddUserClick}
+            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+            </svg>
+            Add User
+          </button>
         </div>
-        <button
-          onClick={handleAddUserClick}
-          className="px-4 py-2 bg-green-500 text-white rounded"
-        >
-          Add User
-        </button>
+
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Profile</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User Type</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredUsers.map((user) => (
+                <tr key={user.id} className="hover:bg-gray-50 transition duration-150">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.id}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <img 
+                      src={user.profilePicture || 'default-avatar.png'} 
+                      alt="profile" 
+                      className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                    />
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                      {user.role}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      onClick={() => handleUserClick(user)}
+                      className="text-blue-600 hover:text-blue-900 mr-4"
+                    >
+                      View
+                    </button>
+                    <button
+                      onClick={() => handleDeleteUser(user.id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <table className="min-w-full table-auto">
-        <thead className="bg-orange-500 text-white">
-          <tr>
-            <th className="px-4 py-2">USER ID</th>
-            <th className="px-4 py-2">PROFILE</th>
-            <th className="px-4 py-2">USER TYPE</th>
-            <th className="px-4 py-2">NAME</th>
-            <th className="px-4 py-2">EMAIL</th>
-            <th className="px-4 py-2">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredUsers.map((user) => (
-            <tr key={user.id} className="bg-orange-100 hover:bg-orange-200">
-              <td className="px-4 py-2">{user.id}</td>
-              <td className="px-4 py-2">
-                <img src={user.profilePicture} alt="profile pic" className='w-8 h-8 rounded-full' />
-              </td>
-              <td className="px-4 py-2">{user.role}</td>
-              <td className="px-4 py-2">{user.name}</td>
-              <td className="px-4 py-2">{user.email}</td>
-              <td className="px-4 py-2">
-                <button
-                  onClick={() => handleUserClick(user)}
-                  className="px-2 py-1 bg-blue-500 text-white rounded mr-2"
-                >
-                  View
-                </button>
-                <button
-                  onClick={() => handleDeleteUser(user.id)}
-                  className="px-2 py-1 bg-red-500 text-white rounded"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
 
       {/* View User Modal */}
       {showModal && selectedUser && (

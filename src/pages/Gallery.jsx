@@ -4,6 +4,7 @@ import { toBase64 } from "../utils/toBase64";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Parse from "parse/dist/parse.min.js";
+import { FaFolderPlus, FaImage, FaTimes, FaTrash } from 'react-icons/fa';
 
 const Gallery = () => {
   const [galleries, setGalleries] = useState([]);
@@ -162,134 +163,206 @@ const Gallery = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center my-20">
-      <div className="flex flex-col gap-y-10">
-        <h1 className="text-2xl flex justify-center items-center font-semibold">
-          GALLERY
-        </h1>
-        {/* Add New Gallery Button */}
-        {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
-          <button
-            onClick={() => setShowModal(true)}
-            className="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition"
-          >
-            Add New Gallery
-          </button>
-        )}
+    <div className="min-h-screen py-12 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            Photo Gallery
+          </h1>
+          {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
+            <button
+              onClick={() => setShowModal(true)}
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 
+                        text-white rounded-lg hover:from-yellow-500 hover:to-orange-600 
+                        transform hover:-translate-y-0.5 transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              <FaFolderPlus className="mr-2" />
+              Add New Gallery
+            </button>
+          )}
+        </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {galleries.map((gallery, index) => (
             <div
               key={index}
-              className="flex flex-col items-center gap-y-2 cursor-pointer"
+              className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 
+                         transition-all duration-300 cursor-pointer group"
               onClick={() => setSelectedFolder(index)}
             >
-              <img
-                src={gallery.files[0] || "/placeholder.svg"}
-                alt={gallery.name}
-                className="h-56 w-full object-cover rounded-md"
-              />
-              <h3>{gallery.name}</h3>
-              {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering folder selection
-                    handleDeleteGallery(index);
-                  }}
-                  className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
-                >
-                  {loading ? "Loading..." : "Delete Gallery"}
-                </button>
-              )}
+              <div className="relative h-64">
+                <img
+                  src={gallery.files[0] || "/placeholder.svg"}
+                  alt={gallery.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 
+                              group-hover:opacity-100 transition-opacity duration-300" />
+              </div>
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">{gallery.name}</h3>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">
+                    {gallery.files.length} photos
+                  </span>
+                  {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteGallery(index);
+                      }}
+                      className="text-red-500 hover:text-red-600 transition-colors"
+                    >
+                      <FaTrash />
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           ))}
         </div>
 
         {/* Modal for Adding New Gallery */}
         {showModal && (
-          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h2 className="text-lg font-semibold mb-4">Add New Gallery</h2>
-              <input
-                type="text"
-                placeholder="Folder Name"
-                value={folderName}
-                onChange={(e) => setFolderName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md mb-4"
-              />
-              <input
-                type="file"
-                onChange={(e) => setNewFile(e.target.files[0])}
-                className="mb-4"
-              />
-              <button
-                onClick={handleAddGallery}
-                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
-              >
-                {loading ? "Loading..." : "Create Folder"}
-              </button>
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+            <div className="bg-white w-full max-w-md rounded-2xl p-8 relative transform transition-all duration-300">
               <button
                 onClick={() => setShowModal(false)}
-                className="ml-2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
               >
-                Cancel
+                <FaTimes size={24} />
               </button>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">Create New Gallery</h2>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Gallery Name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter gallery name"
+                    value={folderName}
+                    onChange={(e) => setFolderName(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 
+                              focus:ring-yellow-400 focus:border-transparent transition-all duration-200"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Cover Image
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="file"
+                      onChange={(e) => setNewFile(e.target.files[0])}
+                      className="hidden"
+                      id="gallery-cover"
+                    />
+                    <label
+                      htmlFor="gallery-cover"
+                      className="flex items-center justify-center w-full px-4 py-3 border-2 border-dashed 
+                                border-gray-300 rounded-lg cursor-pointer hover:border-yellow-400 transition-colors"
+                    >
+                      <FaImage className="mr-2 text-gray-400" />
+                      <span className="text-gray-600">
+                        {newFile ? newFile.name : "Choose a cover image"}
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div className="flex justify-end space-x-3">
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 
+                              hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleAddGallery}
+                    disabled={loading}
+                    className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white 
+                              rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all 
+                              duration-200 disabled:opacity-50"
+                  >
+                    {loading ? "Creating..." : "Create Gallery"}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
         {/* Modal for Viewing Folder Content */}
         {selectedFolder !== null && (
-          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-2xl w-full max-h-[600px] overflow-y-auto">
-              <h2 className="text-lg font-semibold mb-4">
-                {galleries[selectedFolder].name} Gallery
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+            <div className="bg-white w-full max-w-4xl rounded-2xl p-8 relative max-h-[80vh] overflow-y-auto">
+              <button
+                onClick={() => setSelectedFolder(null)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <FaTimes size={24} />
+              </button>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                {galleries[selectedFolder].name}
               </h2>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {galleries[selectedFolder].files.map((file, idx) => (
-                  <div key={idx} className="relative">
+                  <div key={idx} className="relative group">
                     <img
                       src={file}
                       alt={`File ${idx}`}
-                      className="h-40 w-full object-cover rounded-md"
+                      className="w-full h-48 object-cover rounded-lg"
                     />
                     {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
                       <button
                         onClick={() => handleRemoveFile(selectedFolder, idx)}
-                        className="absolute top-2 right-2 bg-red-500 text-white text-sm px-2 py-1 rounded-full hover:bg-red-600 transition"
+                        className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full 
+                                  opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                       >
-                        Remove
+                        <FaTrash size={14} />
                       </button>
                     )}
                   </div>
                 ))}
               </div>
 
-              <div className="mt-4">
-                {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
-                  <>
+              {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
+                <div className="mt-6">
+                  <div className="relative">
                     <input
                       type="file"
                       onChange={(e) => setNewFile(e.target.files[0])}
-                      className="mb-4"
+                      className="hidden"
+                      id="add-photos"
                     />
+                    <label
+                      htmlFor="add-photos"
+                      className="flex items-center justify-center w-full px-4 py-3 border-2 
+                                border-dashed border-gray-300 rounded-lg cursor-pointer 
+                                hover:border-yellow-400 transition-colors"
+                    >
+                      <FaImage className="mr-2 text-gray-400" />
+                      <span className="text-gray-600">
+                        {newFile ? newFile.name : "Choose photos to add"}
+                      </span>
+                    </label>
+                  </div>
+                  <div className="flex justify-end mt-4">
                     <button
                       onClick={() => handleAddFiles(selectedFolder)}
-                      className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition"
+                      disabled={loading}
+                      className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 
+                                text-white rounded-lg hover:from-yellow-500 hover:to-orange-600 
+                                transition-all duration-200 disabled:opacity-50"
                     >
-                      {loading ? "Loading..." : "Add File"}
+                      {loading ? "Adding..." : "Add Photos"}
                     </button>
-                  </>
-                )}
-
-                <button
-                  onClick={() => setSelectedFolder(null)}
-                  className="ml-2 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition"
-                >
-                  Close
-                </button>
-              </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}

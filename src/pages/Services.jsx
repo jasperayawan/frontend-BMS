@@ -163,90 +163,77 @@ const Services = () => {
 
 
   return (
-    <div className="container mx-auto py-10">
-      <div className="flex flex-col mx-3">
-        <h1 className="text-2xl flex justify-center items-center font-semibold">
-          Services
+    <div className="container mx-auto py-10 px-4">
+      <div className="flex flex-col items-center mb-8">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4 relative">
+          Our Services
         </h1>
 
         {/* Add new service button */}
         {(user?.get('role') !== 'SECRETARY' && user?.get('role') !== 'PATIENT' && user?.get('role') === 'ADMIN') && (
           <button
             onClick={() => openModal("add")}
-            className="bg-blue-500 text-white w-[max-content] px-4 py-2 rounded hover:bg-blue-600 mb-5"
+            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
           >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+            </svg>
             Add Service
           </button>
         )}
       </div>
 
-      {/* Services Table */}
-      <table className="min-w-full table-auto border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-300 px-4 py-2">ID</th>
-            <th className="border border-gray-300 px-4 py-2">Image</th>
-            <th className="border border-gray-300 px-4 py-2">Title</th>
-            <th className="border border-gray-300 px-4 py-2">Description</th>
-            <th className="border border-gray-300 px-4 py-2">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(servicesData) &&
-            servicesData.map((service, i) => (
-              <tr key={i}>
-                <td className="border border-gray-300 px-4 py-2">
-                  {service.objectId}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="h-16 w-16 object-cover"
-                  />
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {service.title}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  {service.desc.length > 50
-                    ? `${service.desc.slice(0, 50)}...`
+      {/* Services Grid instead of Table */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.isArray(servicesData) &&
+          servicesData.map((service, i) => (
+            <div key={i} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+              <img
+                src={service.image}
+                alt={service.title}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">{service.title}</h3>
+                <p className="text-gray-600 mb-4">
+                  {service.desc.length > 100
+                    ? `${service.desc.slice(0, 100)}...`
                     : service.desc}
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
+                </p>
+                <div className="flex gap-2">
                   <button
                     onClick={() => openModal("view", service)}
-                    className="bg-green-500 text-white px-2 py-1 rounded mr-2 hover:bg-green-600"
+                    className="flex-1 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors duration-300"
                   >
-                    View
+                    View Details
                   </button>
                   {(user?.get('role') !== 'SECRETARY' && user?.get('role') !== 'PATIENT' && user?.get('role') ===  'ADMIN') && (
-                    <button
-                    onClick={() => openModal("edit", service)}
-                    className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600"
-                  >
-                    Edit
-                  </button>
+                    <>
+                      <button
+                        onClick={() => openModal("edit", service)}
+                        className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-300"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteService(service.objectId)}
+                        className="flex-1 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300"
+                      >
+                        {loading ? 'Loading...' : 'Delete'}
+                      </button>
+                    </>
                   )}
-                  {(user?.get('role') !== 'SECRETARY' && user?.get('role') !== 'PATIENT' && user?.get('role') ===  'ADMIN') && (
-                    <button
-                      onClick={() => handleDeleteService(service.objectId)}
-                      className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                    >
-                      {loading ? 'Loading...' : 'Delete'}
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+                </div>
+              </div>
+            </div>
+          ))}
+      </div>
 
-      {/* Modal */}
+      {/* Modal with improved styling */}
       {modalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white p-5 rounded-md w-[400px] relative">
-            <h2 className="text-xl font-semibold mb-4">
+          <div className="bg-white p-6 rounded-lg w-[500px] relative shadow-2xl">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800">
               {modalType === "add"
                 ? "Add New Service"
                 : modalType === "view"
@@ -257,9 +244,11 @@ const Services = () => {
             {/* Close Button */}
             <button
               onClick={closeModal}
-              className="absolute top-2 right-2 text-gray-700 hover:text-gray-900"
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors duration-300"
             >
-              X
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
 
             {/* View Mode */}
