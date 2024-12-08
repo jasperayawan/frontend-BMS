@@ -2,90 +2,115 @@ import React from 'react';
 
 const OtherServicesHistoryDetails = ({ selectedRow, handleBackClick, componentRef, handlePrint }) => {
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8 z-50">
-      <div className="max-w-4xl mx-auto space-y-6">
-        <div className="bg-[#FFB800] text-center py-4 rounded-t-lg">
-          <h1 className="text-2xl font-bold text-white">
+    <div className="min-h-screen bg-gray-50/95 p-4 md:p-8 z-50">
+      <div className="max-w-4xl mx-auto w-full space-y-6">
+        <div className="bg-gradient-to-r from-yellow-500 to-amber-500 text-center py-6 rounded-lg shadow-md">
+          <h1 className="text-2xl font-semibold text-white tracking-tight">
             OTHER SERVICES HISTORY DETAILS
           </h1>
         </div>
 
-        <div ref={componentRef} className="bg-white p-6 rounded-lg shadow-sm">
-          {/* Basic Service Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div ref={componentRef} className="p-8 rounded-xl border border-gray-200">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
             <div>
-              <label className="block mb-2">SERVICES AVAILED</label>
-              <p className="p-2 border rounded">{selectedRow?.servicesAvailed || '-'}</p>
+              <label className="text-sm font-medium text-gray-700 mb-2">SERVICES AVAILED</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.servicesAvailed || '-'}</p>
+              </div>
             </div>
             <div>
-              <label className="block mb-2">DATE</label>
-              <p className="p-2 border rounded">{selectedRow?.date ? new Date(selectedRow.date).toLocaleDateString() : '-'}</p>
-            </div>
-          </div>
-
-          {/* Personal Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-            <div>
-              <label className="block mb-2">FIRST NAME</label>
-              <p className="p-2 border rounded">{selectedRow?.firstName || '-'}</p>
-            </div>
-            <div>
-              <label className="block mb-2">MIDDLE NAME</label>
-              <p className="p-2 border rounded">{selectedRow?.middleName || '-'}</p>
-            </div>
-            <div>
-              <label className="block mb-2">LAST NAME</label>
-              <p className="p-2 border rounded">{selectedRow?.lastName || '-'}</p>
-            </div>
-            <div>
-              <label className="block mb-2">SEX</label>
-              <p className="p-2 border rounded capitalize">{selectedRow?.sex || '-'}</p>
-            </div>
-            <div>
-              <label className="block mb-2">STATUS</label>
-              <p className="p-2 border rounded">{selectedRow?.status || '-'}</p>
-            </div>
-            <div>
-              <label className="block mb-2">DATE OF BIRTH</label>
-              <p className="p-2 border rounded">{selectedRow?.dateOfBirth ? new Date(selectedRow.dateOfBirth).toLocaleDateString() : '-'}</p>
+              <label className="text-sm font-medium text-gray-700 mb-2">DATE</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.date ? new Date(selectedRow.date).toLocaleDateString() : '-'}</p>
+              </div>
             </div>
           </div>
 
-          {/* Medical Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-5">
             <div>
-              <label className="block mb-2">AGE</label>
-              <p className="p-2 border rounded">{selectedRow?.age || '-'}</p>
+              <label className="text-sm font-medium text-gray-700 mb-2">FIRST NAME</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.firstName || '-'}</p>
+              </div>
             </div>
             <div>
-              <label className="block mb-2">BLOOD TYPE</label>
-              <p className="p-2 border rounded">{selectedRow?.bloodType || '-'}</p>
+              <label className="text-sm font-medium text-gray-700 mb-2">MIDDLE NAME</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.middleName || '-'}</p>
+              </div>
             </div>
             <div>
-              <label className="block mb-2">BLOOD PRESSURE</label>
-              <p className="p-2 border rounded">{selectedRow?.bloodPressure || '-'}</p>
+              <label className="text-sm font-medium text-gray-700 mb-2">LAST NAME</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.lastName || '-'}</p>
+              </div>
             </div>
             <div>
-              <label className="block mb-2">HEIGHT (cm)</label>
-              <p className="p-2 border rounded">{selectedRow?.height || '-'}</p>
+              <label className="text-sm font-medium text-gray-700 mb-2">SEX</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800 capitalize">{selectedRow?.sex || '-'}</p>
+              </div>
             </div>
             <div>
-              <label className="block mb-2">WEIGHT (kg)</label>
-              <p className="p-2 border rounded">{selectedRow?.weight || '-'}</p>
+              <label className="text-sm font-medium text-gray-700 mb-2">STATUS</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.status || '-'}</p>
+              </div>
             </div>
             <div>
-              <label className="block mb-2">RELATIONSHIP</label>
-              <p className="p-2 border rounded">{selectedRow?.relationship || '-'}</p>
+              <label className="text-sm font-medium text-gray-700 mb-2">DATE OF BIRTH</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.dateOfBirth ? new Date(selectedRow.dateOfBirth).toLocaleDateString() : '-'}</p>
+              </div>
             </div>
           </div>
 
-          {/* Prescription */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-5">
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2">AGE</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.age || '-'}</p>
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2">BLOOD TYPE</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.bloodType || '-'}</p>
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2">BLOOD PRESSURE</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.bloodPressure || '-'}</p>
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2">HEIGHT (cm)</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.height || '-'}</p>
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2">WEIGHT (kg)</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.weight || '-'}</p>
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2">RELATIONSHIP</label>
+              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+                <p className="text-gray-800">{selectedRow?.relationship || '-'}</p>
+              </div>
+            </div>
+          </div>
+
           <div className="mb-6">
-            <label className="block mb-2">PRESCRIPTION</label>
-            <p className="p-2 border rounded min-h-[8rem] whitespace-pre-wrap">{selectedRow?.prescription || '-'}</p>
+            <label className="text-sm font-medium text-gray-700 mb-2">PRESCRIPTION</label>
+            <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
+              <p className="text-gray-800 min-h-[8rem] whitespace-pre-wrap">{selectedRow?.prescription || '-'}</p>
+            </div>
           </div>
 
-          {/* Signatures */}
           <div className="flex justify-between mt-6">
             <div className="text-center">
               <div className="border-t border-black w-48 mt-8 pt-2">
@@ -100,16 +125,16 @@ const OtherServicesHistoryDetails = ({ selectedRow, handleBackClick, componentRe
           </div>
         </div>
 
-        <div className="flex justify-center space-x-4 py-4">
+        <div className="flex justify-center space-x-4 py-6">
           <button 
             onClick={handlePrint}
-            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+            className="px-6 py-2.5 bg-gradient-to-r from-yellow-500 to-amber-500 text-white rounded-md font-medium shadow-sm hover:from-yellow-600 hover:to-amber-600 transition-colors duration-200"
           >
             Print
           </button>
           <button 
             onClick={handleBackClick}
-            className="px-4 py-2 border rounded hover:bg-gray-100"
+            className="px-6 py-2.5 bg-white border border-gray-200 text-gray-700 rounded-md font-medium shadow-sm hover:bg-gray-50 transition-colors duration-200"
           >
             Back to List
           </button>
