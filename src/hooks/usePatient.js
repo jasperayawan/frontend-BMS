@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PATIENT, FAMILY_PLANNING, PRENATAL, IMMUNIZATION } from "../helper/api";
+import { PATIENT, FAMILY_PLANNING, PRENATAL, IMMUNIZATION, OTHER_SERVICES } from "../helper/api";
 import { useState, useEffect } from "react";
 
 export const usePatient = () => {
@@ -9,7 +9,8 @@ export const usePatient = () => {
         patient: null,
         familyPlanning: null,
         prenatal: null,
-        immunization: null
+        immunization: null,
+        otherServices: null
     });
 
     const getPatients = async () => {
@@ -28,18 +29,21 @@ export const usePatient = () => {
                         const [
                             familyPlanningResponse,
                             prenatalResponse,
-                            immunizationResponse
+                            immunizationResponse,
+                            otherServicesResponse
                         ] = await Promise.all([
                             axios.get(`${FAMILY_PLANNING}/user/${patient.objectId}`),
                             axios.get(`${PRENATAL}/user/${patient.objectId}`),
-                            axios.get(`${IMMUNIZATION}/user/${patient.objectId}`)
+                            axios.get(`${IMMUNIZATION}/user/${patient.objectId}`),
+                            axios.get(`${OTHER_SERVICES}/user/${patient.objectId}`)
                         ]);
 
                         return {
                             ...patient,
-                            familyPlanning: familyPlanningResponse.data.records?.[0] || null,
-                            prenatal: prenatalResponse.data.data?.[0] || null,
-                            immunization: immunizationResponse.data.data?.[0] || null
+                            familyPlanning: familyPlanningResponse.data.records || null,
+                            prenatal: prenatalResponse.data.data || null,
+                            immunization: immunizationResponse.data.data || null,
+                            otherServices: otherServicesResponse.data.data || null
                         };
                     } catch (error) {
                         console.warn(`Error fetching details for patient ${patient.objectId}:`, error);
@@ -47,7 +51,8 @@ export const usePatient = () => {
                             ...patient,
                             familyPlanning: null,
                             prenatal: null,
-                            immunization: null
+                            immunization: null,
+                            otherServices: null
                         };
                     }
                 })

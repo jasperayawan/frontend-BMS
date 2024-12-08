@@ -1,5 +1,5 @@
-// const baseUrl = "http://localhost:8001"
-const baseUrl = 'https://54.79.236.189'
+const baseUrl = "http://localhost:8001"
+// const baseUrl = 'https://54.79.236.189'
 
 export const ADMIN = baseUrl + '/api/admin/';
 export const USER = baseUrl + '/api/user';
