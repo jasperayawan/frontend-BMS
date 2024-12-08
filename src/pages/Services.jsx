@@ -148,6 +148,41 @@ const Services = () => {
     }
   };
 
+  // Add these new helper functions near your other handlers
+  const insertBulletPoint = (e) => {
+    e.preventDefault();
+    const textarea = e.target.parentNode.nextElementSibling;
+    const cursorPos = textarea.selectionStart;
+    const text = modalType === "add" ? newService.desc : selectedService.desc;
+    const newText = text.slice(0, cursorPos) + "\n• " + text.slice(cursorPos);
+    
+    if (modalType === "add") {
+      setNewService({ ...newService, desc: newText });
+    } else {
+      setSelectedService({ ...selectedService, desc: newText });
+    }
+  };
+
+  const insertNumberedPoint = (e) => {
+    e.preventDefault();
+    const textarea = e.target.parentNode.nextElementSibling;
+    const cursorPos = textarea.selectionStart;
+    const text = modalType === "add" ? newService.desc : selectedService.desc;
+    
+    // Count existing numbered points to determine the next number
+    const lines = text.slice(0, cursorPos).split('\n');
+    const numberedLines = lines.filter(line => /^\d+\./.test(line));
+    const nextNumber = numberedLines.length + 1;
+    
+    const newText = text.slice(0, cursorPos) + `\n${nextNumber}. ` + text.slice(cursorPos);
+    
+    if (modalType === "add") {
+      setNewService({ ...newService, desc: newText });
+    } else {
+      setSelectedService({ ...selectedService, desc: newText });
+    }
+  };
+
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -195,7 +230,7 @@ const Services = () => {
               />
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">{service.title}</h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-600 mb-4 whitespace-pre-line">
                   {service.desc.length > 100
                     ? `${service.desc.slice(0, 100)}...`
                     : service.desc}
@@ -262,7 +297,9 @@ const Services = () => {
                 <h3 className="font-semibold text-lg">
                   {selectedService.title}
                 </h3>
-                <p>{selectedService.desc}</p>
+                <p className="whitespace-pre-wrap break-words font-sans">
+                  {selectedService.desc}
+                </p>
               </div>
             )}
 
@@ -301,13 +338,27 @@ const Services = () => {
                   }
                   className="border px-2 py-1 mb-2"
                 />
+                {/* Add formatting buttons */}
+                <div className="flex gap-2 mb-2">
+                  <button
+                    onClick={insertBulletPoint}
+                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+                    title="Add bullet point"
+                  >
+                    • Bullet List
+                  </button>
+                  <button
+                    onClick={insertNumberedPoint}
+                    className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm"
+                    title="Add numbered point"
+                  >
+                    1. Numbered List
+                  </button>
+                </div>
+
                 <textarea
-                  placeholder="Description"
-                  value={
-                    modalType === "add"
-                      ? newService.desc
-                      : selectedService?.desc || ""
-                  }
+                  placeholder="Description&#10;• Use bullet points&#10;1. Or numbered lists"
+                  value={modalType === "add" ? newService.desc : selectedService?.desc || ""}
                   onChange={(e) =>
                     modalType === "add"
                       ? setNewService({ ...newService, desc: e.target.value })
@@ -316,8 +367,10 @@ const Services = () => {
                           desc: e.target.value,
                         })
                   }
-                  className="border px-2 py-1 mb-2"
+                  rows={10}
+                  className="border px-2 py-1 mb-2 w-full whitespace-pre-wrap font-sans"
                 />
+                
                 {modalType === "add" ? (
                   <button
                     onClick={handleAddService}
