@@ -224,15 +224,22 @@ const Patient = () => {
             .toLowerCase()
             .includes(searchInput.toLowerCase());
         } else if (searchType === "BLOODTYPE") {
-          return data.bloodType
-            .toLowerCase()
-            .includes(searchInput.toLowerCase());
+          return searchInput ? data.bloodType === searchInput : true;
         } else if (searchType === "PUROK") {
           return data.purok.toLowerCase().includes(searchInput.toLowerCase());
         } else if (searchType === "HEALTHCARE SERVICES") {
-          return data.healthcareAssistance
-            ?.toLowerCase()
-            .includes(searchInput.toLowerCase());
+          switch(searchInput) {
+            case "PRENATAL":
+              return data.prenatal && data.prenatal.length > 0;
+            case "IMMUNIZATION":
+              return data.immunization && data.immunization.length > 0;
+            case "FAMILY PLANNING":
+              return data.familyPlanning && data.familyPlanning.length > 0;
+            case "OTHER SERVICES":
+              return data.otherServices && data.otherServices.length > 0;
+            default:
+              return true;
+          }
         }
         return false;
       })
@@ -340,66 +347,110 @@ const Patient = () => {
       )}
 
       {isHealthCareModal && (
-        <div className="fixed inset-0 w-full bg-black/20 h-screen flex justify-center items-center z-50">
-          <div className="relative bg-white border flex flex-col space-y-4 p-5">
+        <div className="fixed inset-0 w-full bg-black/50 h-screen flex justify-center items-center z-50 backdrop-blur-sm">
+          <div className="relative bg-white border rounded-lg shadow-xl flex flex-col justify-center items-center space-y-6 p-8 w-[400px] animate-fadeIn">
             <button
               onClick={() => setIsHealthCareModal(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              ✕
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
-            <label for="healthCare">Select Health Care Service:</label>
-            <select
-              onChange={handleChangeHealthCare}
-              value={healthCare}
-              name="healthCare"
-              id="healthCare"
-            >
-              <option value="">--Select--</option>
-              <option value="PRENATAL">PRENATAL</option>
-              <option value="IMMUNIZATION">IMMUNIZATION</option>
-              <option value="FAMILY PLANNING">FAMILY PLANNING</option>
-              <option value="OTHER SERVICES">OTHER SERVICES</option>
-            </select>
+            
+            <img 
+              src="/sanfranciscologo.png" 
+              alt="sanfrancisco logo" 
+              className="w-32 h-20 object-contain"
+            />
+            
+            <div className="w-full space-y-2">
+              <label 
+                htmlFor="healthCare" 
+                className="block text-sm font-medium text-gray-700"
+              >
+                Select Health Care Service
+              </label>
+              <select
+                onChange={handleChangeHealthCare}
+                value={healthCare}
+                name="healthCare"
+                id="healthCare"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+              >
+                <option value="">--Select a service--</option>
+                <option value="PRENATAL">Prenatal Care</option>
+                <option value="IMMUNIZATION">Immunization</option>
+                <option value="FAMILY PLANNING">Family Planning</option>
+                <option value="OTHER SERVICES">Other Services</option>
+              </select>
+            </div>
 
             <button
               onClick={handleHealthcareSelection}
-              className="border px-4 py-2 uppercase"
+              disabled={!healthCare}
+              className={`w-full px-6 py-3 rounded-md text-white font-medium uppercase tracking-wide transition-all
+                ${healthCare 
+                  ? 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700' 
+                  : 'bg-gray-300 cursor-not-allowed'
+                }`}
             >
-              ok
+              Confirm Selection
             </button>
           </div>
         </div>
       )}
 
       {isEditHealthCareModal && (
-        <div className="fixed inset-0 w-full bg-black/20 h-screen flex justify-center items-center z-50">
-          <div className="relative bg-white border flex flex-col space-y-4 p-5">
+        <div className="fixed inset-0 w-full bg-black/50 h-screen flex justify-center items-center z-50 backdrop-blur-sm">
+          <div className="relative bg-white border rounded-lg shadow-xl flex flex-col justify-center items-center space-y-6 p-8 w-[400px] animate-fadeIn">
             <button
               onClick={() => setIsEditHealthCareModal(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              ✕
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
-            <label for="healthCare">Select Health Care Service:</label>
-            <select
-              onChange={handleChangeHealthCare}
-              value={healthCare}
-              name="healthCare"
-              id="healthCare"
-            >
-              <option value="">--Select--</option>
-              <option value="PRENATAL">PRENATAL</option>
-              <option value="IMMUNIZATION">IMMUNIZATION</option>
-              <option value="FAMILY PLANNING">FAMILY PLANNING</option>
-              <option value="OTHER SERVICES">OTHER SERVICES</option>
-            </select>
+            
+            <img 
+              src="/sanfranciscologo.png" 
+              alt="sanfrancisco logo" 
+              className="w-32 h-20 object-contain"
+            />
+            
+            <div className="w-full space-y-2">
+              <label 
+                htmlFor="healthCare" 
+                className="block text-sm font-medium text-gray-700"
+              >
+                Select Health Care Service
+              </label>
+              <select
+                onChange={handleChangeHealthCare}
+                value={healthCare}
+                name="healthCare"
+                id="healthCare"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none transition-all"
+              >
+                <option value="">--Select a service--</option>
+                <option value="PRENATAL">Prenatal Care</option>
+                <option value="IMMUNIZATION">Immunization</option>
+                <option value="FAMILY PLANNING">Family Planning</option>
+                <option value="OTHER SERVICES">Other Services</option>
+              </select>
+            </div>
 
             <button
               onClick={handleHealthcareSelection}
-              className="border px-4 py-2 uppercase"
+              disabled={!healthCare}
+              className={`w-full px-6 py-3 rounded-md text-white font-medium uppercase tracking-wide transition-all
+                ${healthCare 
+                  ? 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700' 
+                  : 'bg-gray-300 cursor-not-allowed'
+                }`}
             >
-              ok
+              Confirm Selection
             </button>
           </div>
         </div>
@@ -496,14 +547,53 @@ const Patient = () => {
                 <option value="PUROK">PUROK</option>
                 <option value="HEALTHCARE SERVICES">HEALTHCARE SERVICES</option>
               </select>
-              {searchType !== "ALL" && (
+              {searchType === "NAME" && (
                 <input
                   type="search"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                   className="border-[1.5px] border-zinc-500 rounded-md py-1 px-3 outline-none"
-                  placeholder={`Search by ${searchType.toLowerCase()}`}
+                  placeholder="Search by name"
                 />
+              )}
+              {searchType === "PUROK" && (
+                <input
+                  type="search"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  className="border-[1.5px] border-zinc-500 rounded-md py-1 px-3 outline-none"
+                  placeholder="Search by purok"
+                />
+              )}
+              {searchType === "BLOODTYPE" && (
+                <select
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  className="px-4 py-1 rounded-[12px] bg-zinc-300 outline-none w-[150px]"
+                >
+                  <option value="">All Blood Types</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              )}
+              {searchType === "HEALTHCARE SERVICES" && (
+                <select
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  className="px-4 py-1 rounded-[12px] bg-zinc-300 outline-none w-[150px]"
+                >
+                  <option value="">All Services</option>
+                  <option value="PRENATAL">Prenatal</option>
+                  <option value="IMMUNIZATION">Immunization</option>
+                  <option value="FAMILY PLANNING">Family Planning</option>
+                  <option value="OTHER SERVICES">Other Services</option>
+                </select>
               )}
             </div>
 
