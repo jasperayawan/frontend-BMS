@@ -426,7 +426,7 @@ const Employee = () => {
         </div>
 
         {/* Combined Buttons */}
-        <div className="flex justify-end gap-2 mt-6">
+        <div className="flex justify-center gap-2 mt-6">
           {user?.get('role') !== 'SECRETARY' && (
             <>
               <button
