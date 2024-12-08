@@ -449,7 +449,7 @@ const EditPrenatal = ({
                           name="support"
                           value="4ps"
                           checked={
-                            patientDataSelected.healthcareAssistance === "4PS"
+                            patientDataSelected.healthcareAssistance === "4ps"
                           }
                         />
                         <label htmlFor="html" className="text-[12px]">
@@ -463,7 +463,7 @@ const EditPrenatal = ({
                           value="indigent"
                           checked={
                             patientDataSelected.healthcareAssistance ===
-                            "INDIGENT"
+                            "indigent"
                           }
                         />
                         <label htmlFor="indigent" className="text-[12px]">
@@ -477,7 +477,7 @@ const EditPrenatal = ({
                           value="private"
                           checked={
                             patientDataSelected.healthcareAssistance ===
-                            "PRIVATE"
+                            "private"
                           }
                         />
                         <label htmlFor="private" className="text-[12px]">
