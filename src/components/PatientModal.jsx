@@ -61,6 +61,7 @@ const PatientModal = ({
     setSelectedRow(null);
     setSelectedHistoryType("");
   };
+  
 
   const HISTORY_TYPES = {
     0: { key: 'PRENATAL', data: prenatalHistory },
@@ -84,7 +85,7 @@ const PatientModal = ({
         {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
       </td>
       <td className="px-6 py-4">
-        {data?.nurseIncharge ? `${data.nurseIncharge.name} ${data.nurseIncharge.username}` : '-'}
+        {data?.nurseIncharge ? `${data.nurseIncharge.name}` : '-'}
       </td>
     </tr>
   );

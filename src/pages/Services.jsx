@@ -232,7 +232,7 @@ const Services = () => {
       {/* Modal with improved styling */}
       {modalOpen && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg w-[500px] relative shadow-2xl">
+          <div className="bg-white p-6 rounded-lg w-[500px] max-h-[600px] overflow-y-auto relative shadow-2xl">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">
               {modalType === "add"
                 ? "Add New Service"
