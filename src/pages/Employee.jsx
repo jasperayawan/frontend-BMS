@@ -53,6 +53,11 @@ const Employee = () => {
     setViewEmployee(data);
   };
 
+  const handleDoubleClick = (data) => {
+    setViewEmployee(data);
+    setView(true);
+  };
+
   const handlePrint = () => {
     const printContent = componentRef.current;
     const printWindow = window.open("", "_blank");
@@ -387,8 +392,12 @@ const Employee = () => {
                   <tr
                     key={i}
                     onClick={() => handleRowClick(data)}
-                    className={`hover:bg-gray-50 transition-colors duration-200 cursor-pointer
-                      ${viewEmployee?.objectId === data.objectId ? 'bg-orange-50' : ''}`}
+                    onDoubleClick={() => handleDoubleClick(data)}
+                    className={`${
+                      viewEmployee?.objectId === data.objectId 
+                        ? 'bg-yellow-100 hover:bg-yellow-200' 
+                        : 'bg-white hover:bg-gray-50'
+                    } border-b transition duration-200 ease-in-out cursor-pointer`}
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{i + 1}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{data.userId}</td>
@@ -418,12 +427,6 @@ const Employee = () => {
 
         {/* Combined Buttons */}
         <div className="flex justify-end gap-2 mt-6">
-          <button
-            onClick={() => viewEmployee?.objectId && setView(true)}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
-          >
-            View
-          </button>
           {user?.get('role') !== 'SECRETARY' && (
             <>
               <button

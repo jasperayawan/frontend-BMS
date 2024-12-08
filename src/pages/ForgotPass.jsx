@@ -28,7 +28,7 @@ const ForgotPass = () => {
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               className='mt-1 block w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-sm shadow-sm placeholder-zinc-400
-              focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+              focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500'
               placeholder="Enter your email"
             />
           </label>
@@ -36,7 +36,7 @@ const ForgotPass = () => {
           <button 
             type='submit' 
             className='w-full py-2 px-4 bg-orange-500 hover:bg-orange-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
-            bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
+            focus:outline-none focus:ring-2 focus:ring-offset-2
             disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200'
           >
             {loading ? (
@@ -52,7 +52,7 @@ const ForgotPass = () => {
 
           <a 
             href="/" 
-            className='text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200 text-center'
+            className='text-sm text-orange-600 hover:text-orange-800 transition-colors duration-200 text-center'
           >
             Back to Login
           </a>
