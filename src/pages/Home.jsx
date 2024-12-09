@@ -181,15 +181,17 @@ const Home = () => {
                     <h2 className="text-2xl font-semibold text-gray-800">
                       {announcement.title}
                     </h2>
-                    <button
-                      onClick={() => handleEdit(announcement)}
-                      className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
-                    >
-                      <span>Edit</span>
-                    </button>
+                    {user?.get('role') !== 'PATIENT' && (
+                      <button
+                        onClick={() => handleEdit(announcement)}
+                        className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
+                      >
+                        <span>Edit</span>
+                      </button>
+                    )}
                   </div>
                   
-                  <p className="text-gray-600 mb-6 leading-relaxed">
+                  <p className="text-gray-600 mb-6 leading-relaxed whitespace-pre-wrap break-words font-sans">
                     {announcement.description}
                   </p>
 
