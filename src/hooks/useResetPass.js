@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
 import { RESETPASS } from '../helper/api';
+import toast from 'react-hot-toast';
 
 
 export const useResetPass = () => {
@@ -15,10 +16,11 @@ export const useResetPass = () => {
 
         try{
             const res = await axios.post(RESETPASS, formData);
-            console.log(res.data);
+            toast.success(res.data.message);
         }
         catch(error){
             console.log(error.response.data.message)
+            toast.error(error.response.data.message);
         }
         finally{
             setLoading(false)

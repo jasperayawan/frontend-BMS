@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RESETPASSCONFIRM } from '../helper/api';
+import toast from 'react-hot-toast';
 
 
 export const useNewPass = () => {
@@ -17,12 +18,13 @@ export const useNewPass = () => {
         }
 
         try{
-            const res = await axios.post(RESETPASSCONFIRM, formData);
+            await axios.post(RESETPASSCONFIRM, formData);
+            toast.success('Password reset successful');
             navigate('/')
-            console.log(res.data)
         }
         catch(error){
-            console.log(error.response.data.message)
+            toast.error(error.response.data.message);
+            console.log(error.response.data.message);
         }
         finally{
             setLoading(false)
