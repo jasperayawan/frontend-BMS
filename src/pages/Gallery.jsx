@@ -316,7 +316,7 @@ const Gallery = () => {
                       alt={`File ${idx}`}
                       className="w-full h-48 object-cover rounded-lg"
                     />
-                    {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
+                    {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && (user?.get("role") === 'ADMIN' || user?.get("role") === 'NURSE')) && (
                       <button
                         onClick={() => handleRemoveFile(selectedFolder, idx)}
                         className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full 
@@ -329,7 +329,7 @@ const Gallery = () => {
                 ))}
               </div>
 
-              {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
+              {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && (user?.get("role") === 'ADMIN' || user?.get("role") === 'NURSE')) && (
                 <div className="mt-6">
                   <div className="relative">
                     <input

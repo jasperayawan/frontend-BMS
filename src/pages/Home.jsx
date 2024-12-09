@@ -7,7 +7,7 @@ const Home = () => {
   const { loadingLoading, logout } = useLogout();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [announcementImages, setAnnouncementImages] = useState([]);
-  const [announcement, setAnnouncement] = useState("")
+  const [announcement, setAnnouncement] = useState("");
   const user = Parse.User.current();
   const [userInfo, setUserInfo] = useState({
     username: "",
@@ -26,30 +26,28 @@ const Home = () => {
     await logout();
   };
 
-
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    const newImages = files.map(file => URL.createObjectURL(file)); 
-    setAnnouncementImages([...announcementImages, ...newImages]); 
+    const newImages = files.map((file) => URL.createObjectURL(file));
+    setAnnouncementImages([...announcementImages, ...newImages]);
   };
 
   const handleRemoveImage = (index) => {
     const imageUrl = announcementImages[index];
-    if (imageUrl.startsWith('http')) {
+    if (imageUrl.startsWith("http")) {
       setRemovedImages([...removedImages, imageUrl]);
     }
     const updatedImages = announcementImages.filter((_, i) => i !== index);
     setAnnouncementImages(updatedImages);
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       const imagePromises = announcementImages
-        .filter(img => !img.startsWith('http')) // Only process new images
+        .filter((img) => !img.startsWith("http")) // Only process new images
         .map(async (imageUrl) => {
           const response = await fetch(imageUrl);
           const blob = await response.blob();
@@ -69,11 +67,11 @@ const Home = () => {
           title,
           description,
           images: base64Images,
-          removedImages
+          removedImages,
         };
 
         const result = await Parse.Cloud.run("updateAnnouncement", params);
-        
+
         if (result.success) {
           resetForm();
           fetchAnnouncements();
@@ -83,11 +81,11 @@ const Home = () => {
         const params = {
           title,
           description,
-          images: base64Images
+          images: base64Images,
         };
 
         const result = await Parse.Cloud.run("createAnnouncement", params);
-        
+
         if (result.success) {
           resetForm();
           fetchAnnouncements();
@@ -162,7 +160,7 @@ const Home = () => {
 
       <div className="max-w-6xl mx-auto pt-16">
         <h1 className="text-5xl font-bold text-center mb-12 text-gray-800">
-          Welcome <span className="text-yellow-500">{user?.get('role')}!</span>
+          Welcome <span className="text-yellow-500">{user?.get("role")}!</span>
         </h1>
 
         <div className="grid gap-6">
@@ -172,8 +170,8 @@ const Home = () => {
             </div>
           ) : announcements.length > 0 ? (
             announcements.map((announcement) => (
-              <div 
-                key={announcement.id} 
+              <div
+                key={announcement.id}
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
               >
                 <div className="p-6">
@@ -181,16 +179,18 @@ const Home = () => {
                     <h2 className="text-2xl font-semibold text-gray-800">
                       {announcement.title}
                     </h2>
-                    {user?.get('role') !== 'PATIENT' && (
-                      <button
-                        onClick={() => handleEdit(announcement)}
-                        className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
-                      >
-                        <span>Edit</span>
-                      </button>
-                    )}
+                    {user?.get("role") !== "PATIENT" &&
+                      user?.get("role") !== "SECRETARY" &&
+                      user?.get("role") !== "NURSE" && (
+                        <button
+                          onClick={() => handleEdit(announcement)}
+                          className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
+                        >
+                          <span>Edit</span>
+                        </button>
+                      )}
                   </div>
-                  
+
                   <p className="text-gray-600 mb-6 leading-relaxed whitespace-pre-wrap break-words font-sans">
                     {announcement.description}
                   </p>
@@ -211,7 +211,8 @@ const Home = () => {
                   )}
 
                   <div className="mt-4 text-sm text-gray-500">
-                    Posted: {new Date(announcement.createdAt).toLocaleDateString()}
+                    Posted:{" "}
+                    {new Date(announcement.createdAt).toLocaleDateString()}
                   </div>
                 </div>
               </div>
@@ -227,18 +228,18 @@ const Home = () => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl m-4 relative">
-            <button 
+            <button
               onClick={resetForm}
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
             >
               <IoMdClose size={24} />
             </button>
-            
+
             <form onSubmit={handleSubmit} className="p-6">
               <h2 className="text-2xl font-semibold mb-6">
-                {selectedAnnouncement ? 'Edit' : 'Create'} Announcement
+                {selectedAnnouncement ? "Edit" : "Create"} Announcement
               </h2>
-              
+
               <input
                 type="text"
                 value={title}
@@ -246,12 +247,12 @@ const Home = () => {
                 placeholder="Enter announcement title"
                 className="w-full p-3 rounded-md border border-gray-300 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              
-              <textarea 
+
+              <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={6}
-                placeholder="Enter your announcement" 
+                placeholder="Enter your announcement"
                 className="w-full p-3 rounded-md border border-gray-300 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
 
@@ -286,21 +287,27 @@ const Home = () => {
                   />
                   Add Images
                 </label>
-                
-                <button 
-                  type="submit" 
+
+                <button
+                  type="submit"
                   disabled={isSubmitting}
                   className={`${
-                    isSubmitting ? 'bg-green-400' : 'bg-green-500 hover:bg-green-600'
+                    isSubmitting
+                      ? "bg-green-400"
+                      : "bg-green-500 hover:bg-green-600"
                   } transition-colors text-white px-6 py-2 rounded-md flex items-center gap-2`}
                 >
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      <span>{selectedAnnouncement ? 'Updating...' : 'Creating...'}</span>
+                      <span>
+                        {selectedAnnouncement ? "Updating..." : "Creating..."}
+                      </span>
                     </>
                   ) : (
-                    <span>{selectedAnnouncement ? 'Update' : 'Create'} Announcement</span>
+                    <span>
+                      {selectedAnnouncement ? "Update" : "Create"} Announcement
+                    </span>
                   )}
                 </button>
               </div>

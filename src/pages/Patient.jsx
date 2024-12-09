@@ -16,6 +16,7 @@ import { usePatient } from "../hooks/usePatient";
 import EditImmunization from "../components/healthcare_services/EditImmunization";
 import EditPrenatal from "../components/healthcare_services/EditPrenatal";
 import EditOtherServices from "../components/healthcare_services/EditOtherServices";
+import Parse from "parse/dist/parse.min.js";
 
 const Patient = () => {
   const [searchType, setSearchType] = useState("ALL");
@@ -41,6 +42,7 @@ const Patient = () => {
   const [isEditOtherServices, setIsEditOtherServices] = useState(false);
   const [healthCareAddorEdit, setHealthCareAddorEdit] = useState(false);
   const { patientData, getPatients, isLoading } = usePatient();
+  const user = Parse.User.current();
   const [formData, setFormData] = useState({
     // Patient fields
     profilePicture: null,
@@ -228,7 +230,7 @@ const Patient = () => {
         } else if (searchType === "PUROK") {
           return data.purok.toLowerCase().includes(searchInput.toLowerCase());
         } else if (searchType === "HEALTHCARE SERVICES") {
-          switch(searchInput) {
+          switch (searchInput) {
             case "PRENATAL":
               return data.prenatal && data.prenatal.length > 0;
             case "IMMUNIZATION":
@@ -353,20 +355,30 @@ const Patient = () => {
               onClick={() => setIsHealthCareModal(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
-            
-            <img 
-              src="/sanfranciscologo.png" 
-              alt="sanfrancisco logo" 
+
+            <img
+              src="/sanfranciscologo.png"
+              alt="sanfrancisco logo"
               className="w-32 h-20 object-contain"
             />
-            
+
             <div className="w-full space-y-2">
-              <label 
-                htmlFor="healthCare" 
+              <label
+                htmlFor="healthCare"
                 className="block text-sm font-medium text-gray-700"
               >
                 Select Health Care Service
@@ -390,9 +402,10 @@ const Patient = () => {
               onClick={handleHealthcareSelection}
               disabled={!healthCare}
               className={`w-full px-6 py-3 rounded-md text-white font-medium uppercase tracking-wide transition-all
-                ${healthCare 
-                  ? 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700' 
-                  : 'bg-gray-300 cursor-not-allowed'
+                ${
+                  healthCare
+                    ? "bg-orange-500 hover:bg-orange-600 active:bg-orange-700"
+                    : "bg-gray-300 cursor-not-allowed"
                 }`}
             >
               Confirm Selection
@@ -408,20 +421,30 @@ const Patient = () => {
               onClick={() => setIsEditHealthCareModal(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
-            
-            <img 
-              src="/sanfranciscologo.png" 
-              alt="sanfrancisco logo" 
+
+            <img
+              src="/sanfranciscologo.png"
+              alt="sanfrancisco logo"
               className="w-32 h-20 object-contain"
             />
-            
+
             <div className="w-full space-y-2">
-              <label 
-                htmlFor="healthCare" 
+              <label
+                htmlFor="healthCare"
                 className="block text-sm font-medium text-gray-700"
               >
                 Select Health Care Service
@@ -445,9 +468,10 @@ const Patient = () => {
               onClick={handleHealthcareSelection}
               disabled={!healthCare}
               className={`w-full px-6 py-3 rounded-md text-white font-medium uppercase tracking-wide transition-all
-                ${healthCare 
-                  ? 'bg-orange-500 hover:bg-orange-600 active:bg-orange-700' 
-                  : 'bg-gray-300 cursor-not-allowed'
+                ${
+                  healthCare
+                    ? "bg-orange-500 hover:bg-orange-600 active:bg-orange-700"
+                    : "bg-gray-300 cursor-not-allowed"
                 }`}
             >
               Confirm Selection
@@ -609,45 +633,52 @@ const Patient = () => {
             />
 
             <div className="flex justify-center gap-2 mt-5">
-              <button
-                onClick={() => setIsAddPatientModal(!isAddPatientModal)}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Add
-              </button>
+              {user &&
+                user.get("role") !== "PATIENT" &&
+                user.get("role") !== "SECRETARY" &&
+                user.get("role") !== "ADMIN" &&
+                user.get("role") !== " " && (
+                  <>
+                    <button
+                      onClick={() => setIsAddPatientModal(!isAddPatientModal)}
+                      className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Add
+                    </button>
 
-              <button
-                onClick={() => {
-                  handleHealthcareServicesModal("EDIT");
-                  setHealthCareAddorEdit("EDIT");
-                }}
-                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
-              >
-                Edit
-              </button>
+                    <button
+                      onClick={() => {
+                        handleHealthcareServicesModal("EDIT");
+                        setHealthCareAddorEdit("EDIT");
+                      }}
+                      className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+                    >
+                      Edit
+                    </button>
 
-              <button
-                onClick={() => {
-                  handleHealthcareServicesModal("HEALTHCARE SERVICES");
-                  setHealthCareAddorEdit("ADD");
-                }}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
-              >
-                Healthcare Services
-              </button>
-
+                    <button
+                      onClick={() => {
+                        handleHealthcareServicesModal("HEALTHCARE SERVICES");
+                        setHealthCareAddorEdit("ADD");
+                      }}
+                      className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+                    >
+                      Healthcare Services
+                    </button>
+                  </>
+                )}
               <button
                 onClick={handlePrint}
                 className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
