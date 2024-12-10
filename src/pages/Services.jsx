@@ -17,6 +17,9 @@ const Services = () => {
     desc: "",
   });
   const [imagePreview, setImagePreview] = useState(null);
+  const [selectedCardService, setSelectedCardService] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const cardsToShow = 3;
 
   // Open modal for different actions
   const openModal = (type, service = null) => {
@@ -183,6 +186,23 @@ const Services = () => {
     }
   };
 
+  const prevSlide = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(prev => prev - 1);
+    }
+  };
+
+  const nextSlide = () => {
+    if (currentIndex < servicesData.length - 3) {
+      setCurrentIndex(prev => prev + 1);
+    }
+  };
+
+  const isCardCentered = (service) => {
+    const centerCardIndex = currentIndex + 1;
+    return servicesData[centerCardIndex]?.objectId === service.objectId;
+  };
+
   useEffect(() => {
     const fetchServices = async () => {
       try {
@@ -200,69 +220,95 @@ const Services = () => {
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="flex flex-col items-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-800 mb-4 relative">
-          Our Services
+        <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
+          SERVICES
         </h1>
+      </div>
 
-        {/* Add new service button */}
-        {(user?.get('role') !== 'SECRETARY' && user?.get('role') !== 'PATIENT' && user?.get('role') === 'ADMIN') && (
+      {/* Update the carousel section */}
+      <div className="relative max-w-6xl mx-auto">
+        <button 
+          onClick={prevSlide}
+          className={`absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 rounded-full p-2 z-10 ${
+            currentIndex <= 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'
+          }`}
+          disabled={currentIndex <= 0}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <div className="flex justify-center gap-8 overflow-hidden">
+          {Array.isArray(servicesData) &&
+            servicesData
+              .slice(currentIndex, currentIndex + 3)
+              .map((service, i) => (
+                <div 
+                  key={service.objectId || i} 
+                  className="w-72 text-center transition-all duration-300"
+                  style={{
+                    transform: i === 1 ? 'scale(1)' : 'scale(0.85)',
+                    opacity: i === 1 ? '1' : ''
+                  }}
+                >
+                  <div 
+                    className={`cursor-pointer bg-white rounded-lg shadow-lg overflow-hidden relative group ${
+                      selectedCardService?.objectId === service.objectId ? 'ring-2 ring-yellow-500' : ''
+                    }`}
+                    onClick={() => setSelectedCardService(service)}
+                    onDoubleClick={() => openModal("view", service)}
+                  >
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4">
+                      <h3 className="text-xl font-bold text-gray-800 uppercase">
+                        {service.title}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              ))}
+        </div>
+
+        <button 
+          onClick={nextSlide}
+          className={`absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 rounded-full p-2 z-10 ${
+            currentIndex >= servicesData.length - 3 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'
+          }`}
+          disabled={currentIndex >= servicesData.length - 3}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Admin Controls */}
+      {(user?.get('role') === 'ADMIN') && (
+        <div className="flex justify-center gap-4 mt-8">
           <button
             onClick={() => openModal("add")}
-            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+            className="bg-white border-2 border-black px-8 py-2 hover:bg-gray-100"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-            </svg>
-            Add Service
+            ADD
           </button>
-        )}
-      </div>
-
-      {/* Services Grid instead of Table */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.isArray(servicesData) &&
-          servicesData.map((service, i) => (
-            <div key={i} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <img
-                src={service.image}
-                alt={service.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">{service.title}</h3>
-                <p className="text-gray-600 mb-4 whitespace-pre-line">
-                  {service.desc.length > 100
-                    ? `${service.desc.slice(0, 100)}...`
-                    : service.desc}
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => openModal("view", service)}
-                    className="flex-1 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors duration-300"
-                  >
-                    View Details
-                  </button>
-                  {(user?.get('role') !== 'SECRETARY' && user?.get('role') !== 'PATIENT' && user?.get('role') ===  'ADMIN') && (
-                    <>
-                      <button
-                        onClick={() => openModal("edit", service)}
-                        className="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-300"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteService(service.objectId)}
-                        className="flex-1 bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300"
-                      >
-                        {loading ? 'Loading...' : 'Delete'}
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-      </div>
+          <button
+            onClick={() => selectedCardService && openModal("edit", selectedCardService)}
+            disabled={!selectedCardService}
+            className={`bg-white border-2 border-black px-8 py-2 ${
+              selectedCardService
+                ? 'hover:bg-gray-100' 
+                : 'opacity-50 cursor-not-allowed'
+            }`}
+          >
+            EDIT
+          </button>
+        </div>
+      )}
 
       {/* Modal with improved styling */}
       {modalOpen && (

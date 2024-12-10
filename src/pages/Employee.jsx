@@ -368,8 +368,8 @@ const Employee = () => {
       )}
 
       <div className="mx-auto max-w-6xl flex flex-col gap-y-6">
-        <h1 className="text-3xl font-bold text-center text-gray-800">
-          EMPLOYEE LIST
+        <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
+          LIST OF EMPLOYEES
         </h1>
         
         {/* Table Container */}
@@ -429,6 +429,12 @@ const Employee = () => {
         <div className="flex justify-center gap-2 mt-6">
           {user?.get('role') !== 'SECRETARY' && (
             <>
+            <button
+                onClick={() => setAddEmployeeModal(!addEmployeeModal)}
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
+              >
+                Add
+              </button>
               <button
                 onClick={() => {
                   if (viewEmployee?.objectId) {
@@ -439,15 +445,6 @@ const Employee = () => {
                 className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
               >
                 Edit
-              </button>
-              <button
-                onClick={() => setAddEmployeeModal(!addEmployeeModal)}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
-                Add Employee
               </button>
             </>
           )}

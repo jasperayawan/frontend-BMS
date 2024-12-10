@@ -197,12 +197,12 @@ const Users = () => {
                     >
                       View
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => handleDeleteClick(user)}
                       className="text-red-600 hover:text-red-900"
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}

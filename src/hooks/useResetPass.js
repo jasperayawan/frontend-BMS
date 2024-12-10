@@ -15,8 +15,8 @@ export const useResetPass = () => {
         }
 
         try{
-            const res = await axios.post(RESETPASS, formData);
-            toast.success(res.data.message);
+            await axios.post(RESETPASS, formData);
+            toast.success("PASSWORD RECOVERY WAS ALREADY SENT TO YOUR EMAIL");
         }
         catch(error){
             console.log(error.response.data.message)

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLogout } from "../hooks/useLogout";
 import Parse from "parse/dist/parse.min.js";
 import { IoMdClose } from "react-icons/io";
+import toast from "react-hot-toast";
 
 const Home = () => {
   const { loadingLoading, logout } = useLogout();
@@ -73,6 +74,7 @@ const Home = () => {
         const result = await Parse.Cloud.run("updateAnnouncement", params);
 
         if (result.success) {
+          toast.success("SAVE SUCCESSFULLY!");
           resetForm();
           fetchAnnouncements();
         }
@@ -151,18 +153,20 @@ const Home = () => {
 
   return (
     <div className="relative min-h-screen bg-gray-50 p-6">
-      <button
-        onClick={handleLogout}
-        className="absolute top-4 left-4 bg-zinc-700 hover:bg-zinc-800 transition-colors rounded-md px-4 py-2 text-white"
-      >
-        {loading ? "loading..." : "logout"}
-      </button>
-
-      <div className="max-w-6xl mx-auto pt-16">
-        <h1 className="text-5xl font-bold text-center mb-12 text-gray-800">
-          Welcome <span className="text-yellow-500">{user?.get("role")}!</span>
+      <div className="flex flex-col gap-y-2">
+        <h1 className="text-xl font-bold text-orange-500 uppercase">
+          Welcome{" "}
+          <span className="">
+            {user?.get("role")} {user?.get("name")}!
+          </span>
         </h1>
+        <button onClick={handleLogout} className="text-start underline">
+          {loading ? "loading..." : "logout"}
+        </button>
+      </div>
 
+      <div className="max-w-6xl flex flex-col gap-y-2 justify-center items-center mx-auto pt-16">
+        <img src="/sanfranciscologo.png" alt="" className="w-36 object-cover" />
         <div className="grid gap-6">
           {loading ? (
             <div className="text-center py-10">
@@ -184,7 +188,7 @@ const Home = () => {
                       user?.get("role") !== "NURSE" && (
                         <button
                           onClick={() => handleEdit(announcement)}
-                          className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
+                          className="bg-orange-500 hover:bg-orange-600 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
                         >
                           <span>Edit</span>
                         </button>
@@ -273,10 +277,8 @@ const Home = () => {
                     </button>
                   </div>
                 ))}
-              </div>
-
-              <div className="flex gap-4">
-                <label className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-md cursor-pointer">
+                
+                <label className="cursor-pointer border-2 border-dashed border-gray-300 rounded-lg h-32 flex items-center justify-center hover:border-gray-400 transition-colors">
                   <input
                     type="file"
                     id="announcementImages"
@@ -285,16 +287,23 @@ const Home = () => {
                     onChange={handleImageChange}
                     className="hidden"
                   />
-                  Add Images
+                  <div className="text-gray-400 flex flex-col items-center">
+                    <svg className="w-8 h-8 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span className="text-sm">Browse</span>
+                  </div>
                 </label>
+              </div>
 
+              <div className="flex gap-4">
                 <button
                   type="submit"
                   disabled={isSubmitting}
                   className={`${
                     isSubmitting
-                      ? "bg-green-400"
-                      : "bg-green-500 hover:bg-green-600"
+                      ? "bg-orange-400"
+                      : "bg-orange-500 hover:bg-orange-600"
                   } transition-colors text-white px-6 py-2 rounded-md flex items-center gap-2`}
                 >
                   {isSubmitting ? (
@@ -306,7 +315,7 @@ const Home = () => {
                     </>
                   ) : (
                     <span>
-                      {selectedAnnouncement ? "Update" : "Create"} Announcement
+                      {selectedAnnouncement ? "Save Changes" : "Create"}
                     </span>
                   )}
                 </button>

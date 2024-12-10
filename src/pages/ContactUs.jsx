@@ -238,7 +238,7 @@ const ContactUs = () => {
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">Phone</label>
                   <input
-                    type="text"
+                    type="number"
                     name="phone"
                     value={editedInfo.phone}
                     onChange={handleChange}
@@ -305,7 +305,7 @@ const ContactUs = () => {
                 </button>
                 <button
                   onClick={handleSave}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
+                  className="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transform hover:scale-105 transition-all duration-300"
                 >
                   Save Changes
                 </button>
