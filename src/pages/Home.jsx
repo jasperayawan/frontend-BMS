@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useLogout } from "../hooks/useLogout";
 import Parse from "parse/dist/parse.min.js";
 import { IoMdClose } from "react-icons/io";
 import toast from "react-hot-toast";
 
 const Home = () => {
-  const { loadingLoading, logout } = useLogout();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [announcementImages, setAnnouncementImages] = useState([]);
   const [announcement, setAnnouncement] = useState("");
@@ -21,11 +19,6 @@ const Home = () => {
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
   const [removedImages, setRemovedImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleLogout = async (e) => {
-    e.preventDefault();
-    await logout();
-  };
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -153,17 +146,6 @@ const Home = () => {
 
   return (
     <div className="relative min-h-screen bg-gray-50 p-6">
-      <div className="flex flex-col gap-y-2">
-        <h1 className="text-xl font-bold text-orange-500 uppercase">
-          Welcome{" "}
-          <span className="">
-            {user?.get("role")} {user?.get("name")}!
-          </span>
-        </h1>
-        <button onClick={handleLogout} className="text-start underline">
-          {loading ? "loading..." : "logout"}
-        </button>
-      </div>
 
       <div className="max-w-6xl flex flex-col gap-y-2 justify-center items-center mx-auto pt-16">
         <img src="/sanfranciscologo.png" alt="" className="w-36 object-cover" />

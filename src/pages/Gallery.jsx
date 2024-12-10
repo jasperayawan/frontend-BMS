@@ -4,7 +4,7 @@ import { toBase64 } from "../utils/toBase64";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Parse from "parse/dist/parse.min.js";
-import { FaFolderPlus, FaImage, FaTimes, FaTrash } from 'react-icons/fa';
+import { FaFolderPlus, FaImage, FaTimes, FaTrash } from "react-icons/fa";
 
 const Gallery = () => {
   const [galleries, setGalleries] = useState([]);
@@ -15,6 +15,8 @@ const Gallery = () => {
   const [loading, setLoading] = useState(false);
   const user = Parse.User.current();
   const [newFile, setNewFile] = useState(null);
+  const [prevImage, setPrevImage] = useState("");
+  const [selectedCardGallery, setSelectedCardGallery] = useState(null);
 
   // Add a new gallery folder
   const handleAddGallery = async () => {
@@ -125,29 +127,48 @@ const Gallery = () => {
   };
 
   const handleUpdateGallery = async () => {
-    const updatedData = {
-      galleryName: folderName,
-      galleryImage: newFile,
-      prevImage: prevImage, // Only include previous image if updating
-    };
+    if (!selectedFolder) return;
 
+    setLoading(true);
     try {
+      let base64Image = null;
+      if (newFile) {
+        base64Image = await toBase64(newFile);
+      }
+
+      const updatedData = {
+        galleryName: folderName,
+        galleryImage: base64Image,
+      };
+
       const galleryToUpdate = galleries[selectedFolder];
       const response = await axios.put(
-        GALLERY`/${galleryToUpdate.objectId}`,
+        `${GALLERY}/${galleryToUpdate.id}`,
         updatedData
       );
 
       const updatedGalleries = [...galleries];
       updatedGalleries[selectedFolder] = response.data.gallery;
       setGalleries(updatedGalleries);
+
+      // Reset all states
       setFolderName("");
       setNewFile(null);
-      setPrevImage(""); // Reset previous image
       setSelectedFolder(null);
+      setShowModal(false);
+      toast.success("Gallery updated successfully!");
     } catch (error) {
       console.error("Error updating gallery:", error);
+      toast.error("Failed to update gallery");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleEditClick = (index) => {
+    if (selectedFolder === null) return;
+    setFolderName(galleries[selectedFolder].name);
+    setShowModal(true);
   };
 
   useEffect(() => {
@@ -167,62 +188,96 @@ const Gallery = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">
-            Photo Gallery
+          <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
+            GALLERY
           </h1>
-          {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
-            <button
-              onClick={() => setShowModal(true)}
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 
-                        text-white rounded-lg hover:from-yellow-500 hover:to-orange-600 
-                        transform hover:-translate-y-0.5 transition-all duration-200 shadow-md hover:shadow-lg"
-            >
-              <FaFolderPlus className="mr-2" />
-              Add New Gallery
-            </button>
-          )}
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {galleries.map((gallery, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 
-                         transition-all duration-300 cursor-pointer group"
-              onClick={() => setSelectedFolder(index)}
+              className={`relative group cursor-pointer ${
+                selectedCardGallery?.id === gallery.id
+                  ? "ring-4 ring-yellow-500"
+                  : ""
+              }`}
+              onClick={() => setSelectedCardGallery(gallery)}
+              onDoubleClick={() => {
+                setSelectedFolder(index);
+              }}
             >
-              <div className="relative h-64">
+              {/* Gallery Card */}
+              <div className="relative aspect-square">
                 <img
                   src={gallery.files[0] || "/placeholder.svg"}
                   alt={gallery.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover rounded-lg border-4 border-gray-200"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 
-                              group-hover:opacity-100 transition-opacity duration-300" />
+                {/* White overlay frame */}
+                <div className="absolute inset-4 border-4 border-white opacity-70 group-hover:opacity-100 transition-opacity" />
               </div>
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">{gallery.name}</h3>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">
-                    {gallery.files.length} photos
-                  </span>
-                  {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && user?.get("role") === 'ADMIN') && (
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteGallery(index);
-                      }}
-                      className="text-red-500 hover:text-red-600 transition-colors"
-                    >
-                      <FaTrash />
-                    </button>
-                  )}
+
+              {/* Gallery Title */}
+              <div className="text-center mt-2">
+                <h3 className="text-xl font-bold text-gray-800 uppercase">
+                  {gallery.name}
+                </h3>
+              </div>
+
+              {/* Admin Controls */}
+              {user?.get("role") === "ADMIN" && (
+                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteGallery(index);
+                    }}
+                    className="p-2 bg-red-500 text-white rounded-full"
+                  >
+                    <FaTrash size={14} />
+                  </button>
                 </div>
-              </div>
+              )}
             </div>
           ))}
         </div>
+
+        {/* Action Buttons */}
+        {user?.get("role") === "ADMIN" && (
+          <div className="flex justify-center gap-4 mt-8">
+            <button
+              onClick={() => {
+                setSelectedFolder(null);
+                setFolderName("");
+                setNewFile(null);
+                setShowModal(true);
+              }}
+              className="px-8 py-2 border-2 border-gray-800 text-gray-800 font-bold uppercase hover:bg-gray-800 hover:text-white transition-colors"
+            >
+              ADD
+            </button>
+            <button
+              onClick={() => {
+                if (selectedCardGallery) {
+                  setSelectedFolder(
+                    galleries.findIndex((g) => g.id === selectedCardGallery.id)
+                  );
+                  setFolderName(selectedCardGallery.name);
+                }
+              }}
+              disabled={!selectedCardGallery}
+              className={`px-8 py-2 border-2 border-gray-800 font-bold uppercase transition-colors ${
+                !selectedCardGallery
+                  ? "text-gray-400 border-gray-400 cursor-not-allowed"
+                  : "text-gray-800 hover:bg-gray-800 hover:text-white"
+              }`}
+            >
+              EDIT
+            </button>
+          </div>
+        )}
 
         {/* Modal for Adding New Gallery */}
         {showModal && (
@@ -234,7 +289,11 @@ const Gallery = () => {
               >
                 <FaTimes size={24} />
               </button>
-              <h2 className="text-2xl font-bold text-gray-800 mb-6">Create New Gallery</h2>
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
+                {selectedFolder !== null
+                  ? "Edit Gallery"
+                  : "Create New Gallery"}
+              </h2>
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -274,20 +333,30 @@ const Gallery = () => {
                 </div>
                 <div className="flex justify-end space-x-3">
                   <button
-                    onClick={() => setShowModal(false)}
-                    className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 
-                              hover:bg-gray-50 transition-colors"
+                    onClick={() => {
+                      setShowModal(false);
+                      setSelectedFolder(null);
+                      setFolderName("");
+                      setNewFile(null);
+                    }}
+                    className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
-                    onClick={handleAddGallery}
+                    onClick={
+                      selectedFolder !== null
+                        ? handleUpdateGallery
+                        : handleAddGallery
+                    }
                     disabled={loading}
-                    className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white 
-                              rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all 
-                              duration-200 disabled:opacity-50"
+                    className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-lg hover:from-yellow-500 hover:to-orange-600 transition-all duration-200 disabled:opacity-50"
                   >
-                    {loading ? "Creating..." : "Create Gallery"}
+                    {loading
+                      ? "Processing..."
+                      : selectedFolder !== null
+                      ? "Update Gallery"
+                      : "Create Gallery"}
                   </button>
                 </div>
               </div>
@@ -316,53 +385,59 @@ const Gallery = () => {
                       alt={`File ${idx}`}
                       className="w-full h-48 object-cover rounded-lg"
                     />
-                    {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && (user?.get("role") === 'ADMIN' || user?.get("role") === 'NURSE')) && (
-                      <button
-                        onClick={() => handleRemoveFile(selectedFolder, idx)}
-                        className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full 
+                    {user?.get("role") !== "SECRETARY" &&
+                      user?.get("role") !== "PATIENT" &&
+                      (user?.get("role") === "ADMIN" ||
+                        user?.get("role") === "NURSE") && (
+                        <button
+                          onClick={() => handleRemoveFile(selectedFolder, idx)}
+                          className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full 
                                   opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-                      >
-                        <FaTrash size={14} />
-                      </button>
-                    )}
+                        >
+                          <FaTrash size={14} />
+                        </button>
+                      )}
                   </div>
                 ))}
               </div>
 
-              {(user?.get("role") !== "SECRETARY" && user?.get('role') !== 'PATIENT' && (user?.get("role") === 'ADMIN' || user?.get("role") === 'NURSE')) && (
-                <div className="mt-6">
-                  <div className="relative">
-                    <input
-                      type="file"
-                      onChange={(e) => setNewFile(e.target.files[0])}
-                      className="hidden"
-                      id="add-photos"
-                    />
-                    <label
-                      htmlFor="add-photos"
-                      className="flex items-center justify-center w-full px-4 py-3 border-2 
+              {user?.get("role") !== "SECRETARY" &&
+                user?.get("role") !== "PATIENT" &&
+                (user?.get("role") === "ADMIN" ||
+                  user?.get("role") === "NURSE") && (
+                  <div className="mt-6">
+                    <div className="relative">
+                      <input
+                        type="file"
+                        onChange={(e) => setNewFile(e.target.files[0])}
+                        className="hidden"
+                        id="add-photos"
+                      />
+                      <label
+                        htmlFor="add-photos"
+                        className="flex items-center justify-center w-full px-4 py-3 border-2 
                                 border-dashed border-gray-300 rounded-lg cursor-pointer 
                                 hover:border-yellow-400 transition-colors"
-                    >
-                      <FaImage className="mr-2 text-gray-400" />
-                      <span className="text-gray-600">
-                        {newFile ? newFile.name : "Choose photos to add"}
-                      </span>
-                    </label>
-                  </div>
-                  <div className="flex justify-end mt-4">
-                    <button
-                      onClick={() => handleAddFiles(selectedFolder)}
-                      disabled={loading}
-                      className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 
+                      >
+                        <FaImage className="mr-2 text-gray-400" />
+                        <span className="text-gray-600">
+                          {newFile ? newFile.name : "Choose photos to add"}
+                        </span>
+                      </label>
+                    </div>
+                    <div className="flex justify-end mt-4">
+                      <button
+                        onClick={() => handleAddFiles(selectedFolder)}
+                        disabled={loading}
+                        className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 
                                 text-white rounded-lg hover:from-yellow-500 hover:to-orange-600 
                                 transition-all duration-200 disabled:opacity-50"
-                    >
-                      {loading ? "Adding..." : "Add Photos"}
-                    </button>
+                      >
+                        {loading ? "Adding..." : "Add Photos"}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </div>
         )}
