@@ -87,6 +87,8 @@ const Patient = () => {
   });
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const componentRef = useRef(null);
 
@@ -217,35 +219,58 @@ const Patient = () => {
     }
   };
 
-  const filteredData = Array.isArray(patientData)
-    ? patientData.filter((data) => {
-        if (searchType === "ALL") {
-          return true;
-        } else if (searchType === "NAME") {
-          return data.lastname
-            .toLowerCase()
-            .includes(searchInput.toLowerCase());
-        } else if (searchType === "BLOODTYPE") {
-          return searchInput ? data.bloodType === searchInput : true;
-        } else if (searchType === "PUROK") {
-          return data.purok.toLowerCase().includes(searchInput.toLowerCase());
-        } else if (searchType === "HEALTHCARE SERVICES") {
-          switch (searchInput) {
-            case "PRENATAL":
-              return data.prenatal && data.prenatal.length > 0;
-            case "IMMUNIZATION":
-              return data.immunization && data.immunization.length > 0;
-            case "FAMILY PLANNING":
-              return data.familyPlanning && data.familyPlanning.length > 0;
-            case "OTHER SERVICES":
-              return data.otherServices && data.otherServices.length > 0;
-            default:
-              return true;
+  const handleSearch = () => {
+    setHasSearched(true);
+    
+    if (searchType === "ALL") {
+      setSearchResults([]);
+      setSearchInput("");
+      setHasSearched(false);
+      return;
+    }
+
+    const results = Array.isArray(patientData)
+      ? patientData.filter((data) => {
+          if (searchType === "NAME") {
+            return data.lastname
+              .toLowerCase()
+              .includes(searchInput.toLowerCase());
+          } else if (searchType === "BLOODTYPE") {
+            return data.bloodType === searchInput;
+          } else if (searchType === "PUROK") {
+            return data.purok.toLowerCase().includes(searchInput.toLowerCase());
+          } else if (searchType === "HEALTHCARE SERVICES") {
+            switch (searchInput) {
+              case "PRENATAL":
+                return data.prenatal && data.prenatal.length > 0;
+              case "IMMUNIZATION":
+                return data.immunization && data.immunization.length > 0;
+              case "FAMILY PLANNING":
+                return data.familyPlanning && data.familyPlanning.length > 0;
+              case "OTHER SERVICES":
+                return data.otherServices && data.otherServices.length > 0;
+              default:
+                return true;
+            }
           }
-        }
-        return false;
-      })
-    : [];
+          return false;
+        })
+      : [];
+    
+    setSearchResults(results);
+  };
+
+  // Reset search state when changing search type
+  useEffect(() => {
+    if (searchType === "ALL") {
+      setSearchResults([]);
+      setSearchInput("");
+      setHasSearched(false);
+    } else {
+      setHasSearched(false);
+      setSearchResults([]);
+    }
+  }, [searchType]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -572,13 +597,34 @@ const Patient = () => {
                 <option value="HEALTHCARE SERVICES">HEALTHCARE SERVICES</option>
               </select>
               {searchType === "NAME" && (
-                <input
-                  type="search"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  className="border-[1.5px] border-zinc-500 rounded-md py-1 px-3 outline-none"
-                  placeholder="Search by name"
-                />
+                <div className="flex gap-x-2">
+                  <input
+                    type="search"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className="border-[1.5px] border-zinc-500 rounded-md py-1 px-3 outline-none"
+                    placeholder="Search by name"
+                  />
+                  <button
+                    onClick={handleSearch}
+                    className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-md transition-colors"
+                  >
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      strokeWidth={2} 
+                      stroke="currentColor" 
+                      className="w-5 h-5"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" 
+                      />
+                    </svg>
+                  </button>
+                </div>
               )}
               {searchType === "PUROK" && (
                 <input
@@ -590,21 +636,42 @@ const Patient = () => {
                 />
               )}
               {searchType === "BLOODTYPE" && (
-                <select
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  className="px-4 py-1 rounded-[12px] bg-zinc-300 outline-none w-[150px]"
-                >
-                  <option value="">All Blood Types</option>
-                  <option value="A+">A+</option>
-                  <option value="A-">A-</option>
-                  <option value="B+">B+</option>
-                  <option value="B-">B-</option>
-                  <option value="AB+">AB+</option>
-                  <option value="AB-">AB-</option>
-                  <option value="O+">O+</option>
-                  <option value="O-">O-</option>
-                </select>
+                <div className="flex gap-x-2">
+                  <select
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className="px-4 py-1 rounded-[12px] bg-zinc-300 outline-none w-[150px]"
+                  >
+                    <option value="">All Blood Types</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                  </select>
+                  <button
+                    onClick={handleSearch}
+                    className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-md transition-colors"
+                  >
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      strokeWidth={2} 
+                      stroke="currentColor" 
+                      className="w-5 h-5"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" 
+                      />
+                    </svg>
+                  </button>
+                </div>
               )}
               {searchType === "HEALTHCARE SERVICES" && (
                 <select
@@ -622,7 +689,7 @@ const Patient = () => {
             </div>
 
             <PatientTable
-              filteredData={filteredData}
+              filteredData={hasSearched ? searchResults : patientData}
               handlePatientSelection={(data) => {
                 handlePatientSelection(data);
                 setIsPatientSelect(true);
@@ -630,6 +697,9 @@ const Patient = () => {
               patientDataSelected={patientDataSelected}
               componentRef={componentRef}
               onRowDoubleClick={(data) => handleOpenModal(data)}
+              searchType={searchType}
+              searchInput={searchInput}
+              hasSearched={hasSearched}
             />
 
             <div className="flex justify-center gap-2 mt-5">

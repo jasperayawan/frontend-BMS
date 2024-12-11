@@ -365,6 +365,14 @@ const Services = () => {
                 <p className="whitespace-pre-wrap break-words font-sans">
                   {selectedService.desc}
                 </p>
+                <div className="flex justify-center mt-4">
+                  <button
+                    onClick={closeModal}
+                    className="px-6 border-2 rounded-lg py-2 hover:bg-gray-100"
+                  >
+                    CLOSE
+                  </button>
+                </div>
               </div>
             )}
 

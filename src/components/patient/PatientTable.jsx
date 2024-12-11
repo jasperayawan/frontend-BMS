@@ -1,12 +1,17 @@
 import React from 'react';
 
 const PatientTable = ({ 
-  filteredData, 
+  filteredData = [], 
   handlePatientSelection, 
-  patientDataSelected, 
+  patientDataSelected = {}, 
   componentRef, 
-  onRowDoubleClick 
+  onRowDoubleClick, 
+  searchType, 
+  searchInput,
+  hasSearched 
 }) => {
+  const data = Array.isArray(filteredData) ? filteredData : [];
+
   return (
     <div ref={componentRef} className="overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-sm text-left">
@@ -24,14 +29,14 @@ const PatientTable = ({
           </tr>
         </thead>
         <tbody>
-          {filteredData.length > 0 ? (
-            filteredData.map((data, index) => (
+          {data.length > 0 ? (
+            data.map((data, index) => (
               <tr
                 key={index}
                 onClick={() => handlePatientSelection(data)}
                 onDoubleClick={() => onRowDoubleClick(data)}
                 className={`${
-                  patientDataSelected.objectId === data.objectId 
+                  patientDataSelected?.objectId === data?.objectId 
                     ? 'bg-yellow-100 hover:bg-yellow-200' 
                     : 'bg-white hover:bg-gray-50'
                 } border-b transition duration-200 ease-in-out cursor-pointer`}
@@ -52,7 +57,13 @@ const PatientTable = ({
           ) : (
             <tr>
               <td colSpan="9" className="px-4 py-4 text-center text-gray-500 bg-white">
-                No patients found.
+                {hasSearched && searchType === "BLOODTYPE" && searchInput 
+                  ? `No patients found with blood type ${searchInput}`
+                  : hasSearched 
+                    ? "No patients found."
+                    : data.length === 0 
+                      ? "No patients available."
+                      : null}
               </td>
             </tr>
           )}
