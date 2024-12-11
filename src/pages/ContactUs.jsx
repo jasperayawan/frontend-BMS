@@ -49,8 +49,7 @@ const ContactUs = () => {
 
         if (response.success) {
           setContactInfo(response.data);
-          toast.success("Contact info updated successfully!");
-          window.location.reload()
+          toast.success("SAVE CHANGES SUCCESSFULLY!")
         } else {
           toast.error("Failed to update contact info.");
         }
@@ -218,14 +217,14 @@ const ContactUs = () => {
               onClick={handleEdit} 
               className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
             >
-              Edit Information
+              Edit
             </button>
-            <button 
+            {/* <button 
               onClick={handleDelete} 
               className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transform hover:scale-105 transition-all duration-300 shadow-md"
             >
               Delete
-            </button>
+            </button> */}
           </div>
         )}
 

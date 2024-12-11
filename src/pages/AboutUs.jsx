@@ -56,16 +56,25 @@ const AboutUs = () => {
         });
 
         if (response.data) {
-          setTeam(
-            team.map((member) =>
-              member.objectId === form.id ? response.data : member
+          console.log('Update response:', response.data);
+          
+          const updatedMember = {
+            objectId: form.id,
+            name: form.name,
+            role: form.role,
+            image: imageBase64,
+            ...response.data
+          };
+
+          setTeam(prevTeam =>
+            prevTeam.map((member) =>
+              member.objectId === form.id ? updatedMember : member
             )
           );
-          toast.success("Member updated successfully");
+          toast.success("SAVE CHANGES!");
         }
       } else {
         const formData = {
-          id: isEditing ? form.id : null,
           name: form.name,
           role: form.role,
           image: imageBase64,
@@ -74,7 +83,7 @@ const AboutUs = () => {
         const result = await Parse.Cloud.run("addOrUpdateMember", formData);
 
         if (result.success) {
-          setTeam([...team, { ...formData, id: Date.now() }]);
+          setTeam(prevTeam => [...prevTeam, result.data]);
           toast.success("Member added successfully");
         }
       }
@@ -82,7 +91,6 @@ const AboutUs = () => {
       setForm({ id: null, name: "", role: "", image: null });
       setIsEditing(false);
       setIsModalOpen(false);
-      window.location.reload(); // Refresh to show updated data
     } catch (error) {
       console.error("Error saving member:", error);
       toast.error(error.response?.data?.error || "Failed to save member");

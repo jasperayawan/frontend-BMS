@@ -40,11 +40,12 @@ const Gallery = () => {
       setGalleries([...galleries, newGallery]);
       // Clear state
       setFolderName("");
+      toast.success("SAVE SUCCESSFULLY!")
       setNewFile(null);
       setShowModal(false);
     } catch (error) {
       console.error("Error creating gallery:", error);
-      alert("Error creating gallery, please try again.");
+      toast.error("Error creating gallery, please try again.");
     } finally {
       setLoading(false);
     }
