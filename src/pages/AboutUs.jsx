@@ -183,7 +183,7 @@ const AboutUs = () => {
                   alt={member.name}
                   className="w-24 h-24 mx-auto rounded-full"
                 />
-                {user?.get("role") !== "SECRETARY" &&
+                {/* {user?.get("role") !== "SECRETARY" &&
                   user?.get("role") !== "PATIENT" &&
                   user?.get("role") === "ADMIN" && (
                     <button
@@ -192,7 +192,7 @@ const AboutUs = () => {
                     >
                       ✕
                     </button>
-                  )}
+                  )} */}
               </div>
               <h2 className="font-semibold mt-4">{member.name}</h2>
               <p className="text-gray-600">{member.role}</p>
