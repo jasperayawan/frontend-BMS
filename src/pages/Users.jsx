@@ -275,7 +275,6 @@ const Users = () => {
             <option value="ALL">ALL</option>
             <option value="NAME">NAME</option>
             <option value="EMAIL">EMAIL</option>
-            <option value="ROLE">ROLE</option>
           </select>
           
           {searchType === "NAME" && (
@@ -528,9 +527,9 @@ const Users = () => {
 
       {/* Add User Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded shadow-lg w-[400px] h-[600px] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">Add User</h2>
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center transition-opacity duration-300 ease-in-out">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[400px] h-[600px] overflow-y-auto transform transition-transform duration-300 ease-in-out scale-95 hover:scale-100">
+            <h2 className="text-xl font-bold mb-4 text-center text-orange-600">Add User</h2>
             <form onSubmit={handleAddUserSubmit}>
               <div className="mb-4">
                 <label className="block text-sm font-medium">Profile Picture</label>
@@ -538,7 +537,7 @@ const Users = () => {
                   type="file"
                   name="profilePicture"
                   onChange={handleFileChange}
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 />
                 {error && <p className="text-red-500 text-sm">{error}</p>}
               </div>
@@ -550,7 +549,7 @@ const Users = () => {
                   value={newUser.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 />
               </div>
               <div className="mb-2">
@@ -560,7 +559,7 @@ const Users = () => {
                   value={newUser.role}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 >
                   <option value="" disabled>Select User Type</option>
                   <option value="ADMIN">ADMIN</option>
@@ -576,7 +575,7 @@ const Users = () => {
                   value={newUser.birthdate}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 />
               </div>
               <div className="mb-2">
@@ -590,20 +589,29 @@ const Users = () => {
                     age: e.target.value
                   }))}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                   min="0"
                 />
               </div>
               <div className="mb-2">
                 <label className="block">Blood Type</label>
-                <input
-                  type="text"
+                <select
                   name="bloodType"
                   value={newUser.bloodType}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
-                />
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
+                >
+                  <option value="">Select Blood Type</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
               </div>
               <div className="mb-2">
                 <label className="block">Address</label>
@@ -613,18 +621,18 @@ const Users = () => {
                   value={newUser.address}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 />
               </div>
               <div className="mb-2">
                 <label className="block">Contact</label>
                 <input
-                  type="text"
+                  type="number"
                   name="contact"
                   value={newUser.contact}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 />
               </div>
               <div className="mb-2">
@@ -635,7 +643,7 @@ const Users = () => {
                   value={newUser.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 />
               </div>
               <div className="mb-2">
@@ -646,7 +654,7 @@ const Users = () => {
                   value={newUser.username}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 />
               </div>
               <div className="mb-2">
@@ -657,7 +665,7 @@ const Users = () => {
                   value={newUser.password}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 />
               </div>
               <div className="mb-2">
@@ -667,7 +675,7 @@ const Users = () => {
                   value={newUser.status}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded"
+                  className="w-full p-2 border rounded hover:border-blue-500 transition-colors"
                 >
                   <option value="ACTIVE">ACTIVE</option>
                   <option value="INACTIVE">INACTIVE</option>
@@ -677,11 +685,11 @@ const Users = () => {
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 bg-gray-300 rounded mr-2"
+                  className="px-4 py-2 bg-gray-300 rounded mr-2 hover:bg-gray-400 transition-colors"
                 >
                   Cancel
                 </button>
-                <button type="submit" className="px-4 py-2 bg-green-500 text-white rounded">
+                <button type="submit" className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors">
                   {loading ? 'Loading...' : 'Add User'}
                 </button>
               </div>

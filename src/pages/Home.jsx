@@ -145,7 +145,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gray-50 p-6">
+    <div className="relative min-h-screen p-6">
 
       <div className="max-w-6xl flex flex-col gap-y-2 justify-center items-center mx-auto pt-16">
         <img src="/sanfranciscologo.png" alt="" className="w-36 object-cover" />
