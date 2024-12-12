@@ -627,13 +627,34 @@ const Patient = () => {
                 </div>
               )}
               {searchType === "PUROK" && (
-                <input
-                  type="search"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  className="border-[1.5px] border-zinc-500 rounded-md py-1 px-3 outline-none"
-                  placeholder="Search by purok"
-                />
+                <div className="flex gap-x-2">
+                  <input
+                    type="search"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className="border-[1.5px] border-zinc-500 rounded-md py-1 px-3 outline-none"
+                    placeholder="Search by purok"
+                  />
+                  <button
+                    onClick={handleSearch}
+                    className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-md transition-colors"
+                  >
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      strokeWidth={2} 
+                      stroke="currentColor" 
+                      className="w-5 h-5"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" 
+                      />
+                    </svg>
+                  </button>
+                </div>
               )}
               {searchType === "BLOODTYPE" && (
                 <div className="flex gap-x-2">
@@ -674,17 +695,38 @@ const Patient = () => {
                 </div>
               )}
               {searchType === "HEALTHCARE SERVICES" && (
-                <select
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  className="px-4 py-1 rounded-[12px] bg-zinc-300 outline-none w-[150px]"
-                >
-                  <option value="">All Services</option>
-                  <option value="PRENATAL">Prenatal</option>
-                  <option value="IMMUNIZATION">Immunization</option>
-                  <option value="FAMILY PLANNING">Family Planning</option>
-                  <option value="OTHER SERVICES">Other Services</option>
-                </select>
+                <div className="flex gap-x-2">
+                  <select
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    className="px-4 py-1 rounded-[12px] bg-zinc-300 outline-none w-[150px]"
+                  >
+                    <option value="">All Services</option>
+                    <option value="PRENATAL">Prenatal</option>
+                    <option value="IMMUNIZATION">Immunization</option>
+                    <option value="FAMILY PLANNING">Family Planning</option>
+                    <option value="OTHER SERVICES">Other Services</option>
+                  </select>
+                  <button
+                    onClick={handleSearch}
+                    className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-md transition-colors"
+                  >
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      strokeWidth={2} 
+                      stroke="currentColor" 
+                      className="w-5 h-5"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" 
+                      />
+                    </svg>
+                  </button>
+                </div>
               )}
             </div>
 

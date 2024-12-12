@@ -148,7 +148,7 @@ const AboutUs = () => {
       </h1>
 
       {/* Add New Member Button */}
-      {user?.get("role") !== "SECRETARY" &&
+      {/* {user?.get("role") !== "SECRETARY" &&
         user?.get("role") !== "PATIENT" &&
         user?.get("role") === "ADMIN" && (
           <button
@@ -169,43 +169,45 @@ const AboutUs = () => {
           </svg>
           Add Member
         </button>
-        )}
+        )} */}
 
 
       {/* Team Members */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
-        {team.map((member, i) => (
-          <div key={i} className="text-center relative">
-            <div className="relative inline-block">
-              <img
-                src={member.image || "https://via.placeholder.com/150"}
-                alt={member.name}
-                className="w-24 h-24 mx-auto rounded-full"
-              />
+        {Array.isArray(team) && team.map((member, i) => (
+          member && (
+            <div key={i} className="text-center relative">
+              <div className="relative inline-block">
+                <img
+                  src={member.image || "https://via.placeholder.com/150"}
+                  alt={member.name}
+                  className="w-24 h-24 mx-auto rounded-full"
+                />
+                {user?.get("role") !== "SECRETARY" &&
+                  user?.get("role") !== "PATIENT" &&
+                  user?.get("role") === "ADMIN" && (
+                    <button
+                      onClick={() => handleDelete(member.objectId)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                    >
+                      ✕
+                    </button>
+                  )}
+              </div>
+              <h2 className="font-semibold mt-4">{member.name}</h2>
+              <p className="text-gray-600">{member.role}</p>
               {user?.get("role") !== "SECRETARY" &&
                 user?.get("role") !== "PATIENT" &&
                 user?.get("role") === "ADMIN" && (
                   <button
-                    onClick={() => handleDelete(member.objectId)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                    onClick={() => handleEdit(member)}
+                    className="mt-2 text-blue-600 hover:underline"
                   >
-                    ✕
+                    Edit
                   </button>
                 )}
             </div>
-            <h2 className="font-semibold mt-4">{member.name}</h2>
-            <p className="text-gray-600">{member.role}</p>
-            {user?.get("role") !== "SECRETARY" &&
-              user?.get("role") !== "PATIENT" &&
-              user?.get("role") === "ADMIN" && (
-                <button
-                  onClick={() => handleEdit(member)}
-                  className="mt-2 text-blue-600 hover:underline"
-                >
-                  Edit
-                </button>
-              )}
-          </div>
+          )
         ))}
       </div>
 

@@ -182,37 +182,29 @@ const Employee = () => {
 
   const handleEditModal = async (e) => {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const updatedEmployeeData = { ...editData };
+        const updatedEmployeeData = { ...editData };
 
-      // Convert birthdate to Parse.Date before sending
-      if (updatedEmployeeData.birthdate) {
-        updatedEmployeeData.birthdate = {
-          __type: "Date",
-          iso: new Date(updatedEmployeeData.birthdate).toISOString()
-        };
-      }
+        // If there is a new image, make sure it's included in the data
+        if (image) {
+            const base64Image = await toBase64(image);
+            updatedEmployeeData.profilePic = base64Image;
+        }
 
-      // If there is a new image, make sure it's included in the data
-      if (image) {
-        const base64Image = await toBase64(image);
-        updatedEmployeeData.profilePic = base64Image;
-      }
+        const response = await axios.put(
+            EMPLOYEE + `/${editData.objectId}`,
+            updatedEmployeeData
+        );
 
-      const response = await axios.put(
-        EMPLOYEE + `/${editData.objectId}`,
-        updatedEmployeeData
-      );
-      console.log("Employee updated:", response.data);
-      setIsEditModal(false);
-      toast.success("Employee updated successfully!");
+        setIsEditModal(false);
+        toast.success("Employee updated successfully!");
     } catch (error) {
-      console.error("Error updating employee:", error);
-      toast.error("Failed to update employee.");
+        console.error("Error updating employee:", error);
+        toast.error("Failed to update employee: " + error.message);
     } finally {
-      setLoading(false)
+        setLoading(false);
     }
   };
 
@@ -294,15 +286,22 @@ const Employee = () => {
     
     // Special handling for birthdate field
     if (fieldName === 'birthdate') {
-      setEditData((prevEditData) => ({
-        ...prevEditData,
-        [fieldName]: value // Store as string initially
-      }));
+        // Ensure the value is in YYYY-MM-DD format
+        const birthdateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (birthdateRegex.test(value)) {
+            setEditData((prevEditData) => ({
+                ...prevEditData,
+                [fieldName]: value // Store as string initially
+            }));
+        } else {
+            console.error("Invalid birthdate format:", value);
+            toast.error("Birthdate must be in YYYY-MM-DD format");
+        }
     } else {
-      setEditData((prevEditData) => ({
-        ...prevEditData,
-        [fieldName]: value,
-      }));
+        setEditData((prevEditData) => ({
+            ...prevEditData,
+            [fieldName]: value,
+        }));
     }
   };
 
