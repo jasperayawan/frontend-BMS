@@ -3,6 +3,7 @@ import axios from "axios";
 import { CONTACTUS } from "../helper/api";
 import toast from "react-hot-toast";
 import Parse from "parse/dist/parse.min.js";
+import { Phone, LocateIcon, MailIcon } from "lucide-react";
 
 // API call functions
 const createContactus = async (data) => {
@@ -30,7 +31,7 @@ const ContactUs = () => {
 
   // Handle opening the edit modal
   const handleEdit = () => {
-    setEditedInfo(contactInfo)
+    setEditedInfo(contactInfo);
     setIsEditing(true);
   };
 
@@ -49,7 +50,7 @@ const ContactUs = () => {
 
         if (response.success) {
           setContactInfo(response.data);
-          toast.success("SAVE CHANGES SUCCESSFULLY!")
+          toast.success("SAVE CHANGES SUCCESSFULLY!");
         } else {
           toast.error("Failed to update contact info.");
         }
@@ -59,7 +60,7 @@ const ContactUs = () => {
         if (response.success) {
           setContactInfo(response.data);
           toast.success("Contact info created successfully!");
-          window.location.reload()
+          window.location.reload();
         } else {
           toast.error("Failed to create contact info.");
         }
@@ -109,24 +110,22 @@ const ContactUs = () => {
 
   useEffect(() => {
     const fetchContactInfo = async () => {
-      try{
+      try {
         const res = await axios.get(CONTACTUS);
-        setContactInfo(res.data[0])
+        setContactInfo(res.data[0]);
+      } catch (err) {
+        console.log(err.response.data.error);
       }
-      catch(err){
-        console.log(err.response.data.error)
-      }
-    }
+    };
     fetchContactInfo();
-  },[])
-
+  }, []);
 
   return (
-    <div className="min-h-screen flex flex-col gap-y-10 justify-center items-center py-12">
-      <h1 className="text-4xl font-bold text-center text-gray-800 tracking-tight">
-        Get in Touch
+    <div className="min-h-screen flex flex-col gap-y-10 justify-center items-center pb-12">
+      <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2">
+        CONTACT US
       </h1>
-      <div className="bg-white shadow-2xl rounded-2xl p-10 max-w-4xl w-full mx-4">
+      <div className="bg-white rounded-2xl p-10 max-w-4xl w-full mx-4 shadow-lg">
         <p className="text-center text-gray-600 mb-12 text-lg">
           We're here to help! Reach out to us through any of these channels.
         </p>
@@ -134,10 +133,10 @@ const ContactUs = () => {
         {/* Contact Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Phone */}
-          <div className="transform hover:scale-105 transition-transform duration-300 bg-white p-6 rounded-xl shadow-md">
+          <div className="transform hover:scale-105 transition-transform duration-300 bg-orange-50 p-6 rounded-xl shadow-md hover:shadow-lg">
             <div className="flex items-center">
-              <div className="bg-blue-100 p-4 rounded-full">
-                <svg className="h-7 w-7 text-blue-600" /* SVG details omitted */></svg>
+              <div className="bg-orange-200 p-4 rounded-full">
+                <Phone />
               </div>
               <div className="ml-4">
                 <p className="font-semibold text-gray-800 text-lg">Phone</p>
@@ -149,10 +148,10 @@ const ContactUs = () => {
           </div>
 
           {/* Email */}
-          <div className="transform hover:scale-105 transition-transform duration-300 bg-white p-6 rounded-xl">
+          <div className="transform hover:scale-105 transition-transform duration-300 bg-orange-50 p-6 rounded-xl shadow-md hover:shadow-lg">
             <div className="flex items-center">
-              <div className="bg-blue-100 p-4 rounded-full">
-                <svg className="h-7 w-7 text-blue-600" /* SVG details omitted */></svg>
+              <div className="bg-orange-200 p-4 rounded-full">
+                <MailIcon />
               </div>
               <div className="ml-4">
                 <p className="font-semibold text-gray-800 text-lg">Email</p>
@@ -164,10 +163,10 @@ const ContactUs = () => {
           </div>
 
           {/* Location */}
-          <div className="transform hover:scale-105 transition-transform duration-300 bg-white p-6 rounded-xl shadow-md">
+          <div className="transform hover:scale-105 transition-transform duration-300 bg-orange-50 p-6 rounded-xl shadow-md hover:shadow-lg">
             <div className="flex items-center">
-              <div className="bg-blue-100 p-4 rounded-full">
-                <svg className="h-7 w-7 text-blue-600" /* SVG details omitted */></svg>
+              <div className="bg-orange-200 p-4 rounded-full">
+                <LocateIcon />
               </div>
               <div className="ml-4">
                 <p className="font-semibold text-gray-800 text-lg">Location</p>
@@ -179,29 +178,56 @@ const ContactUs = () => {
           </div>
 
           {/* Socials */}
-          <div className="transform hover:scale-105 transition-transform duration-300 bg-white p-6 rounded-xl shadow-md">
+          <div className="transform hover:scale-105 transition-transform duration-300 bg-orange-50 p-6 rounded-xl shadow-md hover:shadow-lg">
             <div className="flex items-center">
-              <div className="bg-blue-100 p-4 rounded-full">
-                <svg className="h-7 w-7 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.477 2 2 6.477 2 12c0 5.523 4.477 10 10 10s10-4.477 10-10c0-5.523-4.477-10-10-10zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm-4-9a4 4 0 108 0 4 4 0 00-8 0z"/>
+              <div className="bg-orange-200 p-4 rounded-full">
+                <svg className="h-7 w-7 text-blue-600" viewBox="0 0 24 24">
+                  <path d="M12 2C6.477 2 2 6.477 2 12c0 5.523 4.477 10 10 10s10-4.477 10-10c0-5.523-4.477-10-10-10zm0 18c-4.418 0-8-3.582-8-8s3.582-8 8-8 8 3.582 8 8-3.582 8-8 8zm-4-9a4 4 0 108 0 4 4 0 00-8 0z" />
                 </svg>
               </div>
               <div className="ml-4">
                 <p className="font-semibold text-gray-800 text-lg">Socials</p>
                 <div className="flex gap-4 mt-2">
-                  <a href={contactInfo.socials?.facebook} className="text-blue-600 hover:text-blue-800 transition-colors" target="_blank" rel="noopener noreferrer">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  <a
+                    href={contactInfo.socials?.facebook}
+                    className="text-blue-600 hover:text-blue-800 transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <svg
+                      className="h-6 w-6"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                     </svg>
                   </a>
-                  <a href={contactInfo.socials?.twitter} className="text-blue-400 hover:text-blue-600 transition-colors" target="_blank" rel="noopener noreferrer">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  <a
+                    href={contactInfo.socials?.twitter}
+                    className="text-blue-400 hover:text-blue-600 transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <svg
+                      className="h-6 w-6"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
                     </svg>
                   </a>
-                  <a href={contactInfo.socials?.linkedin} className="text-blue-700 hover:text-blue-900 transition-colors" target="_blank" rel="noopener noreferrer">
-                    <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  <a
+                    href={contactInfo.socials?.linkedin}
+                    className="text-blue-700 hover:text-blue-900 transition-colors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <svg
+                      className="h-6 w-6"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                     </svg>
                   </a>
                 </div>
@@ -211,31 +237,37 @@ const ContactUs = () => {
         </div>
 
         {/* Admin Buttons */}
-        {(user?.get('role') !== 'SECRETARY' && user?.get('role') !== 'PATIENT' && user?.get('role') === 'ADMIN') && (
-          <div className="flex justify-center gap-4 mt-12">
-            <button 
-              onClick={handleEdit} 
-              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
-            >
-              Edit
-            </button>
-            {/* <button 
+        {user?.get("role") !== "SECRETARY" &&
+          user?.get("role") !== "PATIENT" &&
+          user?.get("role") === "ADMIN" && (
+            <div className="flex justify-center gap-4 mt-12">
+              <button
+                onClick={handleEdit}
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+              >
+                Edit
+              </button>
+              {/* <button 
               onClick={handleDelete} 
               className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transform hover:scale-105 transition-all duration-300 shadow-md"
             >
               Delete
             </button> */}
-          </div>
-        )}
+            </div>
+          )}
 
         {/* Edit Modal */}
         {isEditing && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
             <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-              <h2 className="text-2xl font-bold mb-6 text-gray-800">Edit Contact Information</h2>
+              <h2 className="text-2xl font-bold mb-6 text-gray-800">
+                Edit Contact Information
+              </h2>
               <div className="space-y-6">
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2">Phone</label>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Phone
+                  </label>
                   <input
                     type="number"
                     name="phone"
@@ -245,7 +277,9 @@ const ContactUs = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2">Email</label>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Email
+                  </label>
                   <input
                     type="email"
                     name="email"
@@ -255,7 +289,9 @@ const ContactUs = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2">Location</label>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Location
+                  </label>
                   <input
                     type="text"
                     name="location"
@@ -265,7 +301,9 @@ const ContactUs = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2">Facebook</label>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Facebook
+                  </label>
                   <input
                     type="text"
                     name="facebook"
@@ -275,7 +313,9 @@ const ContactUs = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2">Twitter</label>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Twitter
+                  </label>
                   <input
                     type="text"
                     name="twitter"
@@ -285,7 +325,9 @@ const ContactUs = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2">LinkedIn</label>
+                  <label className="block text-gray-700 font-medium mb-2">
+                    LinkedIn
+                  </label>
                   <input
                     type="text"
                     name="linkedin"

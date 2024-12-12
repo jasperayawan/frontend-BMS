@@ -28,14 +28,14 @@ const router = () => {
             <Route path="/forgot" element={<ProtectedRoute element={<ForgotPass />}/>}/>
             <Route path="/reset-password" element={<ResetPassword />}/>
 
-            <Route path="/patient" element={<Patient />}/>
-            <Route path="/employee" element={<Employee />}/>
-            <Route path="/services" element={<Services />}/>
-            <Route path="/gallery" element={<Gallery />}/>
-            <Route path="/contact-us" element={<ContactUs />}/>
-            <Route path="/about-us" element={<AboutUs />}/>
-            <Route path="/users" element={<Users />}/>
-            <Route path="/myaccount" element={<MyAccount />}/>
+            <Route path="/patient" element={<ProtectedRoute element={<Patient />}/>}/>
+            <Route path="/employee" element={<ProtectedRoute element={<Employee />}/>}/>
+            <Route path="/services" element={<ProtectedRoute element={<Services />}/>}/>
+            <Route path="/gallery" element={<ProtectedRoute element={<Gallery />}/>}/>
+            <Route path="/contact-us" element={<ProtectedRoute element={<ContactUs />}/>}/>
+            <Route path="/about-us" element={<ProtectedRoute element={<AboutUs />}/>}/>
+            <Route path="/users" element={<ProtectedRoute element={<Users />}/>}/>
+            <Route path="/myaccount" element={<ProtectedRoute element={<MyAccount />}/>}/>
         </Route>
     </Routes>
   )

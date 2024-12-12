@@ -17,6 +17,13 @@ const ProtectedRoute = ({ element }) => {
 
   const protectedPathsForUnauthenticated = [
     "/home",
+    "/services",
+    "/patient",
+    "/gallery",
+    "/contact-us",
+    "/about-us",
+    "/myaccount",
+    "/users",
   ];
 
   useEffect(() => {
