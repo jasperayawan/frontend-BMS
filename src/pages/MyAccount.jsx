@@ -12,6 +12,7 @@ const MyAccount = () => {
   const [loading, setLoading] = useState(false);
   const user = Parse.User.current();
   const [error, setError] = useState(null);
+  const [isConfirmSaveOpen, setIsConfirmSaveOpen] = useState(false);
 
   const handleEditToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -32,7 +33,11 @@ const MyAccount = () => {
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = () => {
+    setIsConfirmSaveOpen(true); // Open confirmation modal
+  };
+
+  const confirmSave = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -63,6 +68,7 @@ const MyAccount = () => {
       setError(err.message);
     } finally {
       setLoading(false);
+      setIsConfirmSaveOpen(false); // Close confirmation modal
     }
   };
 
@@ -273,13 +279,35 @@ const MyAccount = () => {
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className="px-4 py-2 bg-green-500 text-white rounded disabled:bg-gray-400"
+                  className="px-4 py-2 bg-orange-500 text-white rounded disabled:bg-gray-400"
                 >
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>
                 {error && (
                   <p className="text-red-500 mt-2">{error}</p>
                 )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isConfirmSaveOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
+            <div className="bg-white flex flex-col justify-center items-center w-full max-w-lg rounded-2xl p-8">
+              <h3 className="text-xl font-bold mb-4">ARE YOU SURE YOU WANT TO SAVE?</h3>
+              <div className="flex justify-between gap-x-2">
+                <button
+                  onClick={confirmSave}
+                  className="px-4 py-2 bg-orange-500 text-white rounded"
+                >
+                  Yes
+                </button> 
+                <button
+                  onClick={() => setIsConfirmSaveOpen(false)}
+                  className="px-4 py-2 bg-red-500 text-white rounded"
+                >
+                  No
+                </button>
               </div>
             </div>
           </div>
