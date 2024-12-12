@@ -121,6 +121,8 @@ const EditPrenatal = ({
     ],
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     getPrenatalByUserIdHistory(patientDataSelected?.objectId);
   }, []);
@@ -199,6 +201,10 @@ const EditPrenatal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsModalOpen(true);
+  };
+
+  const confirmSave = async () => {
     try {
       await updatePrenatal(formData);
       toast.success("Prenatal record updated successfully");
@@ -206,7 +212,13 @@ const EditPrenatal = ({
     } catch (error) {
       console.log(error);
       toast.error("Error updating prenatal record");
+    } finally {
+      setIsModalOpen(false);
     }
+  };
+
+  const cancelSave = () => {
+    setIsModalOpen(false);
   };
 
   const handleCancel = () => {
@@ -1299,21 +1311,46 @@ const EditPrenatal = ({
           </>
         )}
 
-        {!prenatalDialog && !isPrenatalSelected && (
-          <div className="flex justify-center space-x-4 py-4">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-zinc-200 text-black rounded hover:bg-green-700"
-            >
-              {isLoading ? "Loading..." : "SAVE"}
-            </button>
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="px-4 py-2 border rounded"
-            >
-              Cancel
-            </button>
+
+       {!openTableInfo && !prenatalDialog && (
+         <div className="flex justify-center space-x-4 py-4">
+         <button
+           type="submit"
+           className="px-4 py-2 bg-zinc-200 text-black rounded hover:bg-zinc-300"
+         >
+           SAVE CHANGES
+         </button>
+         <button
+           type="button"
+           onClick={handleCancel}
+           className="px-4 py-2 border rounded"
+         >
+           Cancel
+         </button>
+       </div>
+       )}
+
+        {/* Modal for Confirmation */}
+        {isModalOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white flex flex-col justify-between items-center p-6 rounded shadow-md">
+              <h2 className="text-lg font-semibold">Confirmation</h2>
+              <p>ARE YOU SURE YOU WANT TO SAVE?</p>
+              <div className="flex justify-end space-x-4 mt-4">
+                <button
+                  onClick={confirmSave}
+                  className="px-4 py-2 bg-orange-500 text-white rounded"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={cancelSave}
+                  className="px-4 py-2 border rounded"
+                >
+                  No
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </form>

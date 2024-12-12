@@ -221,7 +221,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
             <div>
               <label className="block mb-2">WEEKS</label>
               <input 
-                type="text"
+                type="number"
                 value={formData[period.week]}
                 onChange={(e) => setFormData({...formData, [period.week]: e.target.value})}
                 className="w-full p-2 border rounded"
@@ -475,7 +475,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
               <div key={key}>
                 <label className="block mb-2">{key.toUpperCase()}</label>
                 <input 
-                  type="text" 
+                  type="number" 
                   value={value}
                   onChange={(e) => setFormData({...formData, [key]: e.target.value})}
                   className="w-full p-2 border rounded" 
