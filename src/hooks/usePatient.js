@@ -70,8 +70,54 @@ export const usePatient = () => {
     const getPatientById = async (id) => {
         try {
             const response = await axios.get(PATIENT + `/${id}`);
-            setMyProfile(response.data.patient)
-            return response.data.patient;
+            const patient = response.data.patient;
+
+            // Initialize variables for related data
+            let familyPlanning = null;
+            let prenatal = null;
+            let immunization = null;
+            let otherServices = null;
+
+            // Fetch related data for the patient with error handling
+            try {
+                const familyPlanningResponse = await axios.get(`${FAMILY_PLANNING}/user/${id}`);
+                familyPlanning = familyPlanningResponse.data.records || null;
+            } catch (error) {
+                console.warn('Error fetching family planning data:', error);
+            }
+
+            try {
+                const prenatalResponse = await axios.get(`${PRENATAL}/user/${id}`);
+                prenatal = prenatalResponse.data.data || null;
+            } catch (error) {
+                console.warn('Error fetching prenatal data:', error);
+            }
+
+            try {
+                const immunizationResponse = await axios.get(`${IMMUNIZATION}/user/${id}`);
+                immunization = immunizationResponse.data.data || null;
+            } catch (error) {
+                console.warn('Error fetching immunization data:', error);
+            }
+
+            try {
+                const otherServicesResponse = await axios.get(`${OTHER_SERVICES}/user/${id}`);
+                otherServices = otherServicesResponse.data.data || null;
+            } catch (error) {
+                console.warn('Error fetching other services data:', error);
+            }
+
+            // Combine patient data with related data
+            const patientWithDetails = {
+                ...patient,
+                familyPlanning,
+                prenatal,
+                immunization,
+                otherServices
+            };
+
+            setMyProfile(patientWithDetails);
+            return patientWithDetails; // Return the patient with details
         } catch (error) {
             console.error('Error fetching patient by ID:', error);
             throw error; // Rethrow the error for handling in the calling function

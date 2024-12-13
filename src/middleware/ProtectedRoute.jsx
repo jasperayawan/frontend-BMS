@@ -24,7 +24,8 @@ const ProtectedRoute = ({ element }) => {
     "/about-us",
     "/myaccount",
     "/users",
-    "/employee"
+    "/employee",
+    "/myprofile"
   ];
 
   useEffect(() => {
