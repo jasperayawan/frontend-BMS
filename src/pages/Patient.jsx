@@ -107,11 +107,16 @@ const Patient = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
+    // Calculate age for both 'bod' and 'emergencyBod'
     if (name === 'bod') {
-      const age = calculateAge(value);
-      setFormData((prev) => ({ ...prev, age }));
-  }
-  
+      const age = calculateAge(value); // Calculate age for 'bod'
+      setFormData((prev) => ({ ...prev, age })); // Update age for 'bod'
+    }
+
+    if (name === 'emergencyBod') {
+      const emergencyAge = calculateAge(value); // Calculate age for 'emergencyBod'
+      setFormData((prev) => ({ ...prev, emergencyAge })); // Update emergencyAge
+    }
   };
 
   const handleSubmit = async (e) => {
