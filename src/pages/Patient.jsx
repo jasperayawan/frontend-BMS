@@ -92,9 +92,26 @@ const Patient = () => {
 
   const componentRef = useRef(null);
 
+  const calculateAge = (dateString) => {
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+    }
+    return age;
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === 'bod') {
+      const age = calculateAge(value);
+      setFormData((prev) => ({ ...prev, age }));
+  }
+  
   };
 
   const handleSubmit = async (e) => {

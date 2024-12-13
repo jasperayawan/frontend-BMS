@@ -45,6 +45,7 @@ const AddPatientModal = ({
     }
   };
 
+
   return (
     <div className="fixed inset-0 bg-black/30 w-full h-full flex justify-center items-center z-50">
       {showCamera && (
@@ -179,7 +180,7 @@ const AddPatientModal = ({
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">
-                    Middle Initial
+                    Middle Name
                   </label>
                   <input
                     type="text"
