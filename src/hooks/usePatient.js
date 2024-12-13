@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 export const usePatient = () => {
     const [patientData, setPatientData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [myProfile, setMyProfile] = useState({});
     const [patientDetails, setPatientDetails] = useState({
         patient: null,
         familyPlanning: null,
@@ -66,10 +67,23 @@ export const usePatient = () => {
         }
     };
 
+    const getPatientById = async (id) => {
+        try {
+            const response = await axios.get(PATIENT + `/${id}`);
+            setMyProfile(response.data.patient)
+            return response.data.patient;
+        } catch (error) {
+            console.error('Error fetching patient by ID:', error);
+            throw error; // Rethrow the error for handling in the calling function
+        }
+    };
+
     return {
         patientData,
         patientDetails,
         getPatients,
+        getPatientById,
+        myProfile,
         isLoading
     }
 }

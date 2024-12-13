@@ -15,6 +15,7 @@ import ContactUs from "../pages/ContactUs"
 import AboutUs from "../pages/AboutUs"
 import Users from "../pages/Users"
 import MyAccount from "../pages/MyAccount"
+import MyProfile from "../pages/MyProfile"
 
 const router = () => {
   const user = Parse.User.current();
@@ -36,6 +37,7 @@ const router = () => {
             <Route path="/about-us" element={<ProtectedRoute element={<AboutUs />}/>}/>
             <Route path="/users" element={<ProtectedRoute element={<Users />}/>}/>
             <Route path="/myaccount" element={<ProtectedRoute element={<MyAccount />}/>}/>
+            <Route path="/myprofile" element={<ProtectedRoute element={<MyProfile />}/>}/>
         </Route>
     </Routes>
   )

@@ -77,6 +77,19 @@ const Header = () => {
               </li>
             )}
 
+            {isAuthenticated?.get("role") === "PATIENT" && (
+              <li
+                onClick={() => handleActiveSelect("myprofile")}
+                className={`${
+                  isActive === "myprofile" || currentRoute === "myprofile"
+                    ? "bg-yellow-500 text-white"
+                    : "hover:bg-yellow-100"
+                } rounded-md transition-colors`}
+              >
+                <a href="/myprofile" className="block px-4 py-2">MY PROFILE</a>
+              </li>
+            )}
+
             {(isAuthenticated?.get("role") === "ADMIN" ||
               isAuthenticated?.get("role") === "SECRETARY") && (
               <li
