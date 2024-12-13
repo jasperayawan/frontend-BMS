@@ -49,7 +49,7 @@ function App() {
         </div>
       )}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+        <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center">
         <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
           <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
             <button onClick={() => setShowEditConfirmModal(false)} className="">
