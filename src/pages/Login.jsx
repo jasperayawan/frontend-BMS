@@ -4,9 +4,10 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { FaEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
+import { UserIcon } from 'lucide-react'
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
@@ -17,7 +18,7 @@ const Login = () => {
     const newErrors = { email: '', password: '' };
     let isValid = true;
 
-    if (!email.trim()) {
+    if (!username.trim()) {
       newErrors.email = 'Email is required';
       isValid = false;
     }
@@ -38,7 +39,7 @@ const Login = () => {
     setLoading(true);
 
     try{
-      const loggedInUser = await Parse.User.logIn(email, password);
+      const loggedInUser = await Parse.User.logIn(username, password);
 
       const query = new Parse.Query(Parse.Role);
       query.equalTo('users', loggedInUser);
@@ -59,6 +60,7 @@ const Login = () => {
       
     } catch (error){
       toast.error("error", error);
+      console.log(error)
       setErrors(prevErrors => ({
         ...prevErrors,
         form: 'Login failed. Please check your credentials.'
@@ -91,25 +93,27 @@ const Login = () => {
 
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-zinc-100 to-zinc-200 flex justify-center items-center p-4'>
-      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
-        <form onSubmit={handleLogin} className='w-full flex flex-col space-y-6'>
+    <div className='flex justify-center items-center p-4 pt-10'>
+      <div className="bg-white rounded-lg p-8 w-full max-w-md">
+        <form onSubmit={handleLogin} className='w-full flex flex-col space-y-6 border border-orange-600 p-6 rounded-3xl'>
           <div className="text-center mb-4">
-            <h1 className="text-2xl font-bold text-zinc-800">Welcome Back</h1>
-            <p className="text-zinc-500 mt-2">Please enter your credentials to login</p>
+            <h1 className="text-2xl font-bold text-orange-500">USER LOG IN</h1>
           </div>
 
           <div className="space-y-4">
-            <label htmlFor="email" className='block'>
-              <span className="text-sm font-medium text-zinc-700">Email</span>
-              <input 
-                type="email" 
-                onChange={(e) => setEmail(e.target.value)} 
-                id='email' 
-                className='mt-1 block w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-sm shadow-sm placeholder-zinc-400
-                focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                placeholder="Enter your email"
-              />
+            <label htmlFor="email" className='block relative'>
+              <span className="text-sm font-medium text-zinc-700">Username:</span>
+              <div className="mt-1 flex items-center">
+                <input 
+                  type="text" 
+                  onChange={(e) => setUsername(e.target.value)} 
+                  id='username' 
+                  className='block w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-sm shadow-sm placeholder-zinc-400
+                  focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 pr-10'
+                  placeholder="username"
+                />
+                <UserIcon className="h-5 w-5 text-zinc-400 absolute right-3" />
+              </div>
               {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             </label>
 
@@ -121,7 +125,7 @@ const Login = () => {
                 id='password' 
                 className='mt-1 block w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-sm shadow-sm placeholder-zinc-400
                 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                placeholder="Enter your password"
+                placeholder="password"
               />
               {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
               {seePass === 'password' ? (
@@ -140,7 +144,7 @@ const Login = () => {
 
           <a 
             href="/forgot" 
-            className='text-sm text-blue-600 hover:text-blue-800 transition-colors duration-200 self-end'
+            className='text-sm text-orange-600 hover:text-orange-800 transition-colors duration-200 self-end'
           >
             Forgot Password?
           </a>
