@@ -132,10 +132,12 @@ const Patient = () => {
         ? await toBase64(formData.profilePicture)
         : null;
 
-      const formDatas = {
-        ...formData,
-        profilePicture: imageBase64,
-      };
+        const formDatas = {
+          ...formData,
+          profilePicture: imageBase64,
+          age: formData.age.toString(),
+          emergencyAge: formData.emergencyAge.toString(),
+        };
 
       const response = await axios.post(PATIENT, formDatas);
       if (response.status === 201) {
