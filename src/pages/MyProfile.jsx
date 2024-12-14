@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Parse from 'parse/dist/parse.min.js'
 import { usePatient } from '../hooks/usePatient';
 import MedicalServices from '../components/MedicalServices';
+import printTemplate from "../templates/PatientPrintTemplate.html?raw";
 
 const MyProfile = () => {
     const user = Parse.User.current();
     const { getPatientById, myProfile, getPatients } = usePatient();
     const [openMedicalHistory, setOpenMedicalHistory] = useState(false)
+    const componentRef = useRef();
 
     useEffect(() => {
         getPatientById(user?.id);
@@ -16,14 +18,58 @@ const MyProfile = () => {
     const handleMedicalServices = () => {
         setOpenMedicalHistory(true)
     }
-      console.log(myProfile)
-    if (Object.keys(myProfile).length === 0) {
-      return (
-        <div className="flex justify-center items-center">
-          <p>Loading...</p>
-        </div>
-      )
-    }
+
+
+    const handlePrint = () => {
+      const printContent = componentRef.current;
+      const printWindow = window.open("", "_blank");
+  
+      if (printWindow) {
+        try {
+          // Get the Tailwind CSS stylesheet
+          const tailwindStyles =
+            document.querySelector("style[data-tailwind]")?.innerHTML || "";
+  
+          // Replace placeholder with actual content and add Tailwind styles
+          const filledTemplate = printTemplate
+            .replace(
+              "</head>",
+              `<script src="https://cdn.tailwindcss.com"></script>
+               <style>${tailwindStyles}</style>
+               </head>`
+            )
+            .replace(
+              '<div id="content-placeholder"></div>',
+              printContent.innerHTML
+            );
+  
+          printWindow.document.write(filledTemplate);
+          printWindow.document.close();
+  
+          // Wait for Tailwind to initialize and resources to load
+          printWindow.onload = () => {
+            setTimeout(() => {
+              try {
+                printWindow.print();
+              } catch (error) {
+                console.error("Print failed:", error);
+              }
+            }, 500); // Small delay to ensure Tailwind is initialized
+          };
+        } catch (error) {
+          console.error("Error preparing print document:", error);
+        }
+      }
+    };
+
+
+  if (Object.keys(myProfile).length === 0) {
+    return (
+      <div className="flex justify-center items-center">
+        <p>Loading...</p>
+      </div>
+    )
+  }
 
 
   return (
@@ -34,7 +80,7 @@ const MyProfile = () => {
         )}
 
         {!openMedicalHistory && (
-            <div className="grid grid-cols-5 gap-5 w-full max-w-6xl p-6 border rounded-lg shadow-lg">
+            <div ref={componentRef} className="grid grid-cols-5 gap-5 w-full max-w-6xl p-6 border rounded-lg shadow-lg">
             {/* Left Column - Photo and Basic Info */}
             <div className="flex flex-col gap-3">
               <img src={myProfile?.profilePicture || "/avatarplaceholder.png"} alt="" className="w-48 h-48 object-cover rounded-lg shadow" />
@@ -230,7 +276,7 @@ const MyProfile = () => {
                   MEDICAL HISTORY
                 </button>
                 <div className="flex gap-4">
-                  <button className="px-8 py-2 border border-gray-300 rounded hover:bg-gray-50">
+                  <button onClick={handlePrint} className="px-8 py-2 border border-gray-300 rounded hover:bg-gray-50">
                     PRINT
                   </button>
                   <button type='button' className="px-8 py-2 border border-gray-300 rounded hover:bg-gray-50">
