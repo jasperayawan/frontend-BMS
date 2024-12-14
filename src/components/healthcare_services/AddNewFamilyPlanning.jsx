@@ -74,16 +74,13 @@ const AddNewFamilyPlanning = ({ patientDataSelected, setHealthCare, setIsFamilyP
               </div>
               <div>
                 <label className="block">Sex</label>
-                <select
-                  name="sex"
+                <input
+                  type="text"
+                  name="middlename"
                   value={patientDataSelected.sex}
                   readOnly
                   className="w-full border rounded p-2"
-                >
-                  <option value="">Select Sex</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                </select>
+                />
               </div>
               <div>
                 <label className="block">Birthdate</label>

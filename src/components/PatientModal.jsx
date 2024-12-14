@@ -70,25 +70,47 @@ const PatientModal = ({
     3: { key: 'OTHER SERVICES', data: otherServicesHistory }
   };
 
-  const TableRow = ({ data, type, onClick }) => (
-    <tr 
-      className="bg-white border-b hover:bg-gray-50 transition-colors cursor-pointer"
-      onClick={() => onClick(data, type)}
-    >
-      <td className="px-6 py-4 font-medium">
-        <span>{type}</span>
-      </td>
-      <td className="px-6 py-4">
-        {data?.createdAt ? new Date(data.createdAt).toLocaleDateString() : '-'}
-      </td>
-      <td className="px-6 py-4">
-        {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
-      </td>
-      <td className="px-6 py-4">
-        {data?.nurseIncharge ? `${data.nurseIncharge.name}` : '-'}
-      </td>
-    </tr>
-  );
+  const TableRow = ({ data, type, onClick }) => {
+    const familyPlanning = data?.record;
+
+    return (
+      <tr 
+        className="bg-white border-b hover:bg-gray-50 transition-colors cursor-pointer"
+        onClick={() => onClick(data, type)}
+      >
+        <td className="px-6 py-4 font-medium">
+          <span>{type}</span>
+        </td>
+        {familyPlanning ? (
+          <td className="px-6 py-4">
+            {familyPlanning?.createdAt ? new Date(familyPlanning?.createdAt).toLocaleDateString() : '-'}
+          </td>
+        ) : (
+          <td className="px-6 py-4">
+            {data?.createdAt ? new Date(data.createdAt).toLocaleDateString() : '-'}
+          </td>
+        )}
+        {familyPlanning ? (
+          <td className="px-6 py-4">
+            {familyPlanning?.createdAt ? new Date(familyPlanning?.createdAt).getFullYear() : '-'}
+          </td>
+        ) : (
+          <td className="px-6 py-4">
+            {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
+          </td>
+        )}
+        {familyPlanning ? (
+          <td className="px-6 py-4">
+            {familyPlanning?.nurseIncharge ? `${familyPlanning?.nurseIncharge.name}` : '-'}
+          </td>
+        ) : (
+          <td className="px-6 py-4">
+            {data?.nurseIncharge ? `${data.nurseIncharge.name}` : '-'}
+          </td>
+        )}
+      </tr>
+    )
+  };
 
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
