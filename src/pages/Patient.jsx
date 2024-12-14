@@ -603,7 +603,7 @@ const Patient = () => {
 
       {(!isHealthcareActive && !isModalOpen) && (
         <div className="flex flex-col gap-y-10">
-          <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
+          <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 mb-7">
             PATIENT LIST
           </h1>
           <div className="flex flex-col gap-y-3">

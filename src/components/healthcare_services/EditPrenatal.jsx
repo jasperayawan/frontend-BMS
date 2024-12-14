@@ -1,4 +1,4 @@
-import { Calendar } from "lucide-react";
+import { Calendar, X } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { usePrenatal } from "../../hooks/usePrenatal";
@@ -1332,27 +1332,36 @@ const EditPrenatal = ({
 
         {/* Modal for Confirmation */}
         {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white flex flex-col justify-between items-center p-6 rounded shadow-md">
-              <h2 className="text-lg font-semibold">Confirmation</h2>
-              <p>ARE YOU SURE YOU WANT TO SAVE?</p>
-              <div className="flex justify-end space-x-4 mt-4">
+          <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+            <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
+              <button onClick={cancelSave} className="">
+                <X />
+              </button>
+            </div>
+            <div className="flex flex-col justify-center items-center p-6">
+              <h2 className="text-xl font-bold mb-4 text-center">
+              ARE YOU SURE YOU WANT TO SAVE?
+              </h2>
+              <div className="flex justify-end gap-4">
                 <button
                   onClick={confirmSave}
-                  className="px-4 py-2 bg-orange-500 text-white rounded"
+                  className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
                 >
-                  Yes
+                  YES
                 </button>
                 <button
                   onClick={cancelSave}
-                  className="px-4 py-2 border rounded"
+                  className="px-4 py-2 bg-white hover:bg-gray-400 border border-zinc-600 transition-colors duration-200"
                 >
-                  No
+                  NO
                 </button>
               </div>
             </div>
           </div>
+        </div>
         )}
+
       </form>
     </div>
   );

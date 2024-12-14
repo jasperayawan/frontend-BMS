@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useFamilyPlanning } from "../../hooks/useFamilyPlanning";
+import { X } from "lucide-react";
 
 const EditFamilyPlanning = ({
   setHealthCare,
@@ -9,8 +10,10 @@ const EditFamilyPlanning = ({
   patientDataSelected,
   setIsHealthcareActive,
 }) => {
-  const { fetchFamilyPlanningByUserIdHistory, familyPlanningHistory } = useFamilyPlanning()
+  const { fetchFamilyPlanningByUserIdHistory, familyPlanningHistory } =
+    useFamilyPlanning();
   const [tableIndexSelected, setTableIndexSelected] = useState(null);
+  const [isSave, setIsSave] = useState(false);
   const [formData, setFormData] = useState({
     patientIdNo: "",
     email: "",
@@ -53,13 +56,15 @@ const EditFamilyPlanning = ({
   });
 
   const [showModal, setShowModal] = useState(false);
-  const { 
-    fetchFamilyPlanningByUserId, 
+  const {
+    fetchFamilyPlanningByUserId,
     familyPlanningData,
-    updateFamilyPlanningById 
+    updateFamilyPlanningById,
   } = useFamilyPlanning();
   const [isEdit, setIsEdit] = useState(false);
-  const [selectedFamilyPlanningHistory, setSelectedFamilyPlanningHistory] = useState("");
+  const [selectedFamilyPlanningHistory, setSelectedFamilyPlanningHistory] =
+    useState("");
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const handleFamilyPlanningHistory = (data, index) => {
     setSelectedFamilyPlanningHistory(data);
@@ -78,22 +83,30 @@ const EditFamilyPlanning = ({
     fetchFamilyPlanningByUserIdHistory(patientDataSelected?.objectId);
   }, []);
 
- 
   useEffect(() => {
     if (selectedFamilyPlanningHistory) {
-      setFormData(prevData => ({
+      setFormData((prevData) => ({
         ...prevData,
         // Type of Client
-        newAcceptor: selectedFamilyPlanningHistory?.record?.newAcceptor || false,
-        currentUser: selectedFamilyPlanningHistory?.record?.currentUser || false,
-        changingMethod: selectedFamilyPlanningHistory?.record?.changingMethod || false,
-        changingClinic: selectedFamilyPlanningHistory?.record?.changingClinic || false,
-        dropoutRestart: selectedFamilyPlanningHistory?.record?.dropoutRestart || false,
+        newAcceptor:
+          selectedFamilyPlanningHistory?.record?.newAcceptor || false,
+        currentUser:
+          selectedFamilyPlanningHistory?.record?.currentUser || false,
+        changingMethod:
+          selectedFamilyPlanningHistory?.record?.changingMethod || false,
+        changingClinic:
+          selectedFamilyPlanningHistory?.record?.changingClinic || false,
+        dropoutRestart:
+          selectedFamilyPlanningHistory?.record?.dropoutRestart || false,
         spacingReason: selectedFamilyPlanningHistory?.spacingReason || false,
-        medicalCondition: selectedFamilyPlanningHistory?.record?.medicalCondition || false,
-        sideEffects: selectedFamilyPlanningHistory?.record?.sideEffects || false,
-        limitingReason: selectedFamilyPlanningHistory?.record?.limitingReason || false,
-        otherReason: selectedFamilyPlanningHistory?.record?.otherReason || false,
+        medicalCondition:
+          selectedFamilyPlanningHistory?.record?.medicalCondition || false,
+        sideEffects:
+          selectedFamilyPlanningHistory?.record?.sideEffects || false,
+        limitingReason:
+          selectedFamilyPlanningHistory?.record?.limitingReason || false,
+        otherReason:
+          selectedFamilyPlanningHistory?.record?.otherReason || false,
 
         // Method Currently Used
         coc: selectedFamilyPlanningHistory?.record?.coc || false,
@@ -107,80 +120,50 @@ const EditFamilyPlanning = ({
         bbt: selectedFamilyPlanningHistory?.record?.bbt || false,
         stm: selectedFamilyPlanningHistory?.record?.stm || false,
         lam: selectedFamilyPlanningHistory?.record?.lam || false,
-        otherMethod: selectedFamilyPlanningHistory?.record?.otherMethod || false,
+        otherMethod:
+          selectedFamilyPlanningHistory?.record?.otherMethod || false,
 
         // VAW Risks
-        unpleasantRelationship: selectedFamilyPlanningHistory?.record?.unpleasantRelationship || false,
-        partnerDisapproval: familyPlanningData?.record?.partnerDisapproval || false,
-        domesticViolence: selectedFamilyPlanningHistory?.record?.domesticViolence || false,
-        referredToDSWD: selectedFamilyPlanningHistory?.record?.referredToDSWD || false,
-        referredToWCPU: selectedFamilyPlanningHistory?.record?.referredToWCPU || false,
-        referredToOthers: selectedFamilyPlanningHistory?.record?.referredToOthers || false,
+        unpleasantRelationship:
+          selectedFamilyPlanningHistory?.record?.unpleasantRelationship ||
+          false,
+        partnerDisapproval:
+          familyPlanningData?.record?.partnerDisapproval || false,
+        domesticViolence:
+          selectedFamilyPlanningHistory?.record?.domesticViolence || false,
+        referredToDSWD:
+          selectedFamilyPlanningHistory?.record?.referredToDSWD || false,
+        referredToWCPU:
+          selectedFamilyPlanningHistory?.record?.referredToWCPU || false,
+        referredToOthers:
+          selectedFamilyPlanningHistory?.record?.referredToOthers || false,
       }));
     }
   }, [familyPlanningData, selectedFamilyPlanningHistory]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
-
-  const handleSave = async () => {
+  const confirmSave = async () => {
     try {
-      // Create the payload with the form data
-      const payload = {
-        // Type of Client
-        newAcceptor: formData.newAcceptor,
-        currentUser: formData.currentUser,
-        changingMethod: formData.changingMethod,
-        changingClinic: formData.changingClinic,
-        dropoutRestart: formData.dropoutRestart,
-        spacingReason: formData.spacingReason,
-        medicalCondition: formData.medicalCondition,
-        sideEffects: formData.sideEffects,
-        limitingReason: formData.limitingReason,
-        otherReason: formData.otherReason,
-
-        // Method Currently Used
-        coc: formData.coc,
-        pop: formData.pop,
-        injectable: formData.injectable,
-        implant: formData.implant,
-        inteval: formData.inteval,
-        postPartum: formData.postPartum,
-        condom: formData.condom,
-        bomCmm: formData.bomCmm,
-        bbt: formData.bbt,
-        stm: formData.stm,
-        lam: formData.lam,
-        otherMethod: formData.otherMethod,
-
-        // VAW Risks
-        unpleasantRelationship: formData.unpleasantRelationship,
-        partnerDisapproval: formData.partnerDisapproval,
-        domesticViolence: formData.domesticViolence,
-        referredToDSWD: formData.referredToDSWD,
-        referredToWCPU: formData.referredToWCPU,
-        referredToOthers: formData.referredToOthers,
-      };
-
-      // Call the update function with the family planning ID and payload
-      await updateFamilyPlanningById(selectedFamilyPlanningHistory?.record?.objectId, payload);
-      
-      // Close the modal after successful update
-      setShowModal(false);
-      
-      // Refresh the data
-      await fetchFamilyPlanningByUserId(patientDataSelected?.objectId);
-      
+      await updateFamilyPlanningById(
+        selectedFamilyPlanningHistory?.record.objectId,
+        formData
+      );
+      window.location.reload();
+      setShowConfirmationModal(false);
     } catch (error) {
-      console.error('Error saving family planning data:', error);
-      // Error handling is already done in the updateFamilyPlanningById function
+      console.error("Failed to save changes:", error);
     }
+  };
+
+  const handleSave = () => {
+    setShowConfirmationModal(true);
   };
 
   return (
@@ -1082,13 +1065,16 @@ const EditFamilyPlanning = ({
                         </div>
 
                         <div className="flex justify-center items-center gap-x-2 mt-5">
-                          <button 
+                          <button
                             className="px-4 py-1 border-[1px] border-zinc-700 bg-zinc-200"
                             onClick={handleSave}
                           >
                             Save Changes
                           </button>
-                          <button onClick={() => handleEdit(" ")} className="px-4 py-1 border-[1px] border-zinc-700 bg-zinc-200">
+                          <button
+                            onClick={() => handleEdit(" ")}
+                            className="px-4 py-1 border-[1px] border-zinc-700 bg-zinc-200"
+                          >
                             Back
                           </button>
                         </div>
@@ -1115,22 +1101,29 @@ const EditFamilyPlanning = ({
                           <tbody>
                             {Array.isArray(familyPlanningHistory) &&
                               familyPlanningHistory.map((item, index) => (
-                                <tr 
+                                <tr
                                   key={index}
-                                  onClick={() => handleFamilyPlanningHistory(item, index)}
-                                  className={`${tableIndexSelected === index ? 'bg-yellow-500' : ''} cursor-pointer`}
-                              >
-                                <td className="border border-gray-300 px-6 py-4 text-sm text-gray-800">
-                                  Family Planning
-                                </td>
-                                <td className="border border-gray-300 px-6 py-4 text-sm text-gray-800">
-                                  {new Date(
-                                    item.record.createdAt
-                                  ).getFullYear()}
-                                </td>
-                                <td className="border border-gray-300 px-6 py-4 text-sm text-gray-800">
-                                {item.record.nurseIncharge.name} {item.record.nurseIncharge.username}
-                                </td>
+                                  onClick={() =>
+                                    handleFamilyPlanningHistory(item, index)
+                                  }
+                                  className={`${
+                                    tableIndexSelected === index
+                                      ? "bg-yellow-500"
+                                      : ""
+                                  } cursor-pointer`}
+                                >
+                                  <td className="border border-gray-300 px-6 py-4 text-sm text-gray-800">
+                                    Family Planning
+                                  </td>
+                                  <td className="border border-gray-300 px-6 py-4 text-sm text-gray-800">
+                                    {new Date(
+                                      item.record.createdAt
+                                    ).getFullYear()}
+                                  </td>
+                                  <td className="border border-gray-300 px-6 py-4 text-sm text-gray-800">
+                                    {item.record.nurseIncharge.name}{" "}
+                                    {item.record.nurseIncharge.username}
+                                  </td>
                                 </tr>
                               ))}
                           </tbody>
@@ -1142,7 +1135,10 @@ const EditFamilyPlanning = ({
                           >
                             Edit
                           </button>
-                          <button onClick={() => setShowModal(false)} className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                          <button
+                            onClick={() => setShowModal(false)}
+                            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                          >
                             Cancel
                           </button>
                         </div>
@@ -1151,42 +1147,39 @@ const EditFamilyPlanning = ({
                   </div>
                 </div>
               )}
-              {/* <div className="mt-5">
-                <div className="flex flex-row gap-x-4 space-x-5">
-                  <div className="flex flex-col">
-                    <h5 className="text-[12px] font-semibold">Method Used</h5>
-                    <select 
-                      className="text-[14px] border rounded p-1"
-                      value={formData.methodUsed}
-                      onChange={(e) => setFormData({...formData, methodUsed: e.target.value})}
-                    >
-                      <option value="">Select Method</option>
-                      <option value="pills">Pills</option>
-                      <option value="iud">IUD</option>
-                      <option value="injection">Injection</option>
-                    </select>
-                  </div>
-                  <div className="flex flex-col">
-                    <h5 className="text-[12px] font-semibold">Date Started</h5>
-                    <input 
-                      type="date" 
-                      className="text-[14px] border rounded p-1"
-                      value={formData.dateStarted}
-                      onChange={(e) => setFormData({...formData, dateStarted: e.target.value})}
-                    />
+              {showConfirmationModal && (
+                <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+                  <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+                    <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
+                      <button
+                        onClick={() => setShowConfirmationModal(false)}
+                        className=""
+                      >
+                        <X />
+                      </button>
+                    </div>
+                    <div className="flex flex-col justify-center items-center p-6">
+                      <h2 className="text-xl font-bold mb-4 text-center">
+                        ARE YOU SURE YOU WANT TO SAVE?
+                      </h2>
+                      <div className="flex justify-end gap-4">
+                        <button
+                          onClick={confirmSave}
+                          className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+                        >
+                          YES
+                        </button>
+                        <button
+                          onClick={() => setShowConfirmationModal(false)}
+                          className="px-4 py-2 bg-white hover:bg-gray-400 border border-zinc-600 transition-colors duration-200"
+                        >
+                          NO
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <div className="flex flex-col">
-                  <h5 className="text-[12px] font-semibold">Notes</h5>
-                  <textarea 
-                    className="border rounded p-2 text-[14px]" 
-                    rows="3"
-                    value={formData.notes}
-                    onChange={(e) => setFormData({...formData, notes: e.target.value})}
-                  ></textarea>
-                </div>
-              </div> */}
+              )}
 
               <div className="flex justify-end gap-x-2 mt-4">
                 <button

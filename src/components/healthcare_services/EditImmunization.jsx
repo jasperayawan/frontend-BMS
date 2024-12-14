@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useImmunization } from "../../hooks/useImmunization";
+import { X } from "lucide-react";
 
 const EditImmunization = ({
   patientDataSelected,
@@ -47,6 +48,8 @@ const EditImmunization = ({
     },
   ]);
 
+  const [showModal, setShowModal] = useState(false);
+
   useEffect(() => {
     const fetchImmunizationData = async () => {
       try {
@@ -79,7 +82,10 @@ const EditImmunization = ({
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setShowModal(true);
+  };
 
+  const confirmSave = async () => {
     try {
       const payload = {
         ...formData,
@@ -100,7 +106,13 @@ const EditImmunization = ({
       setIsHealthcareActive(false);
     } catch (error) {
       console.error(error);
+    } finally {
+      setShowModal(false);
     }
+  };
+
+  const handleCancelModal = () => {
+    setShowModal(false);
   };
 
   const handleCancel = () => {
@@ -975,6 +987,39 @@ const EditImmunization = ({
           )}
         </form>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+        <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+          <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
+            <button onClick={handleCancelModal} className="">
+              <X />
+            </button>
+          </div>
+          <div className="flex flex-col justify-center items-center p-6">
+            <h2 className="text-xl font-bold mb-4 text-center">
+            ARE YOU SURE YOU WANT TO SAVE?
+            </h2>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={confirmSave}
+                className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+              >
+                YES
+              </button>
+              <button
+                onClick={handleCancelModal}
+                className="px-4 py-2 bg-white hover:bg-gray-400 border border-zinc-600 transition-colors duration-200"
+              >
+                NO
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      )}
+
+
     </div>
   );
 };

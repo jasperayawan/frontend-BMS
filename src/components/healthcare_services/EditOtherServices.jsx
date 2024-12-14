@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useOtherServices from "../../hooks/useOtherServices";
 import toast from "react-hot-toast";
+import { X } from "lucide-react";
 
 const EditOtherServices = ({
   setHealthCare,
@@ -12,6 +13,7 @@ const EditOtherServices = ({
   const [isEdit, setIsEdit] = useState(false);
   const [selectedOtherServicesHistory, setSelectedOtherServicesHistory] = useState(null);
   const [tableIndexSelected, setTableIndexSelected] = useState(null);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const {
     getOtherServiceHistory,
     otherServicesHistory,
@@ -63,10 +65,14 @@ const EditOtherServices = ({
     setTableIndexSelected(index);
   };
 
+  const confirmSave = async () => {
+    setShowConfirmationModal(false);
+  };
+
   return (
     <div className="flex justify-center items-center">
       <div className="bg-white p-6 rounded-lg w-[800px]">
-        <form className="space-y-4">
+        <form className="" onSubmit={(e) => { e.preventDefault(); setShowConfirmationModal(true); }}>
           <div className="max-w-7xl mx-auto space-y-6">
             <div className="bg-white rounded-[12px] min-w-[500px] relative p-4">
               <div className="w-full">
@@ -416,7 +422,7 @@ const EditOtherServices = ({
           </div>
 
           {showModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="fixed inset-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center">
               <div className="bg-white p-6 rounded-lg shadow-lg max-h-[600px] overflow-y-auto w-[max-content]">
                 {isEdit ? (
                   <div className="flex flex-col gap-y-1 w-full">
@@ -643,7 +649,7 @@ const EditOtherServices = ({
                     {/* Action Buttons */}
                     <div className="flex justify-center items-center gap-x-2 mt-5">
                       <button
-                        onClick={handleSubmit}
+                        onClick={confirmSave}
                         className="px-4 py-2 border-[1px] border-zinc-700 bg-zinc-200 rounded hover:bg-zinc-300"
                       >
                         Save Changes
@@ -722,6 +728,41 @@ const EditOtherServices = ({
                     </div>
                   </div>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Confirmation Modal */}
+          {showConfirmationModal && (
+            <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+              <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+                <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
+                  <button
+                    onClick={() => setShowConfirmationModal(false)}
+                    className=""
+                  >
+                    <X />
+                  </button>
+                </div>
+                <div className="flex flex-col justify-center items-center p-6">
+                  <h2 className="text-xl font-bold mb-4 text-center">
+                    ARE YOU SURE YOU WANT TO SAVE?
+                  </h2>
+                  <div className="flex justify-end gap-4">
+                    <button
+                      onClick={handleSubmit}
+                      className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+                    >
+                      YES
+                    </button>
+                    <button
+                      onClick={() => setShowConfirmationModal(false)}
+                      className="px-4 py-2 bg-white hover:bg-gray-400 border border-zinc-600 transition-colors duration-200"
+                    >
+                      NO
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           )}
