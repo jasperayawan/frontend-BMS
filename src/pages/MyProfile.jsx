@@ -209,65 +209,95 @@ const MyProfile = () => {
               {/* Emergency Contact Section */}
               <div className="col-span-3 mt-8 border-t pt-6">
                 <h2 className="text-lg font-semibold mb-4">EMERGENCY CONTACT PERSON</h2>
-                <div className="grid grid-cols-3 gap-4">
-                  {/* Left Column */}
-                  <div className="space-y-2">
-                    <div>
-                      <p className="text-gray-600 text-sm">LASTNAME:</p>
-                      <p className="font-semibold">{myProfile?.emergencyLastName}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600 text-sm">ADDRESS:</p>
-                      <p className="font-semibold">{myProfile?.emergencyAddress}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600 text-sm">RELIGION:</p>
-                      <p className="font-semibold">{myProfile?.emergencyReligion}</p>
-                    </div>
-                  </div>
-    
-                  {/* Middle Column */}
-                  <div className="space-y-2">
-                    <div>
-                      <p className="text-gray-600 text-sm">FIRSTNAME:</p>
-                      <p className="font-semibold">{myProfile?.emergencyFirstName}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600 text-sm">BIRTHDATE:</p>
-                      <p className="font-semibold">{myProfile?.emergencyBod}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600 text-sm">CONTACT NO:</p>
-                      <p className="font-semibold">{myProfile?.emergencyContact}</p>
-                    </div>
-                  </div>
-    
-                  {/* Right Column */}
-                  <div className="space-y-2">
-                    <div>
-                      <p className="text-gray-600 text-sm">MIDDLE NAME:</p>
-                      <p className="font-semibold">{myProfile?.emergencyInitial}</p>
-                    </div>
-                    <div>
-                      <p className="text-gray-600 text-sm">AGE:</p>
-                      <p className="font-semibold">{myProfile?.emergencyAge}</p>
-                    </div>
-                  </div>
-    
-                  {/* Additional Info */}
+                <div className="grid grid-cols-4 gap-4">
+                {/* Left Column */}
+                <div className="space-y-2">
                   <div>
-                    <p className="text-gray-600 text-sm">RELATIONSHIP:</p>
-                    <p className="font-semibold">{myProfile?.emergencyRelationship}</p>
+                    <p className="text-gray-600 text-sm">LASTNAME:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyLastName}
+                    </p>
                   </div>
                   <div>
-                    <p className="text-gray-600 text-sm">OCCUPATION:</p>
-                    <p className="font-semibold">{myProfile?.emergencyOccupation}</p>
+                    <p className="text-gray-600 text-sm">ADDRESS:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyAddress}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">CIVIL STATUS:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyCivilStatus}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Middle Column */}
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-gray-600 text-sm">FIRSTNAME:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyFirstName}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">BIRTHDATE:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyBod}
+                    </p>
                   </div>
                   <div>
                     <p className="text-gray-600 text-sm">NATIONALITY:</p>
-                    <p className="font-semibold">{myProfile?.emergencyNationality}</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyNationality}
+                    </p>
                   </div>
                 </div>
+
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-gray-600 text-sm">MIDDLE INITIAL:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyInitial}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">AGE:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyAge}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">RELIGION:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyReligion}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-2">
+                  
+                  <div>
+                    <p className="text-gray-600 text-sm">RELATIONSHIP:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyRelationship}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">OCCUPATION:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyOccupation}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">CONTACT NO:</p>
+                    <p className="font-semibold">
+                      {myProfile?.emergencyContact}
+                    </p>
+                  </div>
+                </div>
+              </div>
               </div>
     
               {/* Action Buttons */}
@@ -279,13 +309,10 @@ const MyProfile = () => {
                   <button onClick={handlePrint} className="px-8 py-2 border border-gray-300 rounded hover:bg-gray-50">
                     PRINT
                   </button>
-                  <button type='button' className="px-8 py-2 border border-gray-300 rounded hover:bg-gray-50">
-                    BACK
-                  </button>
                 </div>
               </div>
             </div>
-          </div>
+            </div>
         )}
     </div>
   )

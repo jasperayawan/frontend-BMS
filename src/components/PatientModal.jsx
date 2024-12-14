@@ -3,8 +3,7 @@ import { useImmunization } from "../hooks/useImmunization";
 import { usePrenatal } from "../hooks/usePrenatal";
 import { useFamilyPlanning } from "../hooks/useFamilyPlanning";
 import useOtherServices from "../hooks/useOtherServices";
-import PatientHistoryDetails from './PatientHistoryDetails';
-import { Avatar, ScrollArea, Theme } from "@radix-ui/themes";
+import HistoryDetails from "./healthcare_services/specificDetailsHistory/HistoryDetails";
 
 const PatientModal = ({
   patientData,
@@ -13,514 +12,554 @@ const PatientModal = ({
   handlePrint,
   componentRef,
   setIsPatientSelect,
-  patientDataSelected
+  patientDataSelected,
 }) => {
   const [isPatientHistory, setIsPatientHistory] = useState(false);
-  const [historyIndex, setHistoryIndex] = useState(0);
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [selectedHistoryType, setSelectedHistoryType] = useState("");
   const { getPrenatalByUserIdHistory, prenatalHistory } = usePrenatal();
-  const { getImmunizationByPatientHistory, immunizationHistory } = useImmunization();
-  const { fetchFamilyPlanningByUserIdHistory, familyPlanningHistory } = useFamilyPlanning();
+  const { getImmunizationByPatientHistory, immunizationHistory } =
+    useImmunization();
+  const { fetchFamilyPlanningByUserIdHistory, familyPlanningHistory } =
+    useFamilyPlanning();
   const { getOtherServiceHistory, otherServicesHistory } = useOtherServices();
+  const [activeTab, setActiveTab] = useState("PRENATAL");
+  const [specificHistoryData, setSpecificHistoryData] = useState({});
+  const [tableIndexSelected, setTableIndexSelected] = useState(null);
+  const [isViewDetails, setIsViewDetails] = useState(false);
 
-  const symptoms = [
-    "Edema",
-    "Constipation", 
-    "Nausea/Vomiting",
-    "Leg Cramps",
-    "Hemorrhoids",
-    "Heartburn"
+
+  const tabs = [
+    "PRENATAL CARE",
+    "IMMUNIZATION",
+    "FAMILY PLANNING",
+    "OTHER SERVICES",
   ];
 
-  useEffect(() => {
-    getImmunizationByPatientHistory(patientData?.objectId)
-  }, [patientData?.objectId])
-
-  useEffect(() => {
-    getPrenatalByUserIdHistory(patientData?.objectId)
-  }, [patientData?.objectId])
-
-  useEffect(() => {
-    fetchFamilyPlanningByUserIdHistory(patientData?.objectId)
-  }, [patientData?.objectId])
-
-  useEffect(() => {
-    getOtherServiceHistory(patientData?.objectId)
-  }, [patientData?.objectId])
-
-  const handleRowClick = (data, type) => {
-    setSelectedRow({
-      ...data,
-      type: type
-    });
-    setSelectedHistoryType(type);
+  const handleSelectionTableRow = (data, i) => {
+    setSpecificHistoryData(data);
+    setTableIndexSelected(i);
+    setIsViewDetails(false);
   };
 
-  const handleBackClick = () => {
-    setSelectedRow(null);
-    setSelectedHistoryType("");
-  };
-  
-
-  const HISTORY_TYPES = {
-    0: { key: 'PRENATAL', data: prenatalHistory },
-    1: { key: 'IMMUNIZATION', data: immunizationHistory },
-    2: { key: 'FAMILY PLANNING', data: familyPlanningHistory },
-    3: { key: 'OTHER SERVICES', data: otherServicesHistory }
+  const handleTabsSelection = (tab) => {
+    setActiveTab(tab);
+    setTableIndexSelected(null);
+    setIsViewDetails(false);
   };
 
-  const TableRow = ({ data, type, onClick }) => {
-    const familyPlanning = data?.record;
-
-    return (
-      <tr 
-        className="bg-white border-b hover:bg-gray-50 transition-colors cursor-pointer"
-        onClick={() => onClick(data, type)}
-      >
-        <td className="px-6 py-4 font-medium">
-          <span>{type}</span>
-        </td>
-        {familyPlanning ? (
-          <td className="px-6 py-4">
-            {familyPlanning?.createdAt ? new Date(familyPlanning?.createdAt).toLocaleDateString() : '-'}
-          </td>
-        ) : (
-          <td className="px-6 py-4">
-            {data?.createdAt ? new Date(data.createdAt).toLocaleDateString() : '-'}
-          </td>
-        )}
-        {familyPlanning ? (
-          <td className="px-6 py-4">
-            {familyPlanning?.createdAt ? new Date(familyPlanning?.createdAt).getFullYear() : '-'}
-          </td>
-        ) : (
-          <td className="px-6 py-4">
-            {data?.createdAt ? new Date(data.createdAt).getFullYear() : '-'}
-          </td>
-        )}
-        {familyPlanning ? (
-          <td className="px-6 py-4">
-            {familyPlanning?.nurseIncharge ? `${familyPlanning?.nurseIncharge.name}` : '-'}
-          </td>
-        ) : (
-          <td className="px-6 py-4">
-            {data?.nurseIncharge ? `${data.nurseIncharge.name}` : '-'}
-          </td>
-        )}
-      </tr>
-    )
+  const handleViewDetailsRow = () => {
+    setIsViewDetails(true);
   };
+
+  const handleCloseHistoryDetails = () => {
+    setTableIndexSelected(null);
+    setIsViewDetails(false);
+  };
+
+  useEffect(() => {
+    getImmunizationByPatientHistory(patientData?.objectId);
+  }, [patientData?.objectId]);
+
+  useEffect(() => {
+    getPrenatalByUserIdHistory(patientData?.objectId);
+  }, [patientData?.objectId]);
+
+  useEffect(() => {
+    fetchFamilyPlanningByUserIdHistory(patientData?.objectId);
+  }, [patientData?.objectId]);
+
+  useEffect(() => {
+    getOtherServiceHistory(patientData?.objectId);
+  }, [patientData?.objectId]);
+
+
 
   return (
-    <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
-      {isPatientHistory ? (
-        <div className="bg-white flex flex-col justify-between items-center rounded-[12px] min-w-[500px] h-[600px] relative overflow-y-auto">
-        <div className="flex flex-col h-full">
-        <h2 className="text-center py-2">Patient History</h2>
-        
-        {!selectedRow && (
-          <div className="flex flex-row gap-x-1 p-4 border-b">
-            {[
-              { label: 'PRENATAL', index: 0 },
-              { label: 'IMMUNIZATION', index: 1 },
-              { label: 'FAMILY PLANNING', index: 2 },
-              { label: 'OTHER SERVICES', index: 3 }
-            ].map((tab) => (
-              <button
-                key={tab.index}
-                onClick={() => setHistoryIndex(tab.index)}
-                className={`
-                  px-6 py-2.5
-                  text-sm font-medium
-                  transition-all duration-200
-                  rounded-lg
-                  ${historyIndex === tab.index 
-                    ? 'bg-yellow-500 text-white shadow-sm' 
-                    : 'text-gray-600 hover:bg-gray-100'
-                  }
-                `}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        )}
+    <div className="">
+      {!isPatientHistory && (
+        <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
+        PATIENT PROFILE
+      </h1>
+      )}
       
-        {!selectedRow ? (
-         <div className="flex flex-col justify-between items-center h-full">
-           <div className="w-full overflow-x-auto">
-             <table className="w-full text-sm text-left">
-               <thead className="bg-yellow-500 text-white">
-                 <tr>
-                   <th scope="col" className="px-6 py-3 font-semibold">
-                     HEALTH SERVICES
-                   </th>
-                   <th scope="col" className="px-6 py-3 font-semibold">
-                     DATE
-                   </th>
-                   <th scope="col" className="px-6 py-3 font-semibold">
-                     YEAR
-                   </th>
-                   <th scope="col" className="px-6 py-3 font-semibold">
-                     NURSE INCHARGE
-                   </th>
-                 </tr>
-               </thead>
-               <tbody>
-                 {(() => {
-                   const currentType = HISTORY_TYPES[historyIndex];
-                   const records = currentType?.data;
+      {isPatientHistory ? (
+        <div className="bg-white flex flex-col justify-between items-center relative">
+          <div className="flex flex-col h-full">
+            {!isViewDetails && (
+              <h2 className="text-2xl uppercase text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
+                PATIENT HISTORY RECORD OF {patientDataSelected?.firstname} {patientDataSelected?.lastname}
+              </h2>
+            )}
+            {(!isViewDetails || tableIndexSelected === null) && (
+              <div className="flex flex-col">
+              <div className="flex relative mb-[-1px]">
+                {tabs.map((tab, index) => (
+                  <button
+                    key={tab}
+                    onClick={() => handleTabsSelection(tab)}
+                    className={`
+                  px-6 py-2 min-w-[200px] font-bold
+                  ${
+                    activeTab === tab
+                      ? "bg-yellow-400 text-black border-2 border-black z-10 rounded-t-lg"
+                      : "bg-white border-2 border-black rounded-t-lg -ml-2 first:ml-0"
+                  }
+                  ${index > 0 && "transform translate-x-[-1px]"}
+                `}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
 
-                   if (!Array.isArray(records) || records.length === 0) {
-                     return (
-                       <tr>
-                         <td colSpan="4" className="px-6 py-8 text-center text-gray-500">
-                           No records found for {currentType?.key}
-                         </td>
-                       </tr>
-                     );
-                   }
+              {/* Content */}
+              <div className="border-2 border-black">
+                {/* Header */}
+                <div className="grid grid-cols-3 bg-yellow-400 font-bold text-center border-2 border-black">
+                  <div className="py-2 px-4">HEALTH SERVICES</div>
+                  <div className="py-2 px-4 border-l-2 border-r-2 border-black">
+                    YEAR
+                  </div>
+                  <div className="py-2 px-4">NURSE INCHARGE</div>
+                </div>
 
-                   return records.map((data, index) => (
-                     <TableRow 
-                       key={data.objectId || index}
-                       data={data}
-                       type={currentType.key}
-                       onClick={handleRowClick}
-                     />
-                   ));
-                 })()}
-               </tbody>
-             </table>
-           </div>
-           <button 
-             onClick={() => {
-               setIsPatientHistory(!isPatientHistory);
-               setIsModalOpen(true);
-             }} 
-             className="px-6 py-3 mt-4 bg-gray-200 hover:bg-gray-300 rounded-md transition-colors"
-           >
-             Back
-           </button>
-         </div>
-        ) : (
-          <div className="w-full">
-            <PatientHistoryDetails 
-              componentRef={componentRef}
-              selectedRow={selectedRow}
-              symptoms={symptoms}
-              patientDataSelected={patientDataSelected}
-              handleBackClick={handleBackClick}
-              handlePrint={handlePrint}
-            />
-          </div>
-        )}
-        </div>
-      </div>      
-      ) : (
-        <ScrollArea className="bg-gray-50 rounded-lg p-4" style={{ width: '700px', height: '600px' }}>
-        <div ref={componentRef} className="w-full">
-          <div className="flex gap-x-6 formContainer">
-            <div className="flex flex-col gap-y-2 InitInnerformContainer">
-              <Avatar
-                size="2"
-                src={patientData.profilePicture}
-                fallback="A"
-                className="h-[192px] w-[192px]"
+                {/* Table Content */}
+                <div className="min-h-[300px]">
+                  {activeTab === "PRENATAL CARE" &&
+                    patientDataSelected?.prenatal.length > 0 &&
+                    Array.isArray(patientDataSelected.prenatal) &&
+                    patientDataSelected.prenatal.map((data, i) => (
+                      <div
+                        key={i}
+                        onClick={() => handleSelectionTableRow(data, i)}
+                        className={`${
+                          tableIndexSelected === i &&
+                          activeTab === "PRENATAL CARE"
+                            ? "bg-orange-100"
+                            : ""
+                        } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
+                      >
+                        <div className="py-3 px-4">{activeTab}</div>
+                        <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                          {new Date(data.createdAt).getFullYear()}
+                        </div>
+                        <div className="py-3 px-4">
+                          {data.nurseIncharge.name}
+                        </div>
+                      </div>
+                    ))}
+
+                  {activeTab === "IMMUNIZATION" &&
+                    patientDataSelected?.immunization.length > 0 &&
+                    Array.isArray(patientDataSelected.immunization) &&
+                    patientDataSelected.immunization.map((data, i) => (
+                      <div
+                        key={i}
+                        onClick={() => handleSelectionTableRow(data, i)}
+                        className={`${
+                          tableIndexSelected === i &&
+                          activeTab === "IMMUNIZATION"
+                            ? "bg-orange-100"
+                            : ""
+                        } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
+                      >
+                        <div className="py-3 px-4">{activeTab}</div>
+                        <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                          {new Date(data.createdAt).getFullYear()}
+                        </div>
+                        <div className="py-3 px-4">
+                          {data.nurseIncharge.name}
+                        </div>
+                      </div>
+                    ))}
+
+                  {activeTab === "FAMILY PLANNING" &&
+                    patientDataSelected?.familyPlanning.length > 0 &&
+                    Array.isArray(patientDataSelected.familyPlanning) &&
+                    patientDataSelected.familyPlanning.map((data, i) => (
+                      <div
+                        key={i}
+                        onClick={() => handleSelectionTableRow(data, i)}
+                        className={`${
+                          tableIndexSelected === i &&
+                          activeTab === "FAMILY PLANNING"
+                            ? "bg-orange-100"
+                            : ""
+                        } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
+                      >
+                        <div className="py-3 px-4">{activeTab}</div>
+                        <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                          {new Date(data.record.createdAt).getFullYear()}
+                        </div>
+                        <div className="py-3 px-4">
+                          {data.record.nurseIncharge?.name}
+                        </div>
+                      </div>
+                    ))}
+
+                  {activeTab === "OTHER SERVICES" &&
+                    patientDataSelected?.otherServices.length > 0 &&
+                    Array.isArray(patientDataSelected.otherServices) &&
+                    patientDataSelected.otherServices.map((data, i) => (
+                      <div
+                        key={i}
+                        onClick={() => handleSelectionTableRow(data, i)}
+                        className={`${
+                          tableIndexSelected === i &&
+                          activeTab === "OTHER SERVICES"
+                            ? "bg-orange-100"
+                            : ""
+                        } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
+                      >
+                        <div className="py-3 px-4">{activeTab}</div>
+                        <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                          {new Date(data.createdAt).getFullYear()}
+                        </div>
+                        <div className="py-3 px-4">
+                          {data.nurseIncharge?.name}
+                        </div>
+                      </div>
+                    ))}
+                </div>
+
+                {/* Buttons */}
+                <div className="flex justify-center gap-4 mt-4">
+                  <button
+                    onClick={handleViewDetailsRow}
+                    className="px-12 py-2 border-2 border-black hover:bg-gray-100"
+                  >
+                    VIEW
+                  </button>
+                  <button
+                    onClick={() => setIsPatientHistory(false)}
+                    className="px-12 py-2 border-2 border-black hover:bg-gray-100"
+                  >
+                    BACK
+                  </button>
+                </div>
+              </div>
+            </div>
+            )}
+
+            {isViewDetails && tableIndexSelected !== null && (
+              <HistoryDetails
+                specificHistoryData={specificHistoryData}
+                myProfile={patientDataSelected}
+                activeTab={activeTab}
+                handlePrint={handlePrint}
+                componentRef={componentRef}
+                handleCloseHistoryDetails={handleCloseHistoryDetails}
               />
-              <div className="flex flex-col gap-y-1">
-                <div className="flex flex-col justify-start items-start gap-x-1">
-                  <p className="text-[12px] font-semibold">PATIENT ID NO.</p>
-                  <span className="text-[12px]">
-                    {patientData.patientIdNo}
-                  </span>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-1">
-                  <p className="text-[12px] font-semibold">Email.</p>
-                  <span className="text-[12px]">{patientData.email}</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col gap-y-5 secondInnerformContainer">
-              <div className="flex flex-row gap-x-4 space-x-5 secondInnerformContainer_child">
-                <div className="flex flex-col">
-                  <h5 className="text-[12px] font-semibold">Last Name</h5>
-                  <p className="text-[14px]">{patientData.lastname}</p>
-                </div>
-                <div className="flex flex-col">
-                  <h5 className="text-[12px] font-semibold">First Name</h5>
-                  <p className="text-[14px]">{patientData.firstname}</p>
-                </div>
-                <div className="flex flex-col">
-                  <h5 className="text-[12px] font-semibold">
-                    Middle Initial
-                  </h5>
-                  <p className="text-[14px]">{patientData.middleInitial}</p>
-                </div>
-                <div className="flex flex-col">
-                  <h5 className="text-[12px] font-semibold">Civil Status</h5>
-                  <p className="text-[14px]">{patientData.civilStatus}</p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-x-1 space-x-5 secondInnerformContainer_child">
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Purok
-                  </h5>
-                  <p className="text-[14px]">{patientData.purok}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Barangay
-                  </h5>
-                  <p className="text-[14px]">{patientData.barangay}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Municipality
-                  </h5>
-                  <p className="text-[14px]">{patientData.municipality}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Province
-                  </h5>
-                  <p className="text-[14px]">{patientData.province}</p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-x-1 space-x-5 secondInnerformContainer_child">
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Birth Date
-                  </h5>
-                  <p className="text-[14px]">{patientData.bod}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">Age</h5>
-                  <p className="text-[14px]">{patientData.age}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Municipality
-                  </h5>
-                  <p className="text-[14px]">{patientData.municipality}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Religion
-                  </h5>
-                  <p className="text-[14px]">{patientData.religion}</p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-x-1 space-x-5 secondInnerformContainer_child">
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Birth Place
-                  </h5>
-                  <p className="text-[14px]">{patientData.birthPlace}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Blood Type
-                  </h5>
-                  <p className="text-[14px]">{patientData.bloodType}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Contact No
-                  </h5>
-                  <p className="text-[14px]">{patientData.contact}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Occupation
-                  </h5>
-                  <p className="text-[14px]">{patientData.occupation}</p>
-                </div>
-              </div>
-              <div className="flex flex-row gap-x-1 space-x-5 secondInnerformContainer_child">
-                <div className="flex flex-col justify-start items-center gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    House Hold Montly Income
-                  </h5>
-                  <p className="text-[14px]">
-                    {patientData.houseHoldMonthlyIncome}
-                  </p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    No. living child
-                  </h5>
-                  <p className="text-[14px]">{patientData.livingChild}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    No. Non living child
-                  </h5>
-                  <p className="text-[14px]">{patientData.nonLivingChild}</p>
-                </div>
-                <div className="flex flex-col justify-start items-start gap-x-4">
-                  <h5 className="text-[12px] font-semibold uppercase">
-                    Contact No
-                  </h5>
-                  <p className="text-[14px]">{patientData.contact}</p>
-                </div>
-              </div>
-              <div className="flex flex-col justify-start items-start gap-x-4">
-                <h5 className="text-[12px] font-semibold uppercase">
-                  Occupation
-                </h5>
-                <div className="flex flex-row gap-x-2">
-                  <input
-                    type="radio"
-                    id="html"
-                    name="support"
-                    value="4ps"
-                    checked={patientData.healthcareAssistance === "4ps"}
-                  />
-                  <label htmlFor="html" className="text-[12px]">
-                    4PS
-                  </label>
-
-                  <input
-                    type="radio"
-                    id="css"
-                    name="support"
-                    value="indigent"
-                    checked={patientData.healthcareAssistance === "indigent"}
-                  />
-                  <label htmlFor="indigent" className="text-[12px]">
-                    INDIGENT
-                  </label>
-
-                  <input
-                    type="radio"
-                    id="javascript"
-                    name="support"
-                    value="private"
-                    checked={patientData.healthcareAssistance === "private"}
-                  />
-                  <label htmlFor="private" className="text-[12px]">
-                    PRIVATE
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center my-5 cuttLine">
-            <div className="w-[200px] h-[2px] bg-zinc-200 lineOne"></div>
-            <h3 className="text-center text-zinc-500 text-[12px]">
-              EMERGENCY
-              <br /> CONTACT PERSON
-            </h3>
-            <div className="w-full h-[2px] bg-zinc-200 lineTwo"></div>
-          </div>
-          <div className="flex flex-col gap-y-5 secondFormContainer">
-            <div className="flex flex-row gap-x-4 secondFormContainer_child">
-              <div className="flex flex-col items-start dtContainer">
-                <h6 className="text-[12px] font-semibold">LASTNAME</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyLastName}
-                </p>
-              </div>
-              <div className="flex flex-col items-start dtContainer">
-                <h6 className="text-[12px] font-semibold">FIRSTNAME</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyFirstName}
-                </p>
-              </div>
-              <div className="flex flex-col items-start dtContainer">
-                <h6 className="text-[12px] font-semibold">MIDDLE INITIAL</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyInitial}
-                </p>
-              </div>
-              <div className="flex flex-col items-start dtContainer">
-                <h6 className="text-[12px] font-semibold">RELATIONSHIP</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyRelationship}
-                </p>
-              </div>
-              <div className="flex flex-col items-start dtContainer">
-                <h6 className="text-[12px] font-semibold">CIVIL STATUS</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyCivilStatus}
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-row gap-x-4 secondFormContainer_child">
-              <div className="flex flex-col items-start">
-                <h6 className="text-[12px] font-semibold">ADDRESS</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyAddress}
-                </p>
-              </div>
-              <div className="flex flex-col items-start">
-                <h6 className="text-[12px] font-semibold">BIRTH DATE</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyBod}
-                </p>
-              </div>
-              <div className="flex flex-col items-start">
-                <h6 className="text-[12px] font-semibold">AGE</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyAge}
-                </p>
-              </div>
-              <div className="flex flex-col items-start">
-                <h6 className="text-[12px] font-semibold">OCCUPATION</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyOccupation}
-                </p>
-              </div>
-              <div className="flex flex-col items-start">
-                <h6 className="text-[12px] font-semibold">NATIONALITY</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyNationality}
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-row gap-x-4 secondFormContainer_child">
-              <div className="flex flex-col items-start secondFormContainer_childData">
-                <h6 className="text-[12px] font-semibold">RELIGION</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyRelationship}
-                </p>
-              </div>
-              <div className="flex flex-col items-start secondFormContainer_childData">
-                <h6 className="text-[12px] font-semibold">CONTACT NO.</h6>
-                <p className="text-[12px]">
-                  {patientData.emergencyContact}
-                </p>
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={() => setIsPatientHistory(!isPatientHistory)}
-            className="px-6 py-2 rounded-md bg-zinc-400 text-[12px] mt-5 font-semibold"
-          >
-            Patient History
-          </button>
-          <div className="flex flex-row justify-center items-center gap-x-2 mt-10">
-            <button
-              onClick={handlePrint}
-              className="px-6 py-2 rounded-md bg-yellow-500 text-white no-print"
-            >
-              PRINT
-            </button> 
-            <button
-              onClick={() => {
-                setIsModalOpen(!isModalOpen)
-                setIsPatientSelect(false)
-              }}
-              className="px-6 py-2 rounded-md border-[1px] border-yellow-500 text-yellow-500 no-print"
-            >
-              BACK
-            </button>
+            )}
           </div>
         </div>
-      </ScrollArea>
+      ) : (
+        <div
+          ref={componentRef}
+          className="grid grid-cols-5 gap-5 w-full max-w-6xl p-6 border rounded-lg shadow-lg"
+        >
+          {/* Left Column - Photo and Basic Info */}
+          <div className="flex flex-col gap-3">
+            <img
+              src={
+                patientDataSelected?.profilePicture || "/avatarplaceholder.png"
+              }
+              alt=""
+              className="w-48 h-48 object-cover rounded-lg shadow"
+            />
+            <div className="text-sm">
+              <p className="font-semibold">PATIENT ID NO.</p>
+              <p className="text-black">{patientDataSelected?.patientIdNo}</p>
+            </div>
+            <div className="text-sm">
+              <p className="font-semibold">EMAIL ADDRESS:</p>
+              <p className="text-black break-words">
+                {patientDataSelected?.email}
+              </p>
+            </div>
+          </div>
+
+          {/* Main Information Grid */}
+          <div className="col-span-4 grid grid-cols-3 gap-4">
+            {/* Personal Information */}
+            <div className="space-y-2">
+              <div>
+                <p className="text-gray-600 text-sm">LASTNAME:</p>
+                <p className="font-semibold">{patientDataSelected?.lastname}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">PUROK:</p>
+                <p className="font-semibold">{patientDataSelected?.purok}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">BIRTHDATE:</p>
+                <p className="font-semibold">{patientDataSelected?.bod}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">BIRTHPLACE:</p>
+                <p className="font-semibold">
+                  {patientDataSelected?.birthPlace}
+                </p>
+              </div>
+            </div>
+
+            {/* Middle Column */}
+            <div className="space-y-2">
+              <div>
+                <p className="text-gray-600 text-sm">FIRSTNAME:</p>
+                <p className="font-semibold">
+                  {patientDataSelected?.firstname}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">BARANGAY:</p>
+                <p className="font-semibold">{patientDataSelected?.barangay}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">AGE:</p>
+                <p className="font-semibold">{patientDataSelected?.age}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">BLOODTYPE:</p>
+                <p className="font-semibold">
+                  {patientDataSelected?.bloodType}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">
+                  HOUSEHOLD MONTHLY INCOME:
+                </p>
+                <p className="font-semibold">
+                  {patientDataSelected?.houseHoldMonthlyIncome}
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-2">
+              <div>
+                <p className="text-gray-600 text-sm">MIDDLE NAME:</p>
+                <p className="font-semibold">
+                  {patientDataSelected?.middleInitial}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">MUNICIPALITY:</p>
+                <p className="font-semibold">
+                  {patientDataSelected?.municipality}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">NATIONALITY:</p>
+                <p className="font-semibold">
+                  {patientDataSelected?.nationality}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">CONTACT NO.:</p>
+                <p className="font-semibold">{patientDataSelected?.contact}</p>
+              </div>
+            </div>
+
+            {/* Additional Information Spanning Full Width */}
+            <div className="col-span-3 grid grid-cols-4 gap-4 mt-4">
+              <div>
+                <p className="text-gray-600 text-sm">CIVIL STATUS:</p>
+                <p className="font-semibold">
+                  {patientDataSelected?.civilStatus}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">PROVINCE:</p>
+                <p className="font-semibold">{patientDataSelected?.province}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">RELIGION:</p>
+                <p className="font-semibold">{patientDataSelected?.religion}</p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">OCCUPATION:</p>
+                <p className="font-semibold">
+                  {patientDataSelected?.occupation}
+                </p>
+              </div>
+            </div>
+
+            {/* Family Information */}
+            <div className="col-span-3 flex items-center gap-8 mt-4">
+              <div>
+                <p className="text-gray-600 text-sm">NO. LIVING CHILD:</p>
+                <p className="text-center font-semibold">
+                  - {patientDataSelected?.livingChild} -
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-600 text-sm">NO. NON-LIVING CHILD:</p>
+                <p className="text-center font-semibold">
+                  - {patientDataSelected?.nonLivingChild} -
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="healthcareAssistance"
+                    value="4PS"
+                    checked={
+                      patientDataSelected?.healthcareAssistance === "4ps"
+                    }
+                  />
+                  <span>4PS</span>
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="healthcareAssistance"
+                    value="INDIGENT"
+                    checked={
+                      patientDataSelected?.healthcareAssistance === "indigent"
+                    }
+                  />
+                  <span>INDIGENT</span>
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="healthcareAssistance"
+                    value="PRIVATE"
+                    checked={
+                      patientDataSelected?.healthcareAssistance === "private"
+                    }
+                  />
+                  <span>PRIVATE</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Emergency Contact Section */}
+            <div className="col-span-3 mt-8 border-t pt-6">
+              <h2 className="text-lg font-semibold mb-4">
+                EMERGENCY CONTACT PERSON
+              </h2>
+              <div className="grid grid-cols-4 gap-4">
+                {/* Left Column */}
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-gray-600 text-sm">LASTNAME:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyLastName}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">ADDRESS:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyAddress}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">CIVIL STATUS:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyCivilStatus}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Middle Column */}
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-gray-600 text-sm">FIRSTNAME:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyFirstName}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">BIRTHDATE:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyBod}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">NATIONALITY:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyNationality}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div>
+                    <p className="text-gray-600 text-sm">MIDDLE INITIAL:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyInitial}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">AGE:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyAge}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">RELIGION:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyReligion}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-2">
+                  
+                  <div>
+                    <p className="text-gray-600 text-sm">RELATIONSHIP:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyRelationship}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">OCCUPATION:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyOccupation}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-gray-600 text-sm">CONTACT NO:</p>
+                    <p className="font-semibold">
+                      {patientDataSelected?.emergencyContact}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="col-span-3 flex justify-between mt-6">
+              <button
+                onClick={() => setIsPatientHistory(!isPatientHistory)}
+                className="px-8 py-2 bg-white text-black border border-zinc-600 rounded"
+              >
+                PATIENT HISTORY
+              </button>
+              <div className="flex gap-4">
+                <button
+                  onClick={handlePrint}
+                  className="px-8 py-2 border border-gray-300 rounded hover:bg-gray-50"
+                >
+                  PRINT
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsModalOpen(!isModalOpen);
+                    setIsPatientSelect(false);
+                  }}
+                  className="px-8 py-2 border border-gray-300 rounded hover:bg-gray-50"
+                >
+                  BACK
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

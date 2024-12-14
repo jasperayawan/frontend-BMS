@@ -9,6 +9,8 @@ const HistoryDetails = ({
   myProfile,
   activeTab,
   handleCloseHistoryDetails,
+  handlePrint,
+  componentRef
 }) => {
   return (
     <div className="w-full">
@@ -18,6 +20,8 @@ const HistoryDetails = ({
                 myProfile={myProfile}
                 activeTab={activeTab}
                 handleCloseHistoryDetails={handleCloseHistoryDetails}
+                handlePrint={handlePrint}
+                componentRef={componentRef}
             />
         )}
         {activeTab === 'IMMUNIZATION' && (
@@ -26,6 +30,8 @@ const HistoryDetails = ({
                 myProfile={myProfile}
                 activeTab={activeTab}
                 handleCloseHistoryDetails={handleCloseHistoryDetails}
+                handlePrint={handlePrint}
+                componentRef={componentRef}
             />
         )}
         {activeTab === 'FAMILY PLANNING' && (
@@ -34,6 +40,8 @@ const HistoryDetails = ({
                 myProfile={myProfile}
                 activeTab={activeTab}
                 handleCloseHistoryDetails={handleCloseHistoryDetails}
+                handlePrint={handlePrint}
+                componentRef={componentRef}
             />
         )}
         {activeTab === 'OTHER SERVICES' && (
@@ -42,6 +50,8 @@ const HistoryDetails = ({
                 myProfile={myProfile}
                 activeTab={activeTab}
                 handleCloseHistoryDetails={handleCloseHistoryDetails}
+                handlePrint={handlePrint}
+                componentRef={componentRef}
             />
         )}
     </div>
