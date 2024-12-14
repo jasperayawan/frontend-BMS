@@ -16,7 +16,16 @@ const MyProfile = () => {
     const handleMedicalServices = () => {
         setOpenMedicalHistory(true)
     }
-    console.log(myProfile)
+      console.log(myProfile)
+    if (Object.keys(myProfile).length === 0) {
+      return (
+        <div className="flex justify-center items-center">
+          <p>Loading...</p>
+        </div>
+      )
+    }
+
+
   return (
     <div className='flex justify-center items-center py-10 bg-white'>
 
