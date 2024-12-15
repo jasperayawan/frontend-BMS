@@ -19,6 +19,7 @@ const Home = () => {
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
   const [removedImages, setRemovedImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const unregisteredUser = localStorage.getItem("unregisteredUser")
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -167,6 +168,7 @@ const Home = () => {
                     </h2>
                     {user?.get("role") !== "PATIENT" &&
                       user?.get("role") !== "SECRETARY" &&
+                      !unregisteredUser &&
                       user?.get("role") !== "NURSE" && (
                         <button
                           onClick={() => handleEdit(announcement)}

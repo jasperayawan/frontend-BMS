@@ -34,148 +34,163 @@ const Header = () => {
           className="h-16 md:h-20 mt-4 md:mt-0"
         />
       </div>
+    {(location.pathname !== "/login" && location.pathname !== "/") && (
+      <div className="relative bg-white border-b-[1px] border-yellow-600">
+      <button
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="md:hidden w-full px-4 py-2 flex items-center justify-between bg-yellow-500 text-white"
+      >
+        <span>Menu</span>
+        <svg
+          className={`w-6 h-6 transition-transform ${isMobileMenuOpen ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+          />
+        </svg>
+      </button>
 
-      {isAuthenticated && (
-        <div className="relative bg-white border-b-[1px] border-yellow-600">
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden w-full px-4 py-2 flex items-center justify-between bg-yellow-500 text-white"
-          >
-            <span>Menu</span>
-            <svg
-              className={`w-6 h-6 transition-transform ${isMobileMenuOpen ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d={isMobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
-              />
-            </svg>
-          </button>
-
-          <ul
+      <ul
+        className={`${
+          isMobileMenuOpen ? 'flex' : 'hidden'
+        } md:flex flex-col md:flex-row md:items-center md:justify-between px-4 md:px-20 py-2 gap-2 md:gap-0`}
+      >
+        {(isAuthenticated?.get("role") === "ADMIN" ||
+          isAuthenticated?.get("role") === "NURSE" ||
+          isAuthenticated?.get("role") === "SECRETARY") && (
+          <li
+            onClick={() => handleActiveSelect("patient")}
             className={`${
-              isMobileMenuOpen ? 'flex' : 'hidden'
-            } md:flex flex-col md:flex-row md:items-center md:justify-between px-4 md:px-20 py-2 gap-2 md:gap-0`}
+              isActive === "patient" || currentRoute === "patient"
+                ? "bg-yellow-500 text-white"
+                : "hover:bg-yellow-100"
+            } rounded-md transition-colors`}
           >
-            {(isAuthenticated?.get("role") === "ADMIN" ||
-              isAuthenticated?.get("role") === "NURSE" ||
-              isAuthenticated?.get("role") === "SECRETARY") && (
-              <li
-                onClick={() => handleActiveSelect("patient")}
-                className={`${
-                  isActive === "patient" || currentRoute === "patient"
-                    ? "bg-yellow-500 text-white"
-                    : "hover:bg-yellow-100"
-                } rounded-md transition-colors`}
-              >
-                <a href="/patient" className="block px-4 py-2">PATIENT</a>
-              </li>
-            )}
+            <a href="/patient" className="block px-4 py-2">PATIENT</a>
+          </li>
+        )}
 
-            {isAuthenticated?.get("role") === "PATIENT" && (
-              <li
-                onClick={() => handleActiveSelect("myprofile")}
-                className={`${
-                  isActive === "myprofile" || currentRoute === "myprofile"
-                    ? "bg-yellow-500 text-white"
-                    : "hover:bg-yellow-100"
-                } rounded-md transition-colors`}
-              >
-                <a href="/myprofile" className="block px-4 py-2">MY PROFILE</a>
-              </li>
-            )}
+        {isAuthenticated?.get("role") === "PATIENT" && (
+          <li
+            onClick={() => handleActiveSelect("myprofile")}
+            className={`${
+              isActive === "myprofile" || currentRoute === "myprofile"
+                ? "bg-yellow-500 text-white"
+                : "hover:bg-yellow-100"
+            } rounded-md transition-colors`}
+          >
+            <a href="/myprofile" className="block px-4 py-2">MY PROFILE</a>
+          </li>
+        )}
 
-            {(isAuthenticated?.get("role") === "ADMIN" ||
-              isAuthenticated?.get("role") === "SECRETARY") && (
-              <li
-                onClick={() => handleActiveSelect("employee")}
-                className={`${
-                  isActive === "employee" || currentRoute === "employee"
-                    ? "bg-yellow-500 text-white"
-                    : "hover:bg-yellow-100"
-                } rounded-md transition-colors`}
-              >
-                <a href="/employee" className="block px-4 py-2">EMPLOYEE</a>
-              </li>
-            )}
+        {(isAuthenticated?.get("role") === "ADMIN" ||
+          isAuthenticated?.get("role") === "SECRETARY") && (
+          <li
+            onClick={() => handleActiveSelect("employee")}
+            className={`${
+              isActive === "employee" || currentRoute === "employee"
+                ? "bg-yellow-500 text-white"
+                : "hover:bg-yellow-100"
+            } rounded-md transition-colors`}
+          >
+            <a href="/employee" className="block px-4 py-2">EMPLOYEE</a>
+          </li>
+        )}
 
-            <li
-              onClick={() => handleActiveSelect("services")}
-              className={`${
-                isActive === "services" || currentRoute === "services"
-                  ? "bg-yellow-500 text-white"
-                  : "hover:bg-yellow-100"
-              } rounded-md transition-colors`}
-            >
-              <a href="/services" className="block px-4 py-2">SERVICES</a>
-            </li>
+        <li
+          onClick={() => handleActiveSelect("services")}
+          className={`${
+            isActive === "services" || currentRoute === "services"
+              ? "bg-yellow-500 text-white"
+              : "hover:bg-yellow-100"
+          } rounded-md transition-colors`}
+        >
+          <a href="/services" className="block px-4 py-2">SERVICES</a>
+        </li>
 
-            <li
-              onClick={() => handleActiveSelect("gallery")}
-              className={`${
-                isActive === "gallery" || currentRoute === "gallery"
-                  ? "bg-yellow-500 text-white"
-                  : "hover:bg-yellow-100"
-              } rounded-md transition-colors`}
-            >
-              <a href="/gallery" className="block px-4 py-2">GALLERY</a>
-            </li>
+        <li
+          onClick={() => handleActiveSelect("gallery")}
+          className={`${
+            isActive === "gallery" || currentRoute === "gallery"
+              ? "bg-yellow-500 text-white"
+              : "hover:bg-yellow-100"
+          } rounded-md transition-colors`}
+        >
+          <a href="/gallery" className="block px-4 py-2">GALLERY</a>
+        </li>
 
-            <li
-              onClick={() => handleActiveSelect("contact-us")}
-              className={`${
-                isActive === "contact-us" || currentRoute === "contact-us"
-                  ? "bg-yellow-500 text-white"
-                  : "hover:bg-yellow-100"
-              } rounded-md transition-colors`}
-            >
-              <a href="/contact-us" className="block px-4 py-2">CONTACT US</a>
-            </li>
+        <li
+          onClick={() => handleActiveSelect("contact-us")}
+          className={`${
+            isActive === "contact-us" || currentRoute === "contact-us"
+              ? "bg-yellow-500 text-white"
+              : "hover:bg-yellow-100"
+          } rounded-md transition-colors`}
+        >
+          <a href="/contact-us" className="block px-4 py-2">CONTACT US</a>
+        </li>
 
-            <li
-              onClick={() => handleActiveSelect("about-us")}
-              className={`${
-                isActive === "about-us" || currentRoute === "about-us"
-                  ? "bg-yellow-500 text-white"
-                  : "hover:bg-yellow-100"
-              } rounded-md transition-colors`}
-            >
-              <a href="/about-us" className="block px-4 py-2">ABOUT US</a>
-            </li>
+        <li
+          onClick={() => handleActiveSelect("about-us")}
+          className={`${
+            isActive === "about-us" || currentRoute === "about-us"
+              ? "bg-yellow-500 text-white"
+              : "hover:bg-yellow-100"
+          } rounded-md transition-colors`}
+        >
+          <a href="/about-us" className="block px-4 py-2">ABOUT US</a>
+        </li>
 
-            {(isAuthenticated?.get("role") !== "SECRETARY" &&
-              isAuthenticated?.get("role") !== "PATIENT" &&
-              isAuthenticated?.get("role") === "ADMIN") && (
-              <li
-                onClick={() => handleActiveSelect("users")}
-                className={`${
-                  isActive === "users" || currentRoute === "users"
-                    ? "bg-yellow-500 text-white"
-                    : "hover:bg-yellow-100"
-                } rounded-md transition-colors`}
-              >
-                <a href="/users" className="block px-4 py-2">USERS ACCOUNT</a>
-              </li>
-            )}
+        {(isAuthenticated?.get("role") !== "SECRETARY" &&
+          isAuthenticated?.get("role") !== "PATIENT" &&
+          isAuthenticated?.get("role") === "ADMIN") && (
+          <li
+            onClick={() => handleActiveSelect("users")}
+            className={`${
+              isActive === "users" || currentRoute === "users"
+                ? "bg-yellow-500 text-white"
+                : "hover:bg-yellow-100"
+            } rounded-md transition-colors`}
+          >
+            <a href="/users" className="block px-4 py-2">USERS ACCOUNT</a>
+          </li>
+        )}
 
-            <li
-              onClick={() => handleActiveSelect("myaccount")}
-              className={`${
-                isActive === "myaccount" || currentRoute === "myaccount"
-                  ? "bg-yellow-500 text-white"
-                  : "hover:bg-yellow-100"
-              } rounded-md transition-colors`}
-            >
-              <a href="/myaccount" className="block px-4 py-2">MY ACCOUNT</a>
-            </li>
-          </ul>
-        </div>
-      )}
+        {!isAuthenticated ? (
+           <li
+           onClick={() => {
+            handleActiveSelect("login")
+            localStorage.clear()
+           }}
+           className={`${
+             isActive === "login" || currentRoute === "login"
+               ? "bg-yellow-500 text-white"
+               : "hover:bg-yellow-100"
+           } rounded-md transition-colors`}
+         >
+           <a href="/login" className="block px-4 py-2">LOGIN</a>
+         </li>
+        ) : (
+          <li
+          onClick={() => handleActiveSelect("myaccount")}
+          className={`${
+            isActive === "myaccount" || currentRoute === "myaccount"
+              ? "bg-yellow-500 text-white"
+              : "hover:bg-yellow-100"
+          } rounded-md transition-colors`}
+        >
+          <a href="/myaccount" className="block px-4 py-2">MY ACCOUNT</a>
+        </li>
+        )}
+      </ul>
+    </div>
+    )}
     </div>
   );
 };

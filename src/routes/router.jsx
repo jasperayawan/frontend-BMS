@@ -25,6 +25,8 @@ const router = () => {
         <Route path="/" element={<App />}>
             {/* Public Routes */}
             <Route path="/" element={<ProtectedRoute element={user ? <Home /> : <Login />}/>}/>
+            <Route path="/home" element={<ProtectedRoute element={!user && <Home /> }/>}/>
+            <Route path="/login" element={<ProtectedRoute element={!user && <Login /> }/>}/>
             <Route path="/signup" element={<ProtectedRoute element={<Signup />}/>}/>
             <Route path="/forgot" element={<ProtectedRoute element={<ForgotPass />}/>}/>
             <Route path="/reset-password" element={<ResetPassword />}/>

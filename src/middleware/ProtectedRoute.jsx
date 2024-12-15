@@ -12,16 +12,11 @@ const ProtectedRoute = ({ element }) => {
   const restrictedForAuthenticated = [
     "/",
     "/signup",
-    "/forgot"
+    "/forgot",
   ];
 
   const protectedPathsForUnauthenticated = [
-    "/home",
-    "/services",
     "/patient",
-    "/gallery",
-    "/contact-us",
-    "/about-us",
     "/myaccount",
     "/users",
     "/employee",

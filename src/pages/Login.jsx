@@ -81,15 +81,25 @@ const Login = () => {
   useEffect(() => {
     const checkUser = async () => {
       const isAuthenticated = await Parse.User.current();
+      const unregisteredUser = localStorage.getItem("unregisteredUser")
 
       if(isAuthenticated){
         navigate('/home')
       } else {
-        navigate('/')
+        if(unregisteredUser){
+          navigate('/login')
+        } else {
+          navigate('/')
       }
+    }
     }
     checkUser()
   },[])
+
+  const handleUnregisteredUser = () => {
+    localStorage.setItem('unregisteredUser', "unregistered")
+    navigate('/home')
+  }
 
 
   return (
@@ -166,6 +176,7 @@ const Login = () => {
               </span>
             ) : 'Login'}
           </button>
+          <button onClick={handleUnregisteredUser} className='underline'>VIEW AS UNREGISTED USER</button>
         </form>
       </div>
     </div>
