@@ -3,7 +3,7 @@ import { useResetPass } from '../hooks/useResetPass'
 
 const ForgotPass = () => {
   const [email, setEmail] = useState("")
-  const { loading, resetPass } = useResetPass();
+  const { loading, resetPass, error, setError } = useResetPass();
 
   const handleResetSubmit = async (e) => {
     e.preventDefault();
@@ -12,8 +12,19 @@ const ForgotPass = () => {
   }
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-zinc-100 to-zinc-200 flex justify-center items-center p-4'>
-      <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+    <div className='mt-20 flex justify-center items-center p-4'>
+      {error && (
+        <div className="fixed inset-0 bg-black/20 flex justify-center items-center min-h-screen w-full z-50">
+          <div className="px-20 py-7 bg-white border border-orange-600 flex flex-col gap-y-3">
+            <p className='text-orange-500 text-lg w-48 text-center'>
+              {error}
+            </p>
+            <button onClick={() => setError(null)} className='px-4 py-1 border border-orange-600 text-orange-500 w-[max-content] mx-auto'>OK</button>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-white rounded-lg border border-orange-600 p-8 w-full max-w-md">
         <form onSubmit={handleResetSubmit} className='w-full flex flex-col space-y-6'>
           <div className="text-center mb-4">
             <h1 className="text-2xl font-bold text-zinc-800">Password Recovery</h1>

@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 
 export const useResetPass = () => {
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null)
 
     const resetPass = async (email) => {
         setLoading(true);
@@ -16,7 +17,7 @@ export const useResetPass = () => {
 
         try{
             await axios.post(RESETPASS, formData);
-            toast.success("PASSWORD RECOVERY WAS ALREADY SENT TO YOUR EMAIL");
+            setError("PASSWORD RECOVERY WAS ALREADY SENT TO YOUR EMAIL");
         }
         catch(error){
             console.log(error.response.data.message)
@@ -29,6 +30,8 @@ export const useResetPass = () => {
 
     return {
         loading,
-        resetPass
+        resetPass,
+        setError,
+        error
     }
 }

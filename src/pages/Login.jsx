@@ -7,10 +7,11 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { UserIcon } from 'lucide-react'
 
 const Login = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
+  const [error, setError] = useState(null)
   const [seePass, setSeePass] = useState("password")
   const navigate = useNavigate()
 
@@ -18,7 +19,7 @@ const Login = () => {
     const newErrors = { email: '', password: '' };
     let isValid = true;
 
-    if (!username.trim()) {
+    if (!email.trim()) {
       newErrors.email = 'Email is required';
       isValid = false;
     }
@@ -39,34 +40,38 @@ const Login = () => {
     setLoading(true);
 
     try{
-      const loggedInUser = await Parse.User.logIn(username, password);
+      const emailExists = new Parse.Cloud.run("checkEmailExists", { email })
+      const checkEmailIfExist = await emailExists;
 
-      const query = new Parse.Query(Parse.Role);
-      query.equalTo('users', loggedInUser);
-      const roles = await query.find();
-  
-      // const userRoles = roles.map(role => role.get('name')); 
+      if (!checkEmailIfExist) {
+        const errorHtml = `
+          <h3 class="text-orange-500 text-lg font-semibold text-center">
+            Your email address is not registered and you are unable to log in at this time.
+          </h3>
+          <p class="text-gray-700 text-sm text-center">
+            To access our services, please visit your local Barangay office to create an account.
+          </p>
+        `;
+
+        
+        
+        setError(errorHtml);
+        setLoading(false);
+        return;
+      }
+      
+      const loggedInUser = await Parse.User.logIn(email, password);
+
       toast.success('login successfully!');
       localStorage.setItem('sessionToken', loggedInUser.getSessionToken());
       window.location.reload();
       navigate('/')
+
       
-      // console.log({
-      //   message: 'Login successful',
-      //   username: loggedInUser.get('username'),
-      //   sessionToken: loggedInUser.getSessionToken(),
-      //   roles: userRoles 
-      // });
-      
-    } catch (error){
-      toast.error("error", error);
-      console.log(error)
-      setErrors(prevErrors => ({
-        ...prevErrors,
-        form: 'Login failed. Please check your credentials.'
-      }));
+    } catch (error) {
+      setError("Incorrect Username or Password");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -104,6 +109,15 @@ const Login = () => {
 
   return (
     <div className='flex justify-center items-center p-4 pt-10'>
+      {error && (
+        <div className="fixed inset-0 bg-black/20 flex justify-center items-center min-h-screen w-full z-50">
+          <div className="px-20 py-7 w-[430px] bg-white border border-orange-600 flex justify-center items-center flex-col gap-y-3">
+            <div dangerouslySetInnerHTML={{ __html: error }} />
+            <button onClick={() => setError(null)} className='px-4 py-1 border border-orange-600 text-orange-500 w-[max-content] mx-auto'>OK</button>
+          </div>
+        </div>
+      )}
+
       <div className="bg-white rounded-lg p-8 w-full max-w-md">
         <form onSubmit={handleLogin} className='w-full flex flex-col space-y-6 border border-orange-600 p-6 rounded-3xl'>
           <div className="text-center mb-4">
@@ -112,15 +126,15 @@ const Login = () => {
 
           <div className="space-y-4">
             <label htmlFor="email" className='block relative'>
-              <span className="text-sm font-medium text-zinc-700">Username:</span>
+              <span className="text-sm font-medium text-zinc-700">Email:</span>
               <div className="mt-1 flex items-center">
                 <input 
-                  type="text" 
-                  onChange={(e) => setUsername(e.target.value)} 
-                  id='username' 
+                  type="email" 
+                  onChange={(e) => setEmail(e.target.value)} 
+                  id='email' 
                   className='block w-full px-3 py-2 bg-white border border-zinc-300 rounded-md text-sm shadow-sm placeholder-zinc-400
                   focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 pr-10'
-                  placeholder="username"
+                  placeholder="email"
                 />
                 <UserIcon className="h-5 w-5 text-zinc-400 absolute right-3" />
               </div>
@@ -163,7 +177,7 @@ const Login = () => {
             type='submit' 
             disabled={loading} 
             className='w-full py-2 px-4 bg-orange-500 hover:bg-orange-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white 
-            bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 
             disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200'
           >
             {loading ? (
