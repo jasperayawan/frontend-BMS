@@ -12,6 +12,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
   const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null);
   const [seePass, setSeePass] = useState("password")
   const navigate = useNavigate()
 
@@ -62,10 +63,8 @@ const Login = () => {
       
       const loggedInUser = await Parse.User.logIn(email, password);
 
-      toast.success('login successfully!');
+      setSuccess("YOU HAVE LOGGED IN SUCCESSFULLY!")
       localStorage.setItem('sessionToken', loggedInUser.getSessionToken());
-      window.location.reload();
-      navigate('/')
 
       
     } catch (error) {
@@ -89,13 +88,11 @@ const Login = () => {
       const unregisteredUser = localStorage.getItem("unregisteredUser")
 
       if(isAuthenticated){
-        navigate('/home')
+        navigate('/')
       } else {
         if(unregisteredUser){
-          navigate('/login')
-        } else {
-          navigate('/')
-      }
+          navigate('/home')
+        } 
     }
     }
     checkUser()
@@ -114,6 +111,21 @@ const Login = () => {
           <div className="px-20 py-7 w-[430px] bg-white border border-orange-600 flex justify-center items-center flex-col gap-y-3">
             <div dangerouslySetInnerHTML={{ __html: error }} />
             <button onClick={() => setError(null)} className='px-4 py-1 border border-orange-600 text-orange-500 w-[max-content] mx-auto'>OK</button>
+          </div>
+        </div>
+      )}
+
+    {success && (
+        <div className="fixed inset-0 bg-black/20 flex justify-center items-center min-h-screen w-full z-50">
+          <div className="px-20 py-7 w-[430px] bg-white border border-orange-600 flex justify-center items-center flex-col gap-y-3">
+            <h2 className='text-orange-500 text-lg font-semibold text-center'>
+            {success}
+            </h2>
+            <button onClick={() => {
+              setSuccess(null);
+              navigate('/')
+              window.location.reload()
+            }} className='px-4 py-1 border border-orange-600 text-orange-500 w-[max-content] mx-auto'>OK</button>
           </div>
         </div>
       )}

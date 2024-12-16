@@ -23,6 +23,7 @@ function App() {
   const confirmLogout = async () => {
     await logout();
     setIsModalOpen(false);
+    window.location.reload();
   };
 
   const cancelLogout = () => {
