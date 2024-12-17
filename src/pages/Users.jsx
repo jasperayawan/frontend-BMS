@@ -361,7 +361,7 @@ const Users = () => {
 
             {searchType === "ROLE" && (
               <select
-                value={searchInput}
+                value={2}
                 onChange={(e) => {
                   setSearchInput(e.target.value);
                   setHasSearched(true);
@@ -403,44 +403,55 @@ const Users = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {filteredUsers.map((user, index) => (
-                  <tr
-                    key={user.id}
-                    onClick={() => handleRowClick(user)}
-                    onDoubleClick={() => handleDoubleClick(user)}
-                    className={`${
-                      selectedUser?.id === user.id
-                        ? "bg-orange-100 hover:bg-orange-200"
-                        : index % 2 === 0
-                        ? "bg-[#f5c6cb]"
-                        : "bg-[#f8d7da] hover:bg-gray-50"
-                    } border-b transition duration-200 ease-in-out cursor-pointer`}
-                  >
-                    <td className="px-3 py-1 whitespace-nowrap text-sm text-gray-900">
-                      {user.user_id}
-                    </td>
-                    <td className="px-3 py-1 whitespace-nowrap">
-                      <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold">
-                        {user.role}
-                      </span>
-                    </td>
-                    <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
-                      {user.name}
-                    </td>
-                    <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
-                      {user.address}
-                    </td>
-                    <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
-                      {user.email}
-                    </td>
-                    <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
-                      {user.status}
-                    </td>
-                    <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
-                      {new Date(user.createdAt).toLocaleDateString()}
+                {filteredUsers.length === 0 && hasSearched ? (
+                  <tr>
+                    <td
+                      colSpan={7}
+                      className="px-6 py-4 text-center text-sm text-gray-500 font-medium"
+                    >
+                      User not found.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  filteredUsers.map((user, index) => (
+                    <tr
+                      key={user.id}
+                      onClick={() => handleRowClick(user)}
+                      onDoubleClick={() => handleDoubleClick(user)}
+                      className={`${
+                        selectedUser?.id === user.id
+                          ? "bg-orange-100 hover:bg-orange-200"
+                          : index % 2 === 0
+                          ? "bg-[#f5c6cb]"
+                          : "bg-[#f8d7da] hover:bg-gray-50"
+                      } border-b transition duration-200 ease-in-out cursor-pointer`}
+                    >
+                      <td className="px-3 py-1 whitespace-nowrap text-sm text-gray-900">
+                        {user.user_id}
+                      </td>
+                      <td className="px-3 py-1 whitespace-nowrap">
+                        <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold">
+                          {user.role}
+                        </span>
+                      </td>
+                      <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
+                        {user.name}
+                      </td>
+                      <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
+                        {user.address}
+                      </td>
+                      <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
+                        {user.email}
+                      </td>
+                      <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
+                        {user.status}
+                      </td>
+                      <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -920,301 +931,310 @@ const Users = () => {
 
       {isEditing && editingUser && (
         <>
-        <div className="flex justify-center items-center transition-opacity duration-300 ease-in-out">
-          <div className="bg-white p-6 border border-yellow-500">
-            <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
-              EDIT USER
-            </h2>
-            <form
-              onSubmit={handleEditSubmit}
-              className="flex flex-col gap-5"
-            >
-              <div className="grid grid-cols-3 gap-4">
-                <div className="flex flex-col gap-y-1">
-                  <div className="flex flex-col items-center mb-4">
-                    <label htmlFor="file" className="block text-sm font-medium">
-                      <div className="cursor-pointer w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center mb-2 relative">
-                        {editingUser.profilePicture ? (
-                          <img
-                            src={
-                              editingUser.profilePicture &&
-                              URL.createObjectURL(editingUser.profilePicture)
-                            }
-                            alt="profile"
-                            className="w-full h-full rounded-full object-cover"
-                          />
-                        ) : (
-                          <div className="absolute flex flex-col justify-center items-center">
-                            <CameraIcon />
-                            <span className="text-sm">UPLOAD PHOTO</span>
-                          </div>
-                        )}
-                      </div>
+          <div className="flex justify-center items-center transition-opacity duration-300 ease-in-out">
+            <div className="bg-white p-6 border border-yellow-500">
+              <h2 className="text-xl font-bold mb-4 text-center text-gray-800">
+                EDIT USER
+              </h2>
+              <form onSubmit={handleEditSubmit} className="flex flex-col gap-5">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="flex flex-col gap-y-1">
+                    <div className="flex flex-col items-center mb-4">
+                      <label
+                        htmlFor="file"
+                        className="block text-sm font-medium"
+                      >
+                        <div className="cursor-pointer w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center mb-2 relative">
+                          {editingUser.profilePicture ? (
+                            <img
+                              src={
+                                editingUser.profilePicture &&
+                                URL.createObjectURL(editingUser.profilePicture)
+                              }
+                              alt="profile"
+                              className="w-full h-full rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="absolute flex flex-col justify-center items-center">
+                              <CameraIcon />
+                              <span className="text-sm">UPLOAD PHOTO</span>
+                            </div>
+                          )}
+                        </div>
 
+                        <input
+                          type="file"
+                          id="file"
+                          name="profilePicture"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file && file.size > maxFileSize) {
+                              setError("File size exceeds the 5MB limit.");
+                            } else {
+                              setError("");
+                              setEditingUser((prev) => ({
+                                ...prev,
+                                profilePicture: file,
+                              }));
+                            }
+                          }}
+                          hidden
+                          className="w-full p-2 border rounded hover:border-orange-500 transition-colors"
+                        />
+                        {error && (
+                          <p className="text-red-500 text-sm">{error}</p>
+                        )}
+                      </label>
+                    </div>
+                    <div className="mb-2 flex items-center gap-2">
+                      <label className="block">USER ID:</label>
                       <input
-                        type="file"
-                        id="file"
-                        name="profilePicture"
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          if (file && file.size > maxFileSize) {
-                            setError("File size exceeds the 5MB limit.");
-                          } else {
-                            setError("");
+                        type="text"
+                        name="user_id"
+                        value={editingUser.user_id}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            user_id: e.target.value,
+                          }))
+                        }
+                        required
+                        className="px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3 uppercase">Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={editingUser.name}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                        required
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                      />
+                    </div>
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3 uppercase">User Type</label>
+                      <select
+                        name="role"
+                        value={editingUser.role}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            role: e.target.value,
+                          }))
+                        }
+                        required
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                      >
+                        <option value="" disabled>
+                          Select User Type
+                        </option>
+                        <option value="ADMIN">ADMIN</option>
+                        <option value="SECRETARY">SECRETARY</option>
+                        <option value="NURSE">NURSE</option>
+                      </select>
+                    </div>
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3 uppercase">Birthdate</label>
+                      <input
+                        type="date"
+                        name="birthdate"
+                        value={editingUser.birthdate}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            birthdate: e.target.value,
+                          }))
+                        }
+                        required
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                      />
+                    </div>
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3 uppercase">Age</label>
+                      <input
+                        type="number"
+                        name="age"
+                        value={editingUser.age}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            age: e.target.value,
+                          }))
+                        }
+                        required
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                        min="0"
+                      />
+                    </div>
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3 uppercase">
+                        Blood Type
+                      </label>
+                      <select
+                        name="bloodType"
+                        value={editingUser.bloodType}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            bloodType: e.target.value,
+                          }))
+                        }
+                        required
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                      >
+                        <option value="">Select Blood Type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                      </select>
+                    </div>
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3 uppercase">Address</label>
+                      <input
+                        type="text"
+                        name="address"
+                        value={editingUser.address}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            address: e.target.value,
+                          }))
+                        }
+                        required
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                      />
+                    </div>
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3 uppercase">
+                        Contact NO.
+                      </label>
+                      <input
+                        type="number"
+                        name="contact"
+                        value={editingUser.contact}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            contact: e.target.value,
+                          }))
+                        }
+                        required
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3 uppercase">Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={editingUser.email}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
+                        required
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                      />
+                    </div>
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3 uppercase">Username</label>
+                      <input
+                        type="text"
+                        name="username"
+                        value={editingUser.username}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            username: e.target.value,
+                          }))
+                        }
+                        required
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
+                      />
+                    </div>
+                    <div className="flex items-center gap-x-2 mb-2 relative">
+                      <label className="block w-1/3 uppercase">Password</label>
+                      <input
+                        type={isPasswordVisible ? "text" : "password"}
+                        name="password"
+                        value={editingUser.password}
+                        onChange={(e) =>
+                          setEditingUser((prev) => ({
+                            ...prev,
+                            password: e.target.value,
+                          }))
+                        }
+                        className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors pr-10"
+                      />
+                      {isPasswordVisible ? (
+                        <EyeOffIcon
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                          onClick={() => setIsPasswordVisible(false)}
+                        />
+                      ) : (
+                        <EyeIcon
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                          onClick={() => setIsPasswordVisible(true)}
+                        />
+                      )}
+                    </div>
+                    <div className="flex items-center gap-x-2 mb-2">
+                      <label className="block w-1/3">Status</label>
+                      <div className="flex items-center gap-2">
+                        ACTIVE
+                        <StatusToggle
+                          status={editingUser.status}
+                          setStatus={(newStatus) =>
                             setEditingUser((prev) => ({
                               ...prev,
-                              profilePicture: file,
-                            }));
+                              status: newStatus,
+                            }))
                           }
-                        }}
-                        hidden
-                        className="w-full p-2 border rounded hover:border-orange-500 transition-colors"
-                      />
-                      {error && <p className="text-red-500 text-sm">{error}</p>}
-                    </label>
-                  </div>
-                  <div className="mb-2 flex items-center gap-2">
-                    <label className="block">USER ID:</label>
-                    <input
-                      type="text"
-                      name="user_id"
-                      value={editingUser.user_id}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          user_id: e.target.value,
-                        }))
-                      }
-                      required
-                      className="px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                    />
+                        />
+                        INACTIVE
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3 uppercase">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={editingUser.name}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          name: e.target.value,
-                        }))
-                      }
-                      required
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                    />
-                  </div>
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3 uppercase">User Type</label>
-                    <select
-                      name="role"
-                      value={editingUser.role}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          role: e.target.value,
-                        }))
-                      }
-                      required
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                    >
-                      <option value="" disabled>
-                        Select User Type
-                      </option>
-                      <option value="ADMIN">ADMIN</option>
-                      <option value="SECRETARY">SECRETARY</option>
-                      <option value="NURSE">NURSE</option>
-                    </select>
-                  </div>
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3 uppercase">Birthdate</label>
-                    <input
-                      type="date"
-                      name="birthdate"
-                      value={editingUser.birthdate}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          birthdate: e.target.value,
-                        }))
-                      }
-                      required
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                    />
-                  </div>
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3 uppercase">Age</label>
-                    <input
-                      type="number"
-                      name="age"
-                      value={editingUser.age}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          age: e.target.value,
-                        }))
-                      }
-                      required
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                      min="0"
-                    />
-                  </div>
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3 uppercase">Blood Type</label>
-                    <select
-                      name="bloodType"
-                      value={editingUser.bloodType}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          bloodType: e.target.value,
-                        }))
-                      }
-                      required
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                    >
-                      <option value="">Select Blood Type</option>
-                      <option value="A+">A+</option>
-                      <option value="A-">A-</option>
-                      <option value="B+">B+</option>
-                      <option value="B-">B-</option>
-                      <option value="AB+">AB+</option>
-                      <option value="AB-">AB-</option>
-                      <option value="O+">O+</option>
-                      <option value="O-">O-</option>
-                    </select>
-                  </div>
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3 uppercase">Address</label>
-                    <input
-                      type="text"
-                      name="address"
-                      value={editingUser.address}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          address: e.target.value,
-                        }))
-                      }
-                      required
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                    />
-                  </div>
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3 uppercase">Contact NO.</label>
-                    <input
-                      type="number"
-                      name="contact"
-                      value={editingUser.contact}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          contact: e.target.value,
-                        }))
-                      }
-                      required
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                    />
-                  </div>
+                <div className="flex flex-row justify-center items-center gap-3 w-full mt-4">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 text-black border border-zinc-700 text-sm font-semibold transition-colors"
+                  >
+                    SAVE
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsEditing(false);
+                      setEditingUser(null);
+                    }}
+                    className="px-4 py-2 border border-zinc-700 text-sm font-semibold transition-colors"
+                  >
+                    CANCEL
+                  </button>
                 </div>
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3 uppercase">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={editingUser.email}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          email: e.target.value,
-                        }))
-                      }
-                      required
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                    />
-                  </div>
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3 uppercase">Username</label>
-                    <input
-                      type="text"
-                      name="username"
-                      value={editingUser.username}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          username: e.target.value,
-                        }))
-                      }
-                      required
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
-                    />
-                  </div>
-                  <div className="flex items-center gap-x-2 mb-2 relative">
-                    <label className="block w-1/3 uppercase">Password</label>
-                    <input
-                      type={isPasswordVisible ? "text" : "password"}
-                      name="password"
-                      value={editingUser.password}
-                      onChange={(e) =>
-                        setEditingUser((prev) => ({
-                          ...prev,
-                          password: e.target.value,
-                        }))
-                      }
-                      className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors pr-10"
-                    />
-                    {isPasswordVisible ? (
-                      <EyeOffIcon
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                        onClick={() => setIsPasswordVisible(false)}
-                      />
-                    ) : (
-                      <EyeIcon
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
-                        onClick={() => setIsPasswordVisible(true)}
-                      />
-                    )}
-                  </div>
-                  <div className="flex items-center gap-x-2 mb-2">
-                    <label className="block w-1/3">Status</label>
-                    <div className="flex items-center gap-2">
-                      ACTIVE
-                      <StatusToggle
-                        status={editingUser.status}
-                        setStatus={(newStatus) =>
-                          setEditingUser((prev) => ({ ...prev, status: newStatus }))
-                        }
-                      />
-                      INACTIVE
-                    </div> 
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-row justify-center items-center gap-3 w-full mt-4">
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-black border border-zinc-700 text-sm font-semibold transition-colors"
-                >
-                  SAVE
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsEditing(false);
-                    setEditingUser(null);
-                  }}
-                  className="px-4 py-2 border border-zinc-700 text-sm font-semibold transition-colors"
-                >
-                  CANCEL
-                </button>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
-        </div>
         </>
       )}
 
@@ -1254,7 +1274,10 @@ const Users = () => {
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
           <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
             <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
-              <button onClick={() => setShowEditConfirmModal(false)} className="">
+              <button
+                onClick={() => setShowEditConfirmModal(false)}
+                className=""
+              >
                 <X />
               </button>
             </div>
