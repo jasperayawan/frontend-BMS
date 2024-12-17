@@ -14,51 +14,14 @@ const EditFamilyPlanning = ({
     useFamilyPlanning();
   const [tableIndexSelected, setTableIndexSelected] = useState(null);
   const [isSave, setIsSave] = useState(false);
-  const [formData, setFormData] = useState({
-    patientIdNo: "",
-    email: "",
-    lastName: "",
-    firstName: "",
-    middleInitial: "",
-    civilStatus: "",
-    purok: "",
-    barangay: "",
-    municipality: "",
-    province: "",
-    birthdate: "",
-    age: "",
-    religion: "",
-    birthPlace: "",
-    bloodType: "",
-    contactNo: "",
-    occupation: "",
-    householdMonthlyIncome: "",
-    noLivingChild: "",
-    support: "4PS", // Default value
-    emergencyContact: {
-      lastName: "",
-      firstName: "",
-      middleInitial: "",
-      relationship: "",
-      civilStatus: "",
-      address: "",
-      birthdate: "",
-      age: "",
-      occupation: "",
-      nationality: "",
-      religion: "",
-      contactNo: "",
-    },
-    // Keep existing family planning specific fields
-    methodUsed: "",
-    dateStarted: "",
-    notes: "",
-  });
 
   const [showModal, setShowModal] = useState(false);
   const {
     fetchFamilyPlanningByUserId,
     familyPlanningData,
+    formData,
+    setFormData,
+    handleInputChange,
     updateFamilyPlanningById,
   } = useFamilyPlanning();
   const [isEdit, setIsEdit] = useState(false);
@@ -127,27 +90,16 @@ const EditFamilyPlanning = ({
         unpleasantRelationship:
           selectedFamilyPlanningHistory?.record?.unpleasantRelationship ||
           false,
-        partnerDisapproval:
-          familyPlanningData?.record?.partnerDisapproval || false,
+          partnerDisapproval:
+          familyPlanningData?.record?.partnerDisapproval || false, 
         domesticViolence:
           selectedFamilyPlanningHistory?.record?.domesticViolence || false,
-        referredToDSWD:
-          selectedFamilyPlanningHistory?.record?.referredToDSWD || false,
-        referredToWCPU:
-          selectedFamilyPlanningHistory?.record?.referredToWCPU || false,
-        referredToOthers:
-          selectedFamilyPlanningHistory?.record?.referredToOthers || false,
+        dswd: selectedFamilyPlanningHistory?.record?.dswd || false,
+        wcpu: selectedFamilyPlanningHistory?.record?.wcpu || false,
+        riskOthers: selectedFamilyPlanningHistory?.record?.riskOthers || false,
       }));
     }
   }, [familyPlanningData, selectedFamilyPlanningHistory]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
 
   const confirmSave = async () => {
     try {
@@ -165,6 +117,7 @@ const EditFamilyPlanning = ({
   const handleSave = () => {
     setShowConfirmationModal(true);
   };
+
 
   return (
     <div className="min-h-screen p-4 md:p-8 w-full">
@@ -901,89 +854,203 @@ const EditFamilyPlanning = ({
                           </div>
                         </div>
 
-                        {/* Three Tables Grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                          {/* Table 1: Type of Client */}
-                          <div className="border p-4 rounded">
-                            <h4 className="font-semibold mb-3">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                          {/* Type of Client */}
+                          <div className="border border-orange-200 rounded-lg p-4">
+                            <h3 className="text-lg font-semibold mb-4 uppercase text-gray-700">
                               Type of Client
-                            </h4>
-                            <div className="space-y-2">
-                              {[
-                                { name: "newAcceptor", label: "New Acceptor" },
-                                { name: "currentUser", label: "Current User" },
-                                {
-                                  name: "changingMethod",
-                                  label: "Changing Method",
-                                },
-                                {
-                                  name: "changingClinic",
-                                  label: "Changing Clinic",
-                                },
-                                {
-                                  name: "dropoutRestart",
-                                  label: "Dropout/Restart",
-                                },
-                                {
-                                  name: "spacingReason",
-                                  label: "Spacing Reason",
-                                },
-                                {
-                                  name: "medicalCondition",
-                                  label: "Medical Condition",
-                                },
-                                { name: "sideEffects", label: "Side Effects" },
-                                {
-                                  name: "limitingReason",
-                                  label: "Limiting Reason",
-                                },
-                                { name: "otherReason", label: "Other Reason" },
-                              ].map(({ name, label }) => (
-                                <div
-                                  key={name}
-                                  className="flex items-center gap-2"
+                            </h3>
+                            <div className="space-y-3">
+                              <div className="flex items-start gap-2">
+                                <input
+                                  type="checkbox"
+                                  id="newAcceptor"
+                                  name="newAcceptor"
+                                  checked={formData.newAcceptor}
+                                  onChange={handleInputChange}
+                                  className="form-checkbox mt-1"
+                                />
+                                <label
+                                  htmlFor="newAcceptor"
+                                  className="text-sm font-bold"
                                 >
+                                  NEW ACCEPTOR
+                                </label>
+                              </div>
+
+                              <div>
+                                <div className="flex items-start gap-2">
                                   <input
                                     type="checkbox"
-                                    name={name}
-                                    checked={formData[name]}
-                                    onChange={(e) =>
-                                      handleInputChange({
-                                        target: {
-                                          name: e.target.name,
-                                          value: e.target.checked,
-                                        },
-                                      })
-                                    }
+                                    id="currentUser"
+                                    name="currentUser"
+                                    checked={formData.currentUser}
+                                    onChange={handleInputChange}
+                                    className="form-checkbox mt-1"
                                   />
-                                  <label>{label}</label>
+                                  <label
+                                    htmlFor="currentUser"
+                                    className="text-sm font-bold"
+                                  >
+                                    CURRENT USER
+                                  </label>
                                 </div>
-                              ))}
+
+                                <div className="ml-8 space-y-2 mt-2">
+                                  <div className="flex items-start gap-2">
+                                    <input
+                                      type="checkbox"
+                                      id="changingMethod"
+                                      name="changingMethod"
+                                      checked={formData.changingMethod}
+                                      onChange={handleInputChange}
+                                      className="form-checkbox mt-1 h-3 w-3"
+                                    />
+                                    <label
+                                      htmlFor="changingMethod"
+                                      className="text-xs"
+                                    >
+                                      CHANGING METHOD
+                                    </label>
+                                  </div>
+
+                                  <div className="flex items-start gap-2">
+                                    <input
+                                      type="checkbox"
+                                      id="changingClinic"
+                                      name="changingClinic"
+                                      checked={formData.changingClinic}
+                                      onChange={handleInputChange}
+                                      className="form-checkbox mt-1 h-3 w-3"
+                                    />
+                                    <label
+                                      htmlFor="changingClinic"
+                                      className="text-xs"
+                                    >
+                                      CHANGING CLINIC
+                                    </label>
+                                  </div>
+
+                                  <div className="flex items-start gap-2">
+                                    <input
+                                      type="checkbox"
+                                      id="dropoutRestart"
+                                      name="dropoutRestart"
+                                      checked={formData.dropoutRestart}
+                                      onChange={handleInputChange}
+                                      className="form-checkbox mt-1 h-3 w-3"
+                                    />
+                                    <label
+                                      htmlFor="dropoutRestart"
+                                      className="text-xs"
+                                    >
+                                      DROPOUT/RESTART
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="space-y-2 mt-4">
+                                <p className="text-sm font-semibold">
+                                  REASON FOR FAMILY PLANNING
+                                </p>
+                                <div className="flex items-start gap-2">
+                                  <input
+                                    type="checkbox"
+                                    id="spacing"
+                                    name="spacing"
+                                    checked={formData.spacing}
+                                    onChange={handleInputChange}
+                                    className="form-checkbox mt-1"
+                                  />
+                                  <label htmlFor="spacing" className="text-sm">
+                                    SPACING
+                                  </label>
+                                </div>
+
+                                <div className="flex items-start gap-2">
+                                  <input
+                                    type="checkbox"
+                                    id="medicalCondition"
+                                    name="medicalCondition"
+                                    checked={formData.medicalCondition}
+                                    onChange={handleInputChange}
+                                    className="form-checkbox mt-1"
+                                  />
+                                  <label
+                                    htmlFor="medicalCondition"
+                                    className="text-sm"
+                                  >
+                                    MEDICAL CONDITION
+                                  </label>
+                                </div>
+
+                                <div className="flex items-start gap-2">
+                                  <input
+                                    type="checkbox"
+                                    id="sideEffects"
+                                    name="sideEffects"
+                                    checked={formData.sideEffects}
+                                    onChange={handleInputChange}
+                                    className="form-checkbox mt-1"
+                                  />
+                                  <label
+                                    htmlFor="sideEffects"
+                                    className="text-sm"
+                                  >
+                                    SIDE EFFECTS
+                                  </label>
+                                </div>
+
+                                <div className="flex items-start gap-2">
+                                  <input
+                                    type="checkbox"
+                                    id="limiting"
+                                    name="limiting"
+                                    checked={formData.limiting}
+                                    onChange={handleInputChange}
+                                    className="form-checkbox mt-1"
+                                  />
+                                  <label htmlFor="limiting" className="text-sm">
+                                    LIMITING
+                                  </label>
+                                </div>
+                              </div>
+
+                              <div className="flex items-center gap-2 mt-4">
+                                <label htmlFor="others" className="text-sm">
+                                  OTHERS
+                                </label>
+                                <input
+                                  type="text"
+                                  id="others"
+                                  name="others"
+                                  value={formData.others}
+                                  onChange={handleInputChange}
+                                  className="border-b border-gray-300 focus:border-orange-500 outline-none px-2 py-1 text-sm"
+                                />
+                              </div>
                             </div>
                           </div>
 
-                          {/* Table 2: Method Currently Used */}
-                          <div className="border p-4 rounded">
-                            <h4 className="font-semibold mb-3">
+                          {/* Method Currently Used */}
+                          <div className="border border-orange-200 rounded-lg p-4">
+                            <h3 className="text-lg font-semibold mb-4 uppercase text-gray-700">
                               Method Currently Used
-                            </h4>
+                            </h3>
                             <div className="space-y-2">
                               {[
                                 { name: "coc", label: "COC" },
                                 { name: "pop", label: "POP" },
-                                { name: "injectable", label: "Injectable" },
-                                { name: "implant", label: "Implant" },
-                                { name: "inteval", label: "IUD Interval" },
-                                {
-                                  name: "postPartum",
-                                  label: "IUD Post Partum",
-                                },
-                                { name: "condom", label: "Condom" },
+                                { name: "injectable", label: "INJECTABLE" },
+                                { name: "implant", label: "IMPLANT" },
+                                { name: "interval", label: "INTERVAL" },
+                                { name: "postPartum", label: "POST-PARTUM" },
+                                { name: "condom", label: "CONDOM" },
                                 { name: "bomCmm", label: "BOM/CMM" },
                                 { name: "bbt", label: "BBT" },
                                 { name: "stm", label: "STM" },
                                 { name: "lam", label: "LAM" },
-                                { name: "otherMethod", label: "Other Method" },
                               ].map(({ name, label }) => (
                                 <div
                                   key={name}
@@ -991,75 +1058,199 @@ const EditFamilyPlanning = ({
                                 >
                                   <input
                                     type="checkbox"
+                                    id={name}
                                     name={name}
                                     checked={formData[name]}
-                                    onChange={(e) =>
-                                      handleInputChange({
-                                        target: {
-                                          name: e.target.name,
-                                          value: e.target.checked,
-                                        },
-                                      })
-                                    }
+                                    onChange={handleInputChange}
+                                    className="form-checkbox"
                                   />
-                                  <label>{label}</label>
+                                  <label htmlFor={name} className="text-sm">
+                                    {label}
+                                  </label>
                                 </div>
                               ))}
+                              <div className="flex items-center gap-2">
+                                <label
+                                  htmlFor="methodOthers"
+                                  className="text-sm"
+                                >
+                                  OTHERS
+                                </label>
+                                <input
+                                  type="text"
+                                  id="methodOthers"
+                                  name="methodOthers"
+                                  value={formData.methodOthers}
+                                  onChange={handleInputChange}
+                                  className="border-b border-gray-300 focus:border-orange-500 outline-none px-2 py-1 text-sm"
+                                />
+                              </div>
                             </div>
                           </div>
 
-                          {/* Table 3: VAW Risks */}
-                          <div className="border p-4 rounded">
-                            <h4 className="font-semibold mb-3">
-                              Risks for VAW
-                            </h4>
-                            <div className="space-y-2">
-                              {[
-                                {
-                                  name: "unpleasantRelationship",
-                                  label: "Unpleasant Relationship with Partner",
-                                },
-                                {
-                                  name: "partnerDisapproval",
-                                  label: "Partner Disapproval",
-                                },
-                                {
-                                  name: "domesticViolence",
-                                  label: "Domestic Violence",
-                                },
-                                {
-                                  name: "referredToDSWD",
-                                  label: "Referred to DSWD",
-                                },
-                                {
-                                  name: "referredToWCPU",
-                                  label: "Referred to WCPU",
-                                },
-                                {
-                                  name: "referredToOthers",
-                                  label: "Referred to Others",
-                                },
-                              ].map(({ name, label }) => (
-                                <div
-                                  key={name}
-                                  className="flex items-center gap-2"
-                                >
-                                  <input
-                                    type="checkbox"
-                                    name={name}
-                                    checked={formData[name]}
-                                    onChange={(e) =>
-                                      handleInputChange({
-                                        target: {
-                                          name: e.target.name,
-                                          value: e.target.checked,
-                                        },
-                                      })
-                                    }
-                                  />
-                                  <label>{label}</label>
+                          {/* Risks for Violence Against Women */}
+                          <div className="border border-orange-200 rounded-lg p-4">
+                            <h3 className="text-lg font-semibold mb-4 uppercase text-gray-700">
+                              Risks for Violence Against Women
+                            </h3>
+                            <div className="space-y-4">
+                              {/* Unpleasant Relationship */}
+                              <div>
+                                <p className="text-sm mb-2">
+                                  UNPLEASANT RELATIONSHIP WITH PARTNER
+                                </p>
+                                <div className="flex gap-4">
+                                  <label className="flex items-center gap-2">
+                                    <input
+                                      type="radio"
+                                      name="unpleasantRelationship"
+                                      value="YES"
+                                      checked={
+                                        formData.unpleasantRelationship === true
+                                      }
+                                      onChange={handleInputChange}
+                                      className="form-radio"
+                                    />
+                                    <span className="text-sm">YES</span>
+                                  </label>
+                                  <label className="flex items-center gap-2">
+                                    <input
+                                      type="radio"
+                                      name="unpleasantRelationship"
+                                      value="NO"
+                                      checked={
+                                        formData.unpleasantRelationship ===
+                                        false
+                                      }
+                                      onChange={handleInputChange}
+                                      className="form-radio"
+                                    />
+                                    <span className="text-sm">NO</span>
+                                  </label>
                                 </div>
-                              ))}
+                              </div>
+
+                              {/* Partner Disapproval */}
+                              <div>
+                                <p className="text-sm mb-2">
+                                  PARTNER DOES NOT APPROVE OF THE VISIT TO FP
+                                  CLINIC
+                                </p>
+                                <div className="flex gap-4">
+                                  <label className="flex items-center gap-2">
+                                    <input
+                                      type="radio"
+                                      name="partnerDisapproval"
+                                      value="YES"
+                                      checked={
+                                        formData.partnerDisapproval === true
+                                      }
+                                      onChange={handleInputChange}
+                                      className="form-radio"
+                                    />
+                                    <span className="text-sm">YES</span>
+                                  </label>
+                                  <label className="flex items-center gap-2">
+                                    <input
+                                      type="radio"
+                                      name="partnerDisapproval"
+                                      value="NO"
+                                      checked={
+                                        formData.partnerDisapproval === false
+                                      }
+                                      onChange={handleInputChange}
+                                      className="form-radio"
+                                    />
+                                    <span className="text-sm">NO</span>
+                                  </label>
+                                </div>
+                              </div>
+
+                              {/* Domestic Violence */}
+                              <div>
+                                <p className="text-sm mb-2">
+                                  HISTORY OF DOMESTIC VIOLENCE VAW
+                                </p>
+                                <div className="flex gap-4">
+                                  <label className="flex items-center gap-2">
+                                    <input
+                                      type="radio"
+                                      name="domesticViolence"
+                                      value="YES"
+                                      checked={
+                                        formData.domesticViolence === true
+                                      }
+                                      onChange={handleInputChange}
+                                      className="form-radio"
+                                    />
+                                    <span className="text-sm">YES</span>
+                                  </label>
+                                  <label className="flex items-center gap-2">
+                                    <input
+                                      type="radio"
+                                      name="domesticViolence"
+                                      value="NO"
+                                      checked={
+                                        formData.domesticViolence === false
+                                      }
+                                      onChange={handleInputChange}
+                                      className="form-radio"
+                                    />
+                                    <span className="text-sm">NO</span>
+                                  </label>
+                                </div>
+                              </div>
+
+                              {/* Referred To (Checkboxes) */}
+                              <div>
+                                <p className="text-sm font-semibold mb-2">
+                                  REFERRED TO:
+                                </p>
+                                <div className="space-y-2">
+                                  <div className="flex items-center gap-2">
+                                    <input
+                                      type="checkbox"
+                                      id="dswd"
+                                      name="dswd"
+                                      checked={formData.dswd}
+                                      onChange={handleInputChange}
+                                      className="form-checkbox"
+                                    />
+                                    <label htmlFor="dswd" className="text-sm">
+                                      DSWD
+                                    </label>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <input
+                                      type="checkbox"
+                                      id="wcpu"
+                                      name="wcpu"
+                                      checked={formData.wcpu}
+                                      onChange={handleInputChange}
+                                      className="form-checkbox"
+                                    />
+                                    <label htmlFor="wcpu" className="text-sm">
+                                      WCPU
+                                    </label>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <input
+                                      type="checkbox"
+                                      id="riskOthers"
+                                      name="riskOthers"
+                                      checked={formData.riskOthers}
+                                      onChange={handleInputChange}
+                                      className="form-checkbox"
+                                    />
+                                    <label
+                                      htmlFor="riskOthers"
+                                      className="text-sm"
+                                    >
+                                      OTHERS
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>

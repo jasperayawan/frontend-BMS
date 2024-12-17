@@ -6,198 +6,189 @@ const OtherServicesDetails = ({
   activeTab,
   handleCloseHistoryDetails,
   handlePrint,
-  componentRef
+  componentRef,
 }) => {
   return (
-    <div className="min-h-screen p-4 md:p-8 z-50">
-      <div ref={componentRef && componentRef} className="max-w-6xl mx-auto w-full space-y-6">
-      <h2 className="text-2xl uppercase text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
-        {activeTab}
+    <div className="p-4 md:p-8 z-50">
+      <div
+        ref={componentRef && componentRef}
+        className="max-w-4xl mx-auto w-full space-y-6"
+      >
+        <h2 className="text-2xl uppercase text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 mb-7">
+          {activeTab}
         </h2>
 
-        <div className="p-8 rounded-xl border border-gray-200">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-5">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                SERVICES AVAILED
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">
+        <div className="border border-yellow-500">
+          <h3 className="uppercase mb-4 text-[12px] bg-yellow-500 px-3 py-2 font-semibold">
+            Patient Information
+          </h3>
+          <div className="flex flex-col px-8 pb-10">
+            <div className="grid grid-cols-2 gap-6 mb-5">
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  SERVICES AVAILED:
+                </label>
+                <p className="text-gray-800 text-[12px]">
                   {selectedRow?.servicesAvailed || "-"}
                 </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                DATE
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  DATE:
+                </label>
+                <p className="text-gray-800 text-[12px]">
                   {selectedRow?.date
                     ? new Date(selectedRow.date).toLocaleDateString()
                     : "-"}
                 </p>
               </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-5">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                FIRST NAME
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">{selectedRow?.firstName || "-"}</p>
+            <div className="grid grid-cols-3 gap-6 mb-5">
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  FIRST NAME:
+                </label>
+                <p className="text-gray-800 text-[12px]">
+                  {selectedRow?.firstName || "-"}
+                </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                MIDDLE NAME
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  MIDDLE NAME:
+                </label>
+                <p className="text-gray-800 text-[12px]">
                   {selectedRow?.middleName || "-"}
                 </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                LAST NAME
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">{selectedRow?.lastName || "-"}</p>
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  LAST NAME:
+                </label>
+                <p className="text-gray-800 text-[12px]">
+                  {selectedRow?.lastName || "-"}
+                </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                SEX
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800 capitalize">
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  SEX:
+                </label>
+                <p className="text-gray-800 text-[12px] capitalize">
                   {selectedRow?.sex || "-"}
                 </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                STATUS
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">{selectedRow?.status || "-"}</p>
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  STATUS:
+                </label>
+                <p className="text-gray-800 text-[12px]">
+                  {selectedRow?.status || "-"}
+                </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                DATE OF BIRTH
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  DATE OF BIRTH:
+                </label>
+                <p className="text-gray-800 text-[12px]">
                   {selectedRow?.dateOfBirth
                     ? new Date(selectedRow.dateOfBirth).toLocaleDateString()
                     : "-"}
                 </p>
               </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-5">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                AGE
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">{selectedRow?.age || "-"}</p>
+            <div className="grid grid-cols-3 gap-6 mb-5">
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  AGE:
+                </label>
+                <p className="text-gray-800 text-[12px]">
+                  {selectedRow?.age || "-"}
+                </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                BLOOD TYPE
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">{selectedRow?.bloodType || "-"}</p>
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  BLOOD TYPE:
+                </label>
+                <p className="text-gray-800 text-[12px]">
+                  {selectedRow?.bloodType || "-"}
+                </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                BLOOD PRESSURE
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  BLOOD PRESSURE:
+                </label>
+                <p className="text-gray-800 text-[12px]">
                   {selectedRow?.bloodPressure || "-"}
                 </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                HEIGHT (cm)
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">{selectedRow?.height || "-"}</p>
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  HEIGHT (cm):
+                </label>
+                <p className="text-gray-800 text-[12px]">
+                  {selectedRow?.height || "-"}
+                </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                WEIGHT (kg)
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">{selectedRow?.weight || "-"}</p>
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  WEIGHT (kg):
+                </label>
+                <p className="text-gray-800 text-[12px]">
+                  {selectedRow?.weight || "-"}
+                </p>
               </div>
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2">
-                RELATIONSHIP
-              </label>
-              <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-                <p className="text-gray-800">
+              <div className="flex gap-2 items-center">
+                <label className="text-[12px] font-medium text-black">
+                  RELATIONSHIP:
+                </label>
+                <p className="text-gray-800 text-[12px]">
                   {selectedRow?.relationship || "-"}
                 </p>
               </div>
             </div>
-          </div>
 
-          <div className="mb-6">
-            <label className="text-sm font-medium text-gray-700 mb-2">
-              PRESCRIPTION
-            </label>
-            <div className="p-3 bg-gray-50/50 border border-gray-200 rounded-md shadow-sm">
-              <p className="text-gray-800 min-h-[8rem] whitespace-pre-wrap">
+            <div className="flex items-center gap-2 mb-6">
+              <label className="text-[12px] font-medium text-black">
+                PRESCRIPTION:
+              </label>
+              <p className="text-gray-800 text-[12px] whitespace-pre-wrap">
                 {selectedRow?.prescription || "-"}
               </p>
             </div>
-          </div>
 
-          <div className="flex justify-between mt-6">
-            <div className="text-center">
-              <div className="border-t border-black w-48 mt-8 pt-2">
-                PATIENT SIGNATURE OVER PRINTED NAME
+            <div className="flex justify-between mt-6">
+              <div className="text-center">
+                <div className="border-t border-black w-48 mt-8 text-[12px] pt-2">
+                  PATIENT SIGNATURE OVER PRINTED NAME
+                </div>
               </div>
-            </div>
-            <div className="text-center">
-              <div className="border-t border-black w-48 mt-8 pt-2">
-                NURSE INCHARGE SIGNATURE OVER PRINTED NAME
+              <div className="text-center">
+                <div className="border-t border-black w-48 mt-8 text-[12px] pt-2">
+                  NURSE INCHARGE SIGNATURE OVER PRINTED NAME
+                </div>
               </div>
             </div>
           </div>
         </div>
-
       </div>
 
       <div className="flex justify-center space-x-4 py-6">
         {handlePrint && (
-            <button
+          <button
             onClick={handlePrint}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-gray-200 bg-white hover:bg-gray-100 h-10 px-4 py-2"
+            className="inline-flex items-center justify-center text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-black bg-white hover:bg-gray-100 px-4 py-1 shadow"
           >
             PRINT
           </button>
         )}
-          <button
-            onClick={handleCloseHistoryDetails}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-gray-200 bg-white hover:bg-gray-100 h-10 px-4 py-2"
-          >
-            BACK
-          </button>
-        </div>
+        <button
+          onClick={handleCloseHistoryDetails}
+          className="inline-flex items-center justify-center text-sm font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-black bg-white hover:bg-gray-100 px-4 py-1 shadow"
+        >
+          BACK
+        </button>
+      </div>
     </div>
   );
 };

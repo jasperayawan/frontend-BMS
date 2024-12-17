@@ -38,29 +38,41 @@ const PrenatalHistoryDetails = ({
               </svg>
               Patient Information
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-6 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-1">
+                <label className="block text-sm font-medium text-gray-600 mb-2">
                   PATIENT ID NO.
                 </label>
-                <p className="p-2 border">{myProfile?.patientIdNo || "-"}</p>
+                <p className="">{myProfile?.patientIdNo || "-"}</p>
               </div>
               <div>
                 <label className="block mb-2">LASTNAME</label>
-                <p className="p-2 border rounded">
+                <p className="">
                   {myProfile?.lastname || "-"}
                 </p>
               </div>
               <div>
                 <label className="block mb-2">FIRSTNAME</label>
-                <p className="p-2 border rounded">
+                <p className="">
                   {myProfile?.firstname || "-"}
                 </p>
               </div>
               <div>
                 <label className="block mb-2">MIDDLE INITIAL</label>
-                <p className="p-2 border rounded">
+                <p className="">
                   {myProfile?.middleInitial || "-"}
+                </p>
+              </div>
+              <div>
+                <label className="block mb-2">BIRTHDATE</label>
+                <p className="">
+                  {myProfile?.bod || "-"}
+                </p>
+              </div>
+              <div>
+                <label className="block mb-2">AGE</label>
+                <p className="">
+                  {myProfile?.age || "-"}
                 </p>
               </div>
             </div>
@@ -79,7 +91,7 @@ const PrenatalHistoryDetails = ({
                 { trimester: "Third Trimester", color: "bg-purple-50" },
               ].map((period, index) => (
                 <div key={index} className={`${period.color} p-4`}>
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                  <div className="grid grid-cols-4 gap-4 items-center">
                     <div>
                       <label className="block mb-2">PRENATAL PERIOD</label>
                       <p className="p-2 border rounded">{period.trimester}</p>
@@ -112,7 +124,7 @@ const PrenatalHistoryDetails = ({
 
           {/* Hospital and Expected Delivery */}
           <div className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block mb-2">HOSPITAL</label>
                 <p className="p-2 border rounded">
@@ -219,7 +231,7 @@ const PrenatalHistoryDetails = ({
           </div>
 
           {/* Medical History Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
+          <div className="grid grid-cols-3 gap-6 p-6">
             {/* Review of System */}
             <div className="border p-6">
               <h2 className="text-lg font-semibold mb-4 text-gray-700 border-b pb-2">
@@ -231,9 +243,9 @@ const PrenatalHistoryDetails = ({
                     key={item.name}
                     className="flex items-center justify-between"
                   >
-                    <span>{item.name}</span>
+                    <span className="text-[12px]">{item.name}</span>
                     <div className="flex items-center">
-                      <label className="flex items-center mr-4">
+                      <label className="flex items-center mr-4 text-[12px]">
                         <input
                           type="radio"
                           name={`${item.name}-review`}
@@ -244,7 +256,7 @@ const PrenatalHistoryDetails = ({
                         />
                         YES
                       </label>
-                      <label className="flex items-center">
+                      <label className="flex items-center text-[12px]">
                         <input
                           type="radio"
                           name={`${item.name}-review`}
@@ -272,8 +284,8 @@ const PrenatalHistoryDetails = ({
                     key={item.name}
                     className="flex items-center justify-between"
                   >
-                    <span>{item.name}</span>
-                    <div className="flex items-center">
+                    <span className="text-[12px]">{item.name}</span>
+                    <div className="flex items-center text-[12px]">
                       <label className="flex items-center mr-4">
                         <input
                           type="radio"
@@ -285,7 +297,7 @@ const PrenatalHistoryDetails = ({
                         />
                         YES
                       </label>
-                      <label className="flex items-center">
+                      <label className="flex items-center text-[12px]">
                         <input
                           type="radio"
                           name={`${item.name}-family`}
@@ -313,9 +325,9 @@ const PrenatalHistoryDetails = ({
                     key={item.name}
                     className="flex items-center justify-between"
                   >
-                    <span>{item.name}</span>
+                    <span className="text-[12px]">{item.name}</span>
                     <div className="flex items-center">
-                      <label className="flex items-center mr-4">
+                      <label className="flex items-center mr-4 text-[12px]">
                         <input
                           type="radio"
                           name={`${item.name}-past`}
@@ -326,7 +338,7 @@ const PrenatalHistoryDetails = ({
                         />
                         YES
                       </label>
-                      <label className="flex items-center">
+                      <label className="flex items-center text-[12px]">
                         <input
                           type="radio"
                           name={`${item.name}-past`}
@@ -347,7 +359,7 @@ const PrenatalHistoryDetails = ({
           {/* Physical Examination */}
           <div className="p-6">
             <h2 className="text-lg font-semibold mb-4">Physical Examination</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               {[
                 { key: "bloodPressure", label: "BLOOD PRESSURE" },
                 { key: "weight", label: "WEIGHT" },
@@ -371,17 +383,17 @@ const PrenatalHistoryDetails = ({
               <table className="w-full border-collapse">
                 <thead>
                   <tr>
-                    <th className="bg-[#FFB800] text-white p-3">DATE</th>
-                    <th className="bg-[#FFB800] text-white p-3">
+                    <th className="bg-orange-500 text-white p-3">DATE</th>
+                    <th className="bg-orange-500 text-white p-3">
                       COMPLAINTS/COMPLICATIONS
                     </th>
-                    <th className="bg-[#FFB800] text-white p-3">
+                    <th className="bg-orange-500 text-white p-3">
                       MCN SERVICES GIVEN
                     </th>
-                    <th className="bg-[#FFB800] text-white p-3">
+                    <th className="bg-orange-500 text-white p-3">
                       NAME OF PROVIDER AND SIGNATURE
                     </th>
-                    <th className="bg-[#FFB800] text-white p-3">
+                    <th className="bg-orange-500 text-white p-3">
                       NEXT FOLLOW UP
                     </th>
                   </tr>
@@ -422,14 +434,14 @@ const PrenatalHistoryDetails = ({
         {handlePrint && (
           <button
             onClick={handlePrint}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-gray-200 bg-white hover:bg-gray-100 h-10 px-4 py-2"
+            className="inline-flex items-center justify-center text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-black bg-white hover:bg-gray-100 px-4 py-1 shadow"
           >
             PRINT
           </button>
         )}
         <button
           onClick={handleCloseHistoryDetails}
-          className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-gray-200 bg-white hover:bg-gray-100 h-10 px-4 py-2"
+          className="inline-flex items-center justify-center text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-black bg-white hover:bg-gray-100 px-4 py-1 shadow"
         >
           Back
         </button>

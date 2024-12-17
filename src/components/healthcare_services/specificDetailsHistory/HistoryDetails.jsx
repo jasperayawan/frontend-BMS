@@ -13,7 +13,7 @@ const HistoryDetails = ({
   componentRef
 }) => {
   return (
-    <div className="w-full">
+    <div>
         {activeTab === 'PRENATAL CARE' && (
             <PrenatalHistoryDetails
                 selectedRow={specificHistoryData}

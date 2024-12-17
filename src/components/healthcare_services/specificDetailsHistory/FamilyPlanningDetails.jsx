@@ -8,6 +8,7 @@ const FamilyPlanningDetails = ({
   handlePrint,
   componentRef
 }) => {
+  console.log(myProfile)
   return (
     <div className="min-h-screen bg-[#fafafa] p-4 md:p-8">
       <div ref={componentRef && componentRef} className="max-w-4xl mx-auto space-y-8">
@@ -19,37 +20,29 @@ const FamilyPlanningDetails = ({
         <div className="flex flex-col gap-y-6">
           {/* Patient Basic Information */}
           <div className="space-y-4">
-            <div className="grid grid-cols-4 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700">
                   PATIENT ID NO.
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
+                <p className="flex h-10 bg-white px-3 py-2">
                   {myProfile?.patientIdNo || "-"}
                 </p>
               </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Last Name
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700">
+                  SEX
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.lastname || "-"}
+                <p className="flex h-10 bg-white px-3 py-2">
+                  {myProfile?.sex || "-"}
                 </p>
               </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  First Name
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700">
+                  DATE OF BIRTH
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.firstname || "-"}
-                </p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Middle Initial
-                </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.middleInitial || "-"}
+                <p className="flex h-10 bg-white px-3 py-2">
+                  {myProfile?.bod || "-"}
                 </p>
               </div>
             </div>
@@ -57,143 +50,111 @@ const FamilyPlanningDetails = ({
 
           {/* Additional Patient Details */}
           <div className="space-y-4">
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Sex
+                  NAME OF CLIENT
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.sex || "-"}
+                <p className="flex h-10 bg-white px-3 py-2 text-sm">
+                  {myProfile?.firstname || "-"} {myProfile?.lastname || "-"}
                 </p>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Birthdate
+                  AGE
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.bod || "-"}
-                </p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Age
-                </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
+                <p className="flex h-10 bg-white px-3 py-2 text-sm">
                   {myProfile?.age || "-"}
                 </p>
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Contact
+                  ADDRESS
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.contact || "-"}
+                <p className="flex h-10 bg-white px-3 py-2 text-sm">
+                  {myProfile?.barangay || "-"}, {myProfile?.birthPlace || "-"}
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              <div>
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Address
+                  Contact
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.birthPlace || "-"}, {myProfile?.province || "-"}
+                <p className="flex h-10 bg-white px-3 py-2 text-sm">
+                  {myProfile?.contact || "-"}
                 </p>
               </div>
-              <div>
+              <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700 mb-1.5">
                   Civil Status
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
+                <p className="flex h-10 bg-white px-3 py-2 text-sm">
                   {myProfile?.civilStatus || "-"}
                 </p>
               </div>
             </div>
 
             {/* Spouse Information */}
-            <div className="grid grid-cols-5 gap-4 mt-4">
-              <div>
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Spouse LastName
+                  NAME OF SPOUSE
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.emergencyLastName || "-"}
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="flex h-10 bg-white px-3 py-2 text-sm">
+                    {myProfile?.emergencyLastName || "-"}
+                  </p>
+                  <p className="flex h-10 bg-white px-3 py-2 text-sm">
+                    {myProfile?.emergencyFirstName || "-"}
+                  </p>
+                  <p className="flex h-10 bg-white px-3 py-2 text-sm">
+                    {myProfile?.emergencyInitial || "-"}
+                  </p>
+                </div>
               </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Spouse FirstName
-                </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.emergencyFirstName || "-"}
-                </p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Spouse MiddleInitial
-                </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.emergencyInitial || "-"}
-                </p>
-              </div>
-              <div>
+              <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700 mb-1.5">
                   Birthdate
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
+                <p className="flex h-10 bg-white px-3 py-2 text-sm">
                   {myProfile?.emergencyBod || "-"}
-                </p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Age
-                </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.emergencyAge || "-"}
                 </p>
               </div>
             </div>
 
             {/* Additional Details */}
-            <div className="grid grid-cols-4 gap-4 mt-4">
-              <div>
+            <div className="grid grid-cols-3 gap-4 mt-4">
+              <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700 mb-1.5">
                   No. Living Child
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
+                <p className="flex h-10 bg-white px-3 py-2 text-sm">
                   {myProfile?.livingChild || "-"}
                 </p>
               </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  No. Non-Living Child
-                </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.nonLivingChild || "-"}
-                </p>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5">
-                  Household Monthly Income
-                </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
-                  {myProfile?.houseHoldMonthlyIncome || "-"}
-                </p>
-              </div>
-              <div>
+              <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700 mb-1.5">
                   Occupation
                 </label>
-                <p className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 disabled:cursor-not-allowed disabled:opacity-50">
+                <p className="flex h-10 bg-white px-3 py-2 text-sm">
                   {myProfile?.occupation || "-"}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-medium text-gray-700 mb-1.5">
+                  Average Monthly Income
+                </label>
+                <p className="flex h-10 bg-white px-3 py-2 text-sm">
+                  {myProfile?.houseHoldMonthlyIncome || "-"}
                 </p>
               </div>
             </div>
           </div>
 
           {/* Three Tables Grid with modern styling */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-3 gap-6">
             {/* Type of Client */}
             <div className="space-y-4">
               <h2 className="text-lg font-semibold text-gray-900">
@@ -293,7 +254,7 @@ const FamilyPlanningDetails = ({
         
       </div>
       {/* Modern Buttons */}
-      <div className="flex justify-end space-x-4">
+      <div className="flex justify-center space-x-4 mt-10">
         {handlePrint && (
             <button
             onClick={handlePrint}

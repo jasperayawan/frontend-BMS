@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Parse from "parse/dist/parse.min.js";
 import { IoMdClose } from "react-icons/io";
 import toast from "react-hot-toast";
+import { X } from "lucide-react";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,8 +20,10 @@ const Home = () => {
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
   const [removedImages, setRemovedImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const unregisteredUser = localStorage.getItem("unregisteredUser")
+  const [successMessage, setSuccessMessage] = useState("")
+  const [isSuccess, setIsSuccess] = useState(false)
 
+  const unregisteredUser = localStorage.getItem("unregisteredUser")
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     const newImages = files.map((file) => URL.createObjectURL(file));
@@ -68,7 +71,8 @@ const Home = () => {
         const result = await Parse.Cloud.run("updateAnnouncement", params);
 
         if (result.success) {
-          toast.success("SAVE SUCCESSFULLY!");
+          setSuccessMessage("SAVE SUCCESSFULLY!")
+          setIsSuccess(true)
           resetForm();
           fetchAnnouncements();
         }
@@ -147,7 +151,31 @@ const Home = () => {
 
   return (
     <div className="relative min-h-screen p-6">
-
+      {isSuccess && (
+        <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+        <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+          <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
+            <button onClick={() => setIsSuccess(false)} className="">
+              <X />
+            </button>
+          </div>
+          <div className="flex flex-col justify-center items-center p-6">
+            <h2 className="text-xl font-bold mb-4 text-center">
+            {successMessage}
+            </h2>
+            <div className="flex justify-end gap-4">
+              <button
+                type="button"
+                onClick={() => setIsSuccess(false)}
+                className="px-4 py-2 bg-white hover:bg-gray-400 border border-zinc-600 transition-colors duration-200"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      )}
       <div className="max-w-6xl flex flex-col gap-y-2 justify-center items-center mx-auto pt-16">
         <img src="/sanfranciscologo.png" alt="" className="w-36 object-cover" />
         <div className="grid gap-6">

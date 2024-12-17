@@ -370,7 +370,7 @@ const Patient = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center py-8">
+    <div className="flex justify-center items-center py-8 w-full">
       {isModalOpen && (
         <PatientModal
           patientData={patientDataView}

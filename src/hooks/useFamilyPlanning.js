@@ -16,51 +16,81 @@ export const useFamilyPlanning = () => {
     changingMethod: false,
     changingClinic: false,
     dropoutRestart: false,
-    spacingReason: false,
+    spacing: false,
     medicalCondition: false,
     sideEffects: false,
-    limitingReason: false,
-    otherReason: false,
+    limiting: false,
+    others: '',
     // Method Currently Used
     coc: false,
     pop: false,
     injectable: false,
     implant: false,
-    inteval: false,
+    interval: false,
     postPartum: false,
     condom: false,
     bomCmm: false,
     bbt: false,
     stm: false,
     lam: false,
-    otherMethod: false,
-    // VAW Risks
+    methodOthers: '',
+    // Risks
     unpleasantRelationship: false,
     partnerDisapproval: false,
     domesticViolence: false,
-    referredToDSWD: false,
-    referredToWCPU: false,
-    referredToOthers: false,
+    dswd: false,
+    wcpu: false,
+    riskOthers: false
   });
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    const { name, value, type, checked } = e.target;
+  
+    if (type === 'checkbox') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: checked, 
+      }));
+    } else if (type === 'radio') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value === "YES",
+      }));
+    } else if (type === 'text' || type === 'textarea') {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value, // Ensure that text fields are stored as strings
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
   };
+  
 
+  
   const createNewFamilyPlanning = async (payload, userId) => {
     try {
-      const formData = {
+      // Form data with boolean conversions for radio values
+      const formDataWithBooleans = {
+        ...payload,
+        unpleasantRelationship: payload.unpleasantRelationship === 'YES',
+        partnerDisapproval: payload.partnerDisapproval === 'YES',
+        domesticViolence: payload.domesticViolence === 'YES',
+        others: payload.others || "",
+      };
+  
+      const dataToSend = {
         userId: userId,
         nurseIncharge: user?.id,
-        ...payload
-      }
+        ...formDataWithBooleans,
+      };
+  
       setIsLoading(true);
-      const response = await axios.post(FAMILY_PLANNING, formData);
-      console.log(response.data);
+      const response = await axios.post(FAMILY_PLANNING, dataToSend);
+  
       return response.data;
     } catch (error) {
       console.error('Error creating family planning record:', error);
@@ -69,6 +99,7 @@ export const useFamilyPlanning = () => {
       setIsLoading(false);
     }
   };
+  
 
   const fetchFamilyPlanningByUserId = async (userId) => {
     try {
@@ -101,6 +132,7 @@ export const useFamilyPlanning = () => {
   const updateFamilyPlanningById = async (planningId, payload) => {
     try {
       setIsLoading(true);
+      
       const response = await axios.put(`${FAMILY_PLANNING}/${planningId}`,payload);
       toast.success('Family planning record updated successfully');
       return response.data;
@@ -115,6 +147,7 @@ export const useFamilyPlanning = () => {
 
   return {
     formData,
+    setFormData,
     familyPlanningData,
     isLoading,
     handleInputChange,
