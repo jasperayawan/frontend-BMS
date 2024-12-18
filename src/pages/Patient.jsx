@@ -256,9 +256,12 @@ const Patient = () => {
     const results = Array.isArray(patientData)
       ? patientData.filter((data) => {
           if (searchType === "NAME") {
-            return data.lastname
-              .toLowerCase()
-              .includes(searchInput.toLowerCase());
+            const fullName1 = `${data.firstname} ${data.lastname}`.toLowerCase(); 
+            const fullName2 = `${data.lastname} ${data.firstname}`.toLowerCase(); 
+            const fullName3 = `${data.firstname} ${data.middleInitial} ${data.lastname}`.toLowerCase();
+
+            const search = searchInput.toLowerCase();
+            return fullName1.includes(search) || fullName2.includes(search) || fullName3.includes(search);
           } else if (searchType === "BLOODTYPE") {
             return data.bloodType === searchInput;
           } else if (searchType === "PUROK") {
