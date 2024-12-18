@@ -76,8 +76,16 @@ const PatientModal = ({
     getPatientById(patientDataSelected?.objectId)
   },[patientDataSelected])
 
-  console.log(patientDataSelected)
-  console.log(myProfile)
+  
+  if (Object.keys(myProfile).length === 0) {
+    return (
+      <div className="flex justify-center items-center">
+        <p className="text-xl animate-pulse">Loading...</p>
+      </div>
+    );
+  }
+  
+
   return (
     <div className="w-full">
       {!isPatientHistory && (
