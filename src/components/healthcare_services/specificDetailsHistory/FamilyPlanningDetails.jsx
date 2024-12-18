@@ -8,7 +8,7 @@ const FamilyPlanningDetails = ({
   handlePrint,
   componentRef
 }) => {
-  console.log(myProfile)
+
   return (
     <div className="min-h-screen bg-[#fafafa] p-4 md:p-8">
       <div ref={componentRef && componentRef} className="max-w-4xl mx-auto space-y-8">
@@ -153,99 +153,382 @@ const FamilyPlanningDetails = ({
             </div>
           </div>
 
-          {/* Three Tables Grid with modern styling */}
           <div className="grid grid-cols-3 gap-6">
             {/* Type of Client */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900">
+            <div className="border border-orange-200 rounded-lg p-4">
+              <h3 className="text-lg font-semibold mb-4 uppercase text-gray-700">
                 Type of Client
-              </h2>
-              <div className="space-y-2">
-                {[
-                  { name: "newAcceptor", label: "New Acceptor" },
-                  { name: "currentUser", label: "Current User" },
-                  { name: "changingMethod", label: "Changing Method" },
-                  { name: "changingClinic", label: "Changing Clinic" },
-                  { name: "dropoutRestart", label: "Dropout/Restart" },
-                  { name: "spacingReason", label: "Spacing Reason" },
-                  { name: "medicalCondition", label: "Medical Condition" },
-                  { name: "sideEffects", label: "Side Effects" },
-                  { name: "limitingReason", label: "Limiting Reason" },
-                  { name: "otherReason", label: "Other Reason" },
-                ].map(({ name, label }) => (
-                  <div key={name} className="flex items-center space-x-2">
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-start gap-2">
+                  <input
+                    type="checkbox"
+                    id="newAcceptor"
+                    name="newAcceptor"
+                    checked={selectedRow.record.newAcceptor}
+                    className="form-checkbox mt-1"
+                  />
+                  <label
+                    htmlFor="newAcceptor"
+                    className="text-sm font-bold"
+                  >
+                    NEW ACCEPTOR
+                  </label>
+                </div>
+
+                <div>
+                  <div className="flex items-start gap-2">
                     <input
                       type="checkbox"
-                      checked={selectedRow?.record?.[name] || false}
-                      readOnly
-                      className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-950"
+                      id="currentUser"
+                      name="currentUser"
+                      checked={selectedRow.record.currentUser}
+                      className="form-checkbox mt-1"
                     />
-                    <label className="text-sm text-gray-700">{label}</label>
+                    <label
+                      htmlFor="currentUser"
+                      className="text-sm font-bold"
+                    >
+                      CURRENT USER
+                    </label>
                   </div>
-                ))}
+
+                  <div className="ml-8 space-y-2 mt-2">
+                    <div className="flex items-start gap-2">
+                      <input
+                        type="checkbox"
+                        id="changingMethod"
+                        name="changingMethod"
+                        checked={selectedRow.record.changingMethod}
+                        className="form-checkbox mt-1 h-3 w-3"
+                      />
+                      <label
+                        htmlFor="changingMethod"
+                        className="text-xs"
+                      >
+                        CHANGING METHOD
+                      </label>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <input
+                        type="checkbox"
+                        id="changingClinic"
+                        name="changingClinic"
+                        checked={selectedRow.record.changingClinic}
+                        className="form-checkbox mt-1 h-3 w-3"
+                      />
+                      <label
+                        htmlFor="changingClinic"
+                        className="text-xs"
+                      >
+                        CHANGING CLINIC
+                      </label>
+                    </div>
+
+                    <div className="flex items-start gap-2">
+                      <input
+                        type="checkbox"
+                        id="dropoutRestart"
+                        name="dropoutRestart"
+                        checked={selectedRow.record.dropoutRestart}
+                        className="form-checkbox mt-1 h-3 w-3"
+                      />
+                      <label
+                        htmlFor="dropoutRestart"
+                        className="text-xs"
+                      >
+                        DROPOUT/RESTART
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2 mt-4">
+                  <p className="text-sm font-semibold">
+                    REASON FOR FAMILY PLANNING
+                  </p>
+                  <div className="flex items-start gap-2">
+                    <input
+                      type="checkbox"
+                      id="spacing"
+                      name="spacing"
+                      checked={selectedRow.record.spacing}
+                      className="form-checkbox mt-1"
+                    />
+                    <label htmlFor="spacing" className="text-sm">
+                      SPACING
+                    </label>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <input
+                      type="checkbox"
+                      id="medicalCondition"
+                      name="medicalCondition"
+                      checked={selectedRow.record.medicalCondition}
+                      className="form-checkbox mt-1"
+                    />
+                    <label
+                      htmlFor="medicalCondition"
+                      className="text-sm"
+                    >
+                      MEDICAL CONDITION
+                    </label>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <input
+                      type="checkbox"
+                      id="sideEffects"
+                      name="sideEffects"
+                      checked={selectedRow.record.sideEffects}
+                      className="form-checkbox mt-1"
+                    />
+                    <label
+                      htmlFor="sideEffects"
+                      className="text-sm"
+                    >
+                      SIDE EFFECTS
+                    </label>
+                  </div>
+
+                  <div className="flex items-start gap-2">
+                    <input
+                      type="checkbox"
+                      id="limiting"
+                      name="limiting"
+                      checked={selectedRow.record.limiting}
+                      className="form-checkbox mt-1"
+                    />
+                    <label htmlFor="limiting" className="text-sm">
+                      LIMITING
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 mt-4">
+                  <label htmlFor="others" className="text-sm">
+                    OTHERS
+                  </label>
+                  <input
+                    type="text"
+                    id="others"
+                    name="others"
+                    value={selectedRow.record.others}
+                    className="border-b border-gray-300 focus:border-orange-500 outline-none px-2 py-1 text-sm"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Method Currently Used */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900">
+            <div className="border border-orange-200 rounded-lg p-4">
+              <h3 className="text-lg font-semibold mb-4 uppercase text-gray-700">
                 Method Currently Used
-              </h2>
+              </h3>
               <div className="space-y-2">
                 {[
                   { name: "coc", label: "COC" },
                   { name: "pop", label: "POP" },
-                  { name: "injectable", label: "Injectable" },
-                  { name: "implant", label: "Implant" },
-                  { name: "inteval", label: "IUD Interval" },
-                  { name: "postPartum", label: "IUD Post Partum" },
-                  { name: "condom", label: "Condom" },
+                  { name: "injectable", label: "INJECTABLE" },
+                  { name: "implant", label: "IMPLANT" },
+                  { name: "interval", label: "INTERVAL" },
+                  { name: "postPartum", label: "POST-PARTUM" },
+                  { name: "condom", label: "CONDOM" },
                   { name: "bomCmm", label: "BOM/CMM" },
                   { name: "bbt", label: "BBT" },
                   { name: "stm", label: "STM" },
                   { name: "lam", label: "LAM" },
-                  { name: "otherMethod", label: "Other Method" },
                 ].map(({ name, label }) => (
-                  <div key={name} className="flex items-center space-x-2">
+                  <div
+                    key={name}
+                    className="flex items-center gap-2"
+                  >
                     <input
                       type="checkbox"
-                      checked={selectedRow?.record?.[name] || false}
-                      readOnly
-                      className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-950"
+                      id={name}
+                      name={name}
+                      checked={selectedRow.record[name]}
+                      className="form-checkbox"
                     />
-                    <label className="text-sm text-gray-700">{label}</label>
+                    <label htmlFor={name} className="text-sm">
+                      {label}
+                    </label>
                   </div>
                 ))}
+                <div className="flex items-center gap-2">
+                  <label
+                    htmlFor="methodOthers"
+                    className="text-sm"
+                  >
+                    OTHERS
+                  </label>
+                  <input
+                    type="text"
+                    id="methodOthers"
+                    name="methodOthers"
+                    value={selectedRow.record.methodOthers}
+                    className="border-b border-gray-300 focus:border-orange-500 outline-none px-2 py-1 text-sm"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* VAW Risks */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-900">
-                Risks for VAW
-              </h2>
-              <div className="space-y-2">
-                {[
-                  {
-                    name: "unpleasantRelationship",
-                    label: "Unpleasant Relationship with Partner",
-                  },
-                  { name: "partnerDisapproval", label: "Partner Disapproval" },
-                  { name: "domesticViolence", label: "Domestic Violence" },
-                  { name: "referredToDSWD", label: "Referred to DSWD" },
-                  { name: "referredToWCPU", label: "Referred to WCPU" },
-                  { name: "referredToOthers", label: "Referred to Others" },
-                ].map(({ name, label }) => (
-                  <div key={name} className="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={selectedRow?.record?.[name] || false}
-                      readOnly
-                      className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-950"
-                    />
-                    <label className="text-sm text-gray-700">{label}</label>
+            {/* Risks for Violence Against Women */}
+            <div className="border border-orange-200 rounded-lg p-4">
+              <h3 className="text-lg font-semibold mb-4 uppercase text-gray-700">
+                Risks for Violence Against Women
+              </h3>
+              <div className="space-y-4">
+                {/* Unpleasant Relationship */}
+                <div>
+                  <p className="text-sm mb-2">
+                    UNPLEASANT RELATIONSHIP WITH PARTNER
+                  </p>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="unpleasantRelationship"
+                        value="YES"
+                        checked={
+                          selectedRow.record.unpleasantRelationship === true
+                        }
+                        className="form-radio"
+                      />
+                      <span className="text-sm">YES</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="unpleasantRelationship"
+                        value="NO"
+                        checked={
+                          selectedRow.record.unpleasantRelationship ===
+                          false
+                        }
+                        className="form-radio"
+                      />
+                      <span className="text-sm">NO</span>
+                    </label>
                   </div>
-                ))}
+                </div>
+
+                {/* Partner Disapproval */}
+                <div>
+                  <p className="text-sm mb-2">
+                    PARTNER DOES NOT APPROVE OF THE VISIT TO FP
+                    CLINIC
+                  </p>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="partnerDisapproval"
+                        value="YES"
+                        checked={
+                          selectedRow.record.partnerDisapproval === true
+                        }
+                        className="form-radio"
+                      />
+                      <span className="text-sm">YES</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="partnerDisapproval"
+                        value="NO"
+                        checked={
+                          selectedRow.record.partnerDisapproval === false
+                        }
+                        className="form-radio"
+                      />
+                      <span className="text-sm">NO</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Domestic Violence */}
+                <div>
+                  <p className="text-sm mb-2">
+                    HISTORY OF DOMESTIC VIOLENCE VAW
+                  </p>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="domesticViolence"
+                        value="YES"
+                        checked={
+                          selectedRow.record.domesticViolence === true
+                        }
+                        className="form-radio"
+                      />
+                      <span className="text-sm">YES</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="domesticViolence"
+                        value="NO"
+                        checked={
+                          selectedRow.record.domesticViolence === false
+                        }
+                        className="form-radio"
+                      />
+                      <span className="text-sm">NO</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* Referred To (Checkboxes) */}
+                <div>
+                  <p className="text-sm font-semibold mb-2">
+                    REFERRED TO:
+                  </p>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="dswd"
+                        name="dswd"
+                        checked={selectedRow.record.dswd}
+                        className="form-checkbox"
+                      />
+                      <label htmlFor="dswd" className="text-sm">
+                        DSWD
+                      </label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="wcpu"
+                        name="wcpu"
+                        checked={selectedRow.record.wcpu}
+                        className="form-checkbox"
+                      />
+                      <label htmlFor="wcpu" className="text-sm">
+                        WCPU
+                      </label>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="riskOthers"
+                        name="riskOthers"
+                        checked={selectedRow.record.riskOthers}
+                        className="form-checkbox"
+                      />
+                      <label
+                        htmlFor="riskOthers"
+                        className="text-sm"
+                      >
+                        OTHERS
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

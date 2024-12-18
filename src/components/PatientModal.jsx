@@ -4,6 +4,7 @@ import { usePrenatal } from "../hooks/usePrenatal";
 import { useFamilyPlanning } from "../hooks/useFamilyPlanning";
 import useOtherServices from "../hooks/useOtherServices";
 import HistoryDetails from "./healthcare_services/specificDetailsHistory/HistoryDetails";
+import { usePatient } from "../hooks/usePatient";
 
 const PatientModal = ({
   patientData,
@@ -20,12 +21,12 @@ const PatientModal = ({
     useImmunization();
   const { fetchFamilyPlanningByUserIdHistory, familyPlanningHistory } =
     useFamilyPlanning();
+  const { getPatientById, myProfile } = usePatient();
   const { getOtherServiceHistory, otherServicesHistory } = useOtherServices();
   const [activeTab, setActiveTab] = useState("PRENATAL");
   const [specificHistoryData, setSpecificHistoryData] = useState({});
   const [tableIndexSelected, setTableIndexSelected] = useState(null);
   const [isViewDetails, setIsViewDetails] = useState(false);
-
 
   const tabs = [
     "PRENATAL CARE",
@@ -71,8 +72,12 @@ const PatientModal = ({
     getOtherServiceHistory(patientData?.objectId);
   }, [patientData?.objectId]);
 
+  useEffect(() => {
+    getPatientById(patientDataSelected?.objectId)
+  },[patientDataSelected])
 
-
+  console.log(patientDataSelected)
+  console.log(myProfile)
   return (
     <div className="w-full">
       {!isPatientHistory && (
@@ -86,8 +91,8 @@ const PatientModal = ({
           <div className="flex flex-col h-full w-full">
             {!isViewDetails && (
               <h2 className="text-2xl uppercase text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
-                PATIENT HISTORY RECORD OF {patientDataSelected?.firstname}{" "}
-                {patientDataSelected?.lastname}
+                PATIENT HISTORY RECORD OF {myProfile?.firstname}{" "}
+                {myProfile?.lastname}
               </h2>
             )}
             {(!isViewDetails || tableIndexSelected === null) && (
@@ -126,9 +131,9 @@ const PatientModal = ({
                   {/* Table Content */}
                   <div className="min-h-[300px]">
                     {activeTab === "PRENATAL CARE" &&
-                      Array.isArray(patientDataSelected?.prenatal) &&
-                      patientDataSelected.prenatal.length > 0 &&
-                      patientDataSelected.prenatal.map((data, i) => (
+                      Array.isArray(myProfile?.prenatal) &&
+                      myProfile.prenatal.length > 0 &&
+                      myProfile.prenatal.map((data, i) => (
                         <div
                           key={i}
                           onClick={() => handleSelectionTableRow(data, i)}
@@ -150,9 +155,9 @@ const PatientModal = ({
                       ))}
 
                     {activeTab === "IMMUNIZATION" &&
-                      Array.isArray(patientDataSelected?.immunization) &&
-                      patientDataSelected.immunization.length > 0 &&
-                      patientDataSelected.immunization.map((data, i) => (
+                      Array.isArray(myProfile?.immunization) &&
+                      myProfile.immunization.length > 0 &&
+                      myProfile.immunization.map((data, i) => (
                         <div
                           key={i}
                           onClick={() => handleSelectionTableRow(data, i)}
@@ -174,9 +179,9 @@ const PatientModal = ({
                       ))}
 
                     {activeTab === "FAMILY PLANNING" &&
-                      Array.isArray(patientDataSelected?.familyPlanning) &&
-                      patientDataSelected.familyPlanning.length > 0 &&
-                      patientDataSelected.familyPlanning.map((data, i) => (
+                      Array.isArray(myProfile?.familyPlanning) &&
+                      myProfile.familyPlanning.length > 0 &&
+                      myProfile.familyPlanning.map((data, i) => (
                         <div
                           key={i}
                           onClick={() => handleSelectionTableRow(data, i)}
@@ -198,9 +203,9 @@ const PatientModal = ({
                       ))}
 
                     {activeTab === "OTHER SERVICES" &&
-                      Array.isArray(patientDataSelected?.otherServices) &&
-                      patientDataSelected.otherServices.length > 0 &&
-                      patientDataSelected.otherServices.map((data, i) => (
+                      Array.isArray(myProfile?.otherServices) &&
+                      myProfile.otherServices.length > 0 &&
+                      myProfile.otherServices.map((data, i) => (
                         <div
                           key={i}
                           onClick={() => handleSelectionTableRow(data, i)}
@@ -244,7 +249,7 @@ const PatientModal = ({
             {isViewDetails && tableIndexSelected !== null && (
               <HistoryDetails
                 specificHistoryData={specificHistoryData}
-                myProfile={patientDataSelected}
+                myProfile={myProfile}
                 activeTab={activeTab}
                 handlePrint={handlePrint}
                 componentRef={componentRef}
@@ -264,7 +269,7 @@ const PatientModal = ({
               <div className="flex flex-col gap-1">
                 <img
                   src={
-                    patientDataSelected?.profilePicture ||
+                    myProfile?.profilePicture ||
                     "/avatarplaceholder.png"
                   }
                   alt=""
@@ -273,13 +278,13 @@ const PatientModal = ({
                 <div className="text-[11px]">
                   <p className="font-semibold">PATIENT ID NO.</p>
                   <p className="text-black">
-                    {patientDataSelected?.patientIdNo}
+                    {myProfile?.patientIdNo}
                   </p>
                 </div>
                 <div className="text-[11px]">
                   <p className="font-semibold">EMAIL ADDRESS:</p>
                   <p className="text-black break-words">
-                    {patientDataSelected?.email}
+                    {myProfile?.email}
                   </p>
                 </div>
               </div>
@@ -289,27 +294,27 @@ const PatientModal = ({
                 <div>
                   <p className="text-gray-600 text-sm">LASTNAME:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.lastname}
+                    {myProfile?.lastname}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">PUROK:</p>
-                  <p className="font-semibold">{patientDataSelected?.purok}</p>
+                  <p className="font-semibold">{myProfile?.purok}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">BIRTHDATE:</p>
-                  <p className="font-semibold">{patientDataSelected?.bod}</p>
+                  <p className="font-semibold">{myProfile?.bod}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">BIRTHPLACE:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.birthPlace}
+                    {myProfile?.birthPlace}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600">HOUSEHOLD MONTHLY INCOME:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.houseHoldMonthlyIncome}
+                    {myProfile?.houseHoldMonthlyIncome}
                   </p>
                 </div>
               </div>
@@ -319,29 +324,29 @@ const PatientModal = ({
                 <div>
                   <p className="text-gray-600 text-sm">FIRSTNAME:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.firstname}
+                    {myProfile?.firstname}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">BARANGAY:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.barangay}
+                    {myProfile?.barangay}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">AGE:</p>
-                  <p className="font-semibold">{patientDataSelected?.age}</p>
+                  <p className="font-semibold">{myProfile?.age}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">BLOODTYPE:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.bloodType}
+                    {myProfile?.bloodType}
                   </p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <p className="text-gray-600">NO. LIVING CHILD:</p>
                   <p className="text-center font-semibold">
-                    - {patientDataSelected?.livingChild} -
+                    - {myProfile?.livingChild} -
                   </p>
                 </div>
               </div>
@@ -351,31 +356,31 @@ const PatientModal = ({
                 <div>
                   <p className="text-gray-600 text-sm">MIDDLE NAME:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.middleInitial}
+                    {myProfile?.middleInitial}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">MUNICIPALITY:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.municipality}
+                    {myProfile?.municipality}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">NATIONALITY:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.nationality}
+                    {myProfile?.nationality}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">CONTACT NO.:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.contact}
+                    {myProfile?.contact}
                   </p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <p className="text-gray-600">NO. NON-LIVING CHILD:</p>
                   <p className="text-center font-semibold">
-                    - {patientDataSelected?.nonLivingChild} -
+                    - {myProfile?.nonLivingChild} -
                   </p>
                 </div>
               </div>
@@ -385,25 +390,25 @@ const PatientModal = ({
                 <div>
                   <p className="text-gray-600 text-sm">CIVIL STATUS:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.civilStatus}
+                    {myProfile?.civilStatus}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">PROVINCE:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.province}
+                    {myProfile?.province}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">RELIGION:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.religion}
+                    {myProfile?.religion}
                   </p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">OCCUPATION:</p>
                   <p className="font-semibold">
-                    {patientDataSelected?.occupation}
+                    {myProfile?.occupation}
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -413,7 +418,7 @@ const PatientModal = ({
                       name="healthcareAssistance"
                       value="4PS"
                       checked={
-                        patientDataSelected?.healthcareAssistance === "4ps"
+                        myProfile?.healthcareAssistance === "4ps"
                       }
                     />
                     <span>4PS</span>
@@ -424,7 +429,7 @@ const PatientModal = ({
                       name="healthcareAssistance"
                       value="INDIGENT"
                       checked={
-                        patientDataSelected?.healthcareAssistance === "indigent"
+                        myProfile?.healthcareAssistance === "indigent"
                       }
                     />
                     <span>INDIGENT</span>
@@ -435,7 +440,7 @@ const PatientModal = ({
                       name="healthcareAssistance"
                       value="PRIVATE"
                       checked={
-                        patientDataSelected?.healthcareAssistance === "private"
+                        myProfile?.healthcareAssistance === "private"
                       }
                     />
                     <span>PRIVATE</span>
@@ -457,19 +462,19 @@ const PatientModal = ({
                     <div>
                       <p className="text-gray-600">LASTNAME:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyLastName}
+                        {myProfile?.emergencyLastName}
                       </p>
                     </div>
                     <div>
                       <p className="text-gray-600">ADDRESS:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyAddress}
+                        {myProfile?.emergencyAddress}
                       </p>
                     </div>
                     <div>
                       <p className="text-gray-600">CIVIL STATUS:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyCivilStatus}
+                        {myProfile?.emergencyCivilStatus}
                       </p>
                     </div>
                   </div>
@@ -479,19 +484,19 @@ const PatientModal = ({
                     <div>
                       <p className="text-gray-600">FIRSTNAME:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyFirstName}
+                        {myProfile?.emergencyFirstName}
                       </p>
                     </div>
                     <div>
                       <p className="text-gray-600">BIRTHDATE:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyBod}
+                        {myProfile?.emergencyBod}
                       </p>
                     </div>
                     <div>
                       <p className="text-gray-600">NATIONALITY:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyNationality}
+                        {myProfile?.emergencyNationality}
                       </p>
                     </div>
                   </div>
@@ -500,19 +505,19 @@ const PatientModal = ({
                     <div>
                       <p className="text-gray-600">MIDDLE INITIAL:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyInitial}
+                        {myProfile?.emergencyInitial}
                       </p>
                     </div>
                     <div>
                       <p className="text-gray-600">AGE:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyAge}
+                        {myProfile?.emergencyAge}
                       </p>
                     </div>
                     <div>
                       <p className="text-gray-600">RELIGION:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyReligion}
+                        {myProfile?.emergencyReligion}
                       </p>
                     </div>
                   </div>
@@ -522,19 +527,19 @@ const PatientModal = ({
                     <div>
                       <p className="text-gray-600 text-sm">RELATIONSHIP:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyRelationship}
+                        {myProfile?.emergencyRelationship}
                       </p>
                     </div>
                     <div>
                       <p className="text-gray-600 text-sm">OCCUPATION:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyOccupation}
+                        {myProfile?.emergencyOccupation}
                       </p>
                     </div>
                     <div>
                       <p className="text-gray-600 text-sm">CONTACT NO:</p>
                       <p className="font-semibold">
-                        {patientDataSelected?.emergencyContact}
+                        {myProfile?.emergencyContact}
                       </p>
                     </div>
                   </div>

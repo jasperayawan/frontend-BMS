@@ -68,6 +68,7 @@ export const usePatient = () => {
     };
 
     const getPatientById = async (id) => {
+
         try {
             const response = await axios.get(PATIENT + `/${id}`);
             const patient = response.data.patient;
@@ -115,7 +116,7 @@ export const usePatient = () => {
                 immunization,
                 otherServices
             };
-
+            
             setMyProfile(patientWithDetails);
             return patientWithDetails; // Return the patient with details
         } catch (error) {
