@@ -73,10 +73,9 @@ const PatientModal = ({
   }, [patientData?.objectId]);
 
   useEffect(() => {
-    getPatientById(patientDataSelected?.objectId)
-  },[patientDataSelected])
+    getPatientById(patientDataSelected?.objectId);
+  }, [patientDataSelected]);
 
-  
   if (Object.keys(myProfile).length === 0) {
     return (
       <div className="flex justify-center items-center">
@@ -84,7 +83,7 @@ const PatientModal = ({
       </div>
     );
   }
-  
+
 
   return (
     <div className="w-full">
@@ -140,99 +139,129 @@ const PatientModal = ({
                   <div className="min-h-[300px]">
                     {activeTab === "PRENATAL CARE" &&
                       Array.isArray(myProfile?.prenatal) &&
-                      myProfile.prenatal.length > 0 &&
-                      myProfile.prenatal.map((data, i) => (
-                        <div
-                          key={i}
-                          onClick={() => handleSelectionTableRow(data, i)}
-                          className={`${
-                            tableIndexSelected === i &&
-                            activeTab === "PRENATAL CARE"
-                              ? "bg-orange-100"
-                              : ""
-                          } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
-                        >
-                          <div className="py-3 px-4">{activeTab}</div>
-                          <div className="py-3 px-4 border-l-2 border-r-2 border-black">
-                            {new Date(data.createdAt).getFullYear()}
+                      (myProfile.prenatal.length > 0 ? (
+                        myProfile.prenatal.map((data, i) => (
+                          <div
+                            key={i}
+                            onClick={() => handleSelectionTableRow(data, i)}
+                            className={`${
+                              tableIndexSelected === i &&
+                              activeTab === "PRENATAL CARE"
+                                ? "bg-orange-100"
+                                : ""
+                            } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
+                          >
+                            <div className="py-3 px-4">{activeTab}</div>
+                            <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                              {new Date(data.createdAt).getFullYear()}
+                            </div>
+                            <div className="py-3 px-4">
+                              {data.nurseIncharge.name}
+                            </div>
                           </div>
-                          <div className="py-3 px-4">
-                            {data.nurseIncharge.name}
-                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-3">
+                          <p className="text-2xl text-black font-semibold uppercase border-b-[1px] border-black pb-2">
+                            No records found
+                          </p>
                         </div>
                       ))}
 
                     {activeTab === "IMMUNIZATION" &&
-                      Array.isArray(myProfile?.immunization) &&
-                      myProfile.immunization.length > 0 &&
-                      myProfile.immunization.map((data, i) => (
-                        <div
-                          key={i}
-                          onClick={() => handleSelectionTableRow(data, i)}
-                          className={`${
-                            tableIndexSelected === i &&
-                            activeTab === "IMMUNIZATION"
-                              ? "bg-orange-100"
-                              : ""
-                          } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
-                        >
-                          <div className="py-3 px-4">{activeTab}</div>
-                          <div className="py-3 px-4 border-l-2 border-r-2 border-black">
-                            {new Date(data.createdAt).getFullYear()}
+                      (Array.isArray(myProfile?.immunization) &&
+                      myProfile.immunization.length > 0 ? (
+                        myProfile.immunization.map((data, i) => (
+                          <div
+                            key={i}
+                            onClick={() => handleSelectionTableRow(data, i)}
+                            className={`${
+                              tableIndexSelected === i &&
+                              activeTab === "IMMUNIZATION"
+                                ? "bg-orange-100"
+                                : ""
+                            } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
+                          >
+                            <div className="py-3 px-4">{activeTab}</div>
+                            <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                              {new Date(data.createdAt).getFullYear()}
+                            </div>
+                            <div className="py-3 px-4">
+                              {data.nurseIncharge.name}
+                            </div>
                           </div>
-                          <div className="py-3 px-4">
-                            {data.nurseIncharge.name}
-                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-3">
+                          <p className="text-2xl text-black font-semibold uppercase border-b-[1px] border-black pb-2">
+                            No records found
+                          </p>
                         </div>
                       ))}
 
                     {activeTab === "FAMILY PLANNING" &&
-                      Array.isArray(myProfile?.familyPlanning) &&
-                      myProfile.familyPlanning.length > 0 &&
-                      myProfile.familyPlanning.map((data, i) => (
-                        <div
-                          key={i}
-                          onClick={() => handleSelectionTableRow(data, i)}
-                          className={`${
-                            tableIndexSelected === i &&
-                            activeTab === "FAMILY PLANNING"
-                              ? "bg-orange-100"
-                              : ""
-                          } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
-                        >
-                          <div className="py-3 px-4">{activeTab}</div>
-                          <div className="py-3 px-4 border-l-2 border-r-2 border-black">
-                            {new Date(data.record?.createdAt).getFullYear()}
+                      (Array.isArray(myProfile?.familyPlanning) &&
+                      myProfile.familyPlanning.length > 0 ? (
+                        myProfile.familyPlanning.map((data, i) => (
+                          <div
+                            key={i}
+                            onClick={() => handleSelectionTableRow(data, i)}
+                            className={`${
+                              tableIndexSelected === i &&
+                              activeTab === "FAMILY PLANNING"
+                                ? "bg-orange-100"
+                                : ""
+                            } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
+                          >
+                            <div className="py-3 px-4">{activeTab}</div>
+                            <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                              {new Date(data.record?.createdAt).getFullYear()}
+                            </div>
+                            <div className="py-3 px-4">
+                              {data.record?.nurseIncharge?.name}
+                            </div>
                           </div>
-                          <div className="py-3 px-4">
-                            {data.record?.nurseIncharge?.name}
-                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-3">
+                          <p className="text-2xl text-black font-semibold uppercase border-b-[1px] border-black pb-2">
+                            No records found
+                          </p>
                         </div>
                       ))}
 
                     {activeTab === "OTHER SERVICES" &&
-                      Array.isArray(myProfile?.otherServices) &&
-                      myProfile.otherServices.length > 0 &&
-                      myProfile.otherServices.map((data, i) => (
-                        <div
-                          key={i}
-                          onClick={() => handleSelectionTableRow(data, i)}
-                          className={`${
-                            tableIndexSelected === i && activeTab === "OTHER SERVICES"
-                              ? "bg-orange-100"
-                              : ""
-                          } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
-                        >
-                          <div className="py-3 px-4">{activeTab}</div>
-                          <div className="py-3 px-4 border-l-2 border-r-2 border-black">
-                            {data.createdAt ? new Date(data.createdAt).getFullYear() : "N/A"}
+                      (Array.isArray(myProfile?.otherServices) &&
+                      myProfile.otherServices.length > 0 ? (
+                        myProfile.otherServices.map((data, i) => (
+                          <div
+                            key={i}
+                            onClick={() => handleSelectionTableRow(data, i)}
+                            className={`${
+                              tableIndexSelected === i &&
+                              activeTab === "OTHER SERVICES"
+                                ? "bg-orange-100"
+                                : ""
+                            } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
+                          >
+                            <div className="py-3 px-4">{activeTab}</div>
+                            <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                              {data.createdAt
+                                ? new Date(data.createdAt).getFullYear()
+                                : "N/A"}
+                            </div>
+                            <div className="py-3 px-4">
+                              {data.nurseIncharge?.name || "Unknown"}
+                            </div>
                           </div>
-                          <div className="py-3 px-4">
-                            {data.nurseIncharge?.name || "Unknown"}
-                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-3">
+                          <p className="text-2xl text-black font-semibold uppercase border-b-[1px] border-black pb-2">
+                            No records found
+                          </p>
                         </div>
                       ))}
-
                   </div>
 
                   {/* Buttons */}
@@ -276,24 +305,17 @@ const PatientModal = ({
             <div className="grid grid-cols-5">
               <div className="flex flex-col gap-1">
                 <img
-                  src={
-                    myProfile?.profilePicture ||
-                    "/avatarplaceholder.png"
-                  }
+                  src={myProfile?.profilePicture || "/avatarplaceholder.png"}
                   alt=""
                   className="w-32 h-32 object-cover"
                 />
                 <div className="text-[11px]">
                   <p className="font-semibold">PATIENT ID NO.</p>
-                  <p className="text-black">
-                    {myProfile?.patientIdNo}
-                  </p>
+                  <p className="text-black">{myProfile?.patientIdNo}</p>
                 </div>
                 <div className="text-[11px]">
                   <p className="font-semibold">EMAIL ADDRESS:</p>
-                  <p className="text-black break-words">
-                    {myProfile?.email}
-                  </p>
+                  <p className="text-black break-words">{myProfile?.email}</p>
                 </div>
               </div>
 
@@ -301,9 +323,7 @@ const PatientModal = ({
               <div className="space-y-2 text-[11px]">
                 <div>
                   <p className="text-gray-600 text-sm">LASTNAME:</p>
-                  <p className="font-semibold">
-                    {myProfile?.lastname}
-                  </p>
+                  <p className="font-semibold">{myProfile?.lastname}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">PUROK:</p>
@@ -315,9 +335,7 @@ const PatientModal = ({
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">BIRTHPLACE:</p>
-                  <p className="font-semibold">
-                    {myProfile?.birthPlace}
-                  </p>
+                  <p className="font-semibold">{myProfile?.birthPlace}</p>
                 </div>
                 <div>
                   <p className="text-gray-600">HOUSEHOLD MONTHLY INCOME:</p>
@@ -331,15 +349,11 @@ const PatientModal = ({
               <div className="space-y-2 text-[11px]">
                 <div>
                   <p className="text-gray-600 text-sm">FIRSTNAME:</p>
-                  <p className="font-semibold">
-                    {myProfile?.firstname}
-                  </p>
+                  <p className="font-semibold">{myProfile?.firstname}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">BARANGAY:</p>
-                  <p className="font-semibold">
-                    {myProfile?.barangay}
-                  </p>
+                  <p className="font-semibold">{myProfile?.barangay}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">AGE:</p>
@@ -347,9 +361,7 @@ const PatientModal = ({
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">BLOODTYPE:</p>
-                  <p className="font-semibold">
-                    {myProfile?.bloodType}
-                  </p>
+                  <p className="font-semibold">{myProfile?.bloodType}</p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <p className="text-gray-600">NO. LIVING CHILD:</p>
@@ -363,27 +375,19 @@ const PatientModal = ({
               <div className="space-y-2 text-[11px]">
                 <div>
                   <p className="text-gray-600 text-sm">MIDDLE NAME:</p>
-                  <p className="font-semibold">
-                    {myProfile?.middleInitial}
-                  </p>
+                  <p className="font-semibold">{myProfile?.middleInitial}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">MUNICIPALITY:</p>
-                  <p className="font-semibold">
-                    {myProfile?.municipality}
-                  </p>
+                  <p className="font-semibold">{myProfile?.municipality}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">NATIONALITY:</p>
-                  <p className="font-semibold">
-                    {myProfile?.nationality}
-                  </p>
+                  <p className="font-semibold">{myProfile?.nationality}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">CONTACT NO.:</p>
-                  <p className="font-semibold">
-                    {myProfile?.contact}
-                  </p>
+                  <p className="font-semibold">{myProfile?.contact}</p>
                 </div>
                 <div className="flex gap-2 items-center">
                   <p className="text-gray-600">NO. NON-LIVING CHILD:</p>
@@ -397,27 +401,19 @@ const PatientModal = ({
               <div className="space-y-2 text-[11px]">
                 <div>
                   <p className="text-gray-600 text-sm">CIVIL STATUS:</p>
-                  <p className="font-semibold">
-                    {myProfile?.civilStatus}
-                  </p>
+                  <p className="font-semibold">{myProfile?.civilStatus}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">PROVINCE:</p>
-                  <p className="font-semibold">
-                    {myProfile?.province}
-                  </p>
+                  <p className="font-semibold">{myProfile?.province}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">RELIGION:</p>
-                  <p className="font-semibold">
-                    {myProfile?.religion}
-                  </p>
+                  <p className="font-semibold">{myProfile?.religion}</p>
                 </div>
                 <div>
                   <p className="text-gray-600 text-sm">OCCUPATION:</p>
-                  <p className="font-semibold">
-                    {myProfile?.occupation}
-                  </p>
+                  <p className="font-semibold">{myProfile?.occupation}</p>
                 </div>
                 <div className="flex items-center gap-4">
                   <label className="flex items-center gap-2">
@@ -425,9 +421,7 @@ const PatientModal = ({
                       type="radio"
                       name="healthcareAssistance"
                       value="4PS"
-                      checked={
-                        myProfile?.healthcareAssistance === "4ps"
-                      }
+                      checked={myProfile?.healthcareAssistance === "4ps"}
                     />
                     <span>4PS</span>
                   </label>
@@ -436,9 +430,7 @@ const PatientModal = ({
                       type="radio"
                       name="healthcareAssistance"
                       value="INDIGENT"
-                      checked={
-                        myProfile?.healthcareAssistance === "indigent"
-                      }
+                      checked={myProfile?.healthcareAssistance === "indigent"}
                     />
                     <span>INDIGENT</span>
                   </label>
@@ -447,9 +439,7 @@ const PatientModal = ({
                       type="radio"
                       name="healthcareAssistance"
                       value="PRIVATE"
-                      checked={
-                        myProfile?.healthcareAssistance === "private"
-                      }
+                      checked={myProfile?.healthcareAssistance === "private"}
                     />
                     <span>PRIVATE</span>
                   </label>
@@ -497,9 +487,7 @@ const PatientModal = ({
                     </div>
                     <div>
                       <p className="text-gray-600">BIRTHDATE:</p>
-                      <p className="font-semibold">
-                        {myProfile?.emergencyBod}
-                      </p>
+                      <p className="font-semibold">{myProfile?.emergencyBod}</p>
                     </div>
                     <div>
                       <p className="text-gray-600">NATIONALITY:</p>
@@ -518,9 +506,7 @@ const PatientModal = ({
                     </div>
                     <div>
                       <p className="text-gray-600">AGE:</p>
-                      <p className="font-semibold">
-                        {myProfile?.emergencyAge}
-                      </p>
+                      <p className="font-semibold">{myProfile?.emergencyAge}</p>
                     </div>
                     <div>
                       <p className="text-gray-600">RELIGION:</p>
