@@ -98,10 +98,6 @@ const Login = () => {
     checkUser()
   },[])
 
-  const handleUnregisteredUser = () => {
-    localStorage.setItem('unregisteredUser', "unregistered")
-    navigate('/home')
-  }
 
 
   return (
@@ -202,7 +198,6 @@ const Login = () => {
               </span>
             ) : 'Login'}
           </button>
-          <button onClick={handleUnregisteredUser} className='underline'>VIEW AS UNREGISTED USER</button>
         </form>
       </div>
     </div>

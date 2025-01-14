@@ -3,6 +3,7 @@ import Parse from "parse/dist/parse.min.js";
 import { IoMdClose } from "react-icons/io";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,6 +23,7 @@ const Home = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("")
   const [isSuccess, setIsSuccess] = useState(false)
+  const location = useLocation()
 
   const unregisteredUser = localStorage.getItem("unregisteredUser")
   const handleImageChange = (e) => {
@@ -148,6 +150,12 @@ const Home = () => {
   useEffect(() => {
     fetchAnnouncements();
   }, []);
+
+  useEffect(() => {
+    if(location.pathname === "/home") {
+      localStorage.setItem("unregisteredUser", true)
+    }
+  },[location])
 
   return (
     <div className="relative min-h-screen p-6">

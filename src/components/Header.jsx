@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Parse from "parse/dist/parse.min.js";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isActive, setIsActive] = useState("");
@@ -9,6 +9,7 @@ const Header = () => {
   const location = useLocation();
   const currentRoute = location.pathname.split("/").pop();
   const Navigate = useNavigate();
+  const unregisteredUser = localStorage.getItem("unregisteredUser");
 
   const handleActiveSelect = (activeData) => {
     setIsActive(activeData);
@@ -18,12 +19,23 @@ const Header = () => {
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-col md:flex-row justify-between items-center px-4 md:px-10 py-4 bg-yellow-500">
-        <img
-          onClick={() => Navigate("/")}
-          src="/sanfranciscologo.svg"
-          alt="San Francisco Logo"
-          className="z-30 cursor-pointer h-16 md:h-20 mb-4 md:mb-0"
-        />
+        {unregisteredUser ? (
+          <Link to='/home'>
+            <img
+              onClick={() => Navigate("/")}
+              src="/sanfranciscologo.svg"
+              alt="San Francisco Logo"
+              className="z-30 cursor-pointer h-16 md:h-20 mb-4 md:mb-0"
+            />
+          </Link>
+        ) : (
+          <img
+            onClick={() => Navigate("/")}
+            src="/sanfranciscologo.svg"
+            alt="San Francisco Logo"
+            className="z-30 cursor-pointer h-16 md:h-20 mb-4 md:mb-0"
+          />
+        )}
         <h2 className="text-white text-xl md:text-[32px] text-center font-semibold px-2">
           BARANGAY SAN FRANCISCO HEALTH CENTER
           <br className="hidden md:block" /> MANAGEMENT SYSTEM
