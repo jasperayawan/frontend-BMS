@@ -123,6 +123,9 @@ const Users = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
+    if(name === "contact" && value.length > 11) return;
+
     setNewUser((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -1126,12 +1129,14 @@ const Users = () => {
                         type="number"
                         name="contact"
                         value={editingUser.contact}
-                        onChange={(e) =>
-                          setEditingUser((prev) => ({
-                            ...prev,
-                            contact: e.target.value,
-                          }))
-                        }
+                        onChange={(e) => {
+                          if (e.target.value.length <= 11) {
+                            setEditingUser((prev) => ({
+                              ...prev,
+                              contact: e.target.value,
+                            }));
+                          }
+                        }}
                         required
                         className="w-2/3 px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
                       />

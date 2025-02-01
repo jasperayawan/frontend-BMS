@@ -22,6 +22,11 @@ const MyAccount = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    if(name === "contact" && (!/^\d*$/.test(value) || value.length > 11)){
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -250,7 +255,7 @@ const MyAccount = () => {
                   <label className="block font-bold">Contact No.:</label>
                   <input
                     type="text"
-                    name="contactNo"
+                    name="contact"
                     value={formData.contact}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border rounded"

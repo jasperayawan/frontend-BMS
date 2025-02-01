@@ -105,6 +105,9 @@ const Patient = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === 'contact' && value.length > 11) return;
+
     setFormData({ ...formData, [name]: value });
 
     // Calculate age for both 'bod' and 'emergencyBod'

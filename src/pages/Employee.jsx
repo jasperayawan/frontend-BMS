@@ -265,6 +265,8 @@ const Employee = () => {
   const handleInputChange = async (e) => {
     const { name, value, files } = e.target;
 
+    if((name === 'contactNo' || 'companyContact' || 'emergencyContact') && value.length > 11) return;
+
     if (name === "image" && files?.[0]) {
       const file = files[0];
       const base64 = await toBase64(file);
@@ -282,7 +284,9 @@ const Employee = () => {
   };
 
   const handleInputChangeData = (e, fieldName) => {
-    const { value } = e.target;
+    const { name, value } = e.target;
+
+    if((name === 'contactNo' || name === 'companyContact' || name === 'emergencyContact') && value.length > 11) return;
     
     // Special handling for birthdate field
     if (fieldName === 'birthdate') {

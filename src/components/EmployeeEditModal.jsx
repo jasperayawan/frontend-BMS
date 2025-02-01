@@ -176,6 +176,7 @@ const EmployeeEditModal = ({
                   </h5>
                   <input
                     type="number"
+                    name="contactNo"
                     value={employeeData.contactNo}
                     onChange={(e) => handleInputChangeData(e, 'contactNo')}
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
@@ -234,6 +235,7 @@ const EmployeeEditModal = ({
                 <h6 className="text-[12px] font-semibold">CONTACT NO.</h6>
                 <input
                   type="number"
+                  name="companyContact"
                   value={employeeData.companyContact}
                   onChange={(e) => handleInputChangeData(e, 'companyContact')}
                   className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
@@ -291,6 +293,7 @@ const EmployeeEditModal = ({
                 <h6 className="text-[12px] font-semibold">CONTACT NO.</h6>
                 <input
                   type="number"
+                  name="emergencyContact"
                   value={employeeData.emergencyContact}
                   onChange={(e) => handleInputChangeData(e, 'emergencyContact')}
                   className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
