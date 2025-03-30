@@ -108,6 +108,8 @@ const Patient = () => {
 
     if (name === 'contact' && value.length > 11) return;
 
+    if (name === 'emergencyContact' && value.length > 11) return; 
+
     setFormData({ ...formData, [name]: value });
 
     // Calculate age for both 'bod' and 'emergencyBod'
