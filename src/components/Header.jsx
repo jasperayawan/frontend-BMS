@@ -18,7 +18,7 @@ const Header = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-col md:flex-row justify-between items-center px-4 md:px-10 py-4 bg-yellow-500">
+      <div className="flex justify-between items-center px-4 md:px-10 py-4 bg-yellow-500">
         {unregisteredUser ? (
           <Link to='/home'>
             <img
@@ -36,7 +36,7 @@ const Header = () => {
             className="z-30 cursor-pointer h-16 md:h-20 mb-4 md:mb-0"
           />
         )}
-        <h2 className="text-white text-xl md:text-[32px] text-center font-semibold px-2">
+        <h2 className="text-white text-base md:text-[32px] text-center font-semibold px-2">
           BARANGAY SAN FRANCISCO HEALTH CENTER
           <br className="hidden md:block" /> MANAGEMENT SYSTEM
         </h2>
