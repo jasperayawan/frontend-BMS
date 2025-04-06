@@ -36,10 +36,15 @@ const Header = () => {
             className="z-30 cursor-pointer h-16 md:h-20 mb-4 md:mb-0"
           />
         )}
-        <h2 className="text-white text-base md:text-[32px] text-center font-semibold px-2">
+        <div className="flex flex-col justify-center items-center gap-y-2">
+          <span className="text-white text-base md:text-[32px] text-center font-semibold px-2"> 
           BARANGAY SAN FRANCISCO HEALTH CENTER
-          <br className="hidden md:block" /> MANAGEMENT SYSTEM
-        </h2>
+          </span>
+          <span className="text-white text-base md:text-[32px] text-center font-semibold px-2">
+          MANAGEMENT SYSTEM
+          </span>
+        </div>
+        
         <img 
           src="/pagadianlogo.svg" 
           alt="Pagadian Logo" 

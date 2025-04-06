@@ -108,6 +108,7 @@ const MedicalServices = ({ setOpenMedicalHistory, myProfile }) => {
                 ))}
 
               {activeTab === "IMMUNIZATION" &&
+                Array.isArray(myProfile.immunization) &&
                 myProfile?.immunization.length > 0 &&
                 Array.isArray(myProfile.immunization) &&
                 myProfile.immunization.map((data, i) => (
@@ -129,6 +130,7 @@ const MedicalServices = ({ setOpenMedicalHistory, myProfile }) => {
                 ))}
 
               {activeTab === "FAMILY PLANNING" &&
+                Array.isArray(myProfile.familyPlanning) &&
                 myProfile?.familyPlanning.length > 0 &&
                 Array.isArray(myProfile.familyPlanning) &&
                 myProfile.familyPlanning.map((data, i) => (
@@ -153,6 +155,7 @@ const MedicalServices = ({ setOpenMedicalHistory, myProfile }) => {
                 ))}
 
               {activeTab === "OTHER SERVICES" &&
+                Array.isArray(myProfile.otherServices) &&
                 myProfile?.otherServices.length > 0 &&
                 Array.isArray(myProfile.otherServices) &&
                 myProfile.otherServices.map((data, i) => (
