@@ -188,9 +188,18 @@ const Employee = () => {
     try {
         const updatedEmployeeData = { ...editData };
 
-        if (updatedEmployeeData.birthdate && typeof updatedEmployeeData.birthdate === 'string') {
+        if (
+          updatedEmployeeData.birthdate &&
+          typeof updatedEmployeeData.birthdate === 'object' &&
+          updatedEmployeeData.birthdate.__type === "Date"
+        ) {
+          updatedEmployeeData.birthdate = new Date(updatedEmployeeData.birthdate.iso);
+        } else if (typeof updatedEmployeeData.birthdate === "string") {
           updatedEmployeeData.birthdate = new Date(updatedEmployeeData.birthdate);
         }
+
+        
+        console.log('updatedEmployeeData', updatedEmployeeData)
 
         // If there is a new image, make sure it's included in the data
         if (image) {

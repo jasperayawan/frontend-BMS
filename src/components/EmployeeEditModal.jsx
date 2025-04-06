@@ -17,7 +17,7 @@ const EmployeeEditModal = ({
       : format(new Date(employeeData.birthdate), "yyyy-MM-dd")
     : "";
 
-    console.log("Employee Data:", employeeData);
+
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center z-50">
       <div className="bg-white rounded-[12px] min-w-[500px] h-[400px] relative p-4 overflow-y-auto">
