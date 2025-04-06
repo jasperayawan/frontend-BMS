@@ -68,7 +68,7 @@ const EmployeeEditModal = ({
                     value={employeeData.lastName}
                     onChange={(e) => handleInputChangeData(e, 'lastName')}
                     name="lastName"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -80,7 +80,7 @@ const EmployeeEditModal = ({
                     value={employeeData.firstName}
                     onChange={(e) => handleInputChangeData(e, 'firstName')}
                     name="firstName"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -92,7 +92,7 @@ const EmployeeEditModal = ({
                     value={employeeData.middleInitial}
                     onChange={(e) => handleInputChangeData(e, 'middleInitial')}
                     name="middleInitial"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -104,20 +104,29 @@ const EmployeeEditModal = ({
                     value={employeeData.maritalStatus}
                     onChange={(e) => handleInputChangeData(e, 'maritalStatus')}
                     name="maritalStatus" 
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col">
                   <h5 className="text-[12px] font-semibold uppercase">
                     BLOODTYPE
                   </h5>
-                  <input
-                    type="text"
+                  <select
+                    name="bloodType"
                     value={employeeData.bloodType}
                     onChange={(e) => handleInputChangeData(e, 'bloodType')}
-                    name="bloodType"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
-                  />
+                    className="mt-1 block w-full rounded-md border border-gray-300 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  >
+                    <option value="" className="text-[13px]">--select--</option>
+                    <option value="O+" className="text-[13px]">O+</option>
+                    <option value="A+" className="text-[13px]">A+</option>
+                    <option value="B+" className="text-[13px]">B+</option>
+                    <option value="AB+" className="text-[13px]">AB+</option>
+                    <option value="O-" className="text-[13px]">O-</option>
+                    <option value="A-" className="text-[13px]">A-</option>
+                    <option value="B-" className="text-[13px]">B-</option>
+                    <option value="AB-" className="text-[13px]">AB-</option>
+                  </select>
                 </div>
               </div>
               <div className="flex flex-row space-x-2 secondInnerformContainer_child">
@@ -130,7 +139,7 @@ const EmployeeEditModal = ({
                     value={employeeData.position}
                     onChange={(e) => handleInputChangeData(e, 'position')}
                     name="position"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -142,7 +151,7 @@ const EmployeeEditModal = ({
                     value={formattedBirthdate}
                     onChange={(e) => handleInputChangeData(e, 'birthdate')}
                     name="birthdate"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -152,7 +161,7 @@ const EmployeeEditModal = ({
                     value={employeeData.age}
                     onChange={(e) => handleInputChangeData(e, 'age')}
                     name="age"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -164,7 +173,7 @@ const EmployeeEditModal = ({
                     value={employeeData.nationality}
                     onChange={(e) => handleInputChangeData(e, 'nationality')}
                     name="nationality"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -176,7 +185,7 @@ const EmployeeEditModal = ({
                     value={employeeData.address}
                     onChange={(e) => handleInputChangeData(e, 'address')}
                     name="address"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
               </div>
@@ -190,7 +199,7 @@ const EmployeeEditModal = ({
                     name="contactNo"
                     value={employeeData.contactNo}
                     onChange={(e) => handleInputChangeData(e, 'contactNo')}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -200,7 +209,7 @@ const EmployeeEditModal = ({
                     value={employeeData.email}
                     onChange={(e) => handleInputChangeData(e, 'email')}
                     name="email"
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
               </div>
@@ -223,7 +232,7 @@ const EmployeeEditModal = ({
                   value={employeeData.licenseId}
                   onChange={(e) => handleInputChangeData(e, 'licenseId')}
                   name="licenseId"
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -233,7 +242,7 @@ const EmployeeEditModal = ({
                   value={employeeData.profession}
                   onChange={(e) => handleInputChangeData(e, 'profession')}
                   name="profession"
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -243,7 +252,7 @@ const EmployeeEditModal = ({
                   value={employeeData.companyName}
                   onChange={(e) => handleInputChangeData(e, 'companyName')}
                   name="companyName"
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -253,7 +262,7 @@ const EmployeeEditModal = ({
                   name="companyContact"
                   value={employeeData.companyContact}
                   onChange={(e) => handleInputChangeData(e, 'companyContact')}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -263,7 +272,7 @@ const EmployeeEditModal = ({
                   value={employeeData.workAddress}
                   onChange={(e) => handleInputChangeData(e, 'workAddress')}
                   name="workAddress"
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
             </div>
@@ -285,7 +294,7 @@ const EmployeeEditModal = ({
                   value={employeeData.emergencyName}
                   onChange={(e) => handleInputChangeData(e, 'emergencyName')}
                   name="emergencyName"
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -295,7 +304,7 @@ const EmployeeEditModal = ({
                   value={employeeData.emergencyRelationship}
                   onChange={(e) => handleInputChangeData(e, 'emergencyRelationship')}
                   name="emergencyRelationship"
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -305,7 +314,7 @@ const EmployeeEditModal = ({
                   value={employeeData.emergencyAddress}
                   onChange={(e) => handleInputChangeData(e, 'emergencyAddress')}
                   name="emergencyAddress"
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -315,7 +324,7 @@ const EmployeeEditModal = ({
                   name="emergencyContact"
                   value={employeeData.emergencyContact}
                   onChange={(e) => handleInputChangeData(e, 'emergencyContact')}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
             </div>

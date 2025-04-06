@@ -188,12 +188,17 @@ const Employee = () => {
     try {
         const updatedEmployeeData = { ...editData };
 
+        if (updatedEmployeeData.birthdate && typeof updatedEmployeeData.birthdate === 'string') {
+          updatedEmployeeData.birthdate = new Date(updatedEmployeeData.birthdate);
+        }
+
         // If there is a new image, make sure it's included in the data
         if (image) {
             const base64Image = await toBase64(image);
             updatedEmployeeData.profilePic = base64Image;
         }
-
+        
+        console.log(updatedEmployeeData)
         const response = await axios.put(
             EMPLOYEE + `/${editData.objectId}`,
             updatedEmployeeData
@@ -306,7 +311,18 @@ const Employee = () => {
   const handleInputChangeData = (e, fieldName) => {
     const { name, value } = e.target;
 
-    if((name === 'contactNo' || name === 'companyContact' || name === 'emergencyContact') && value.length > 11) return;
+    const max11Fields = ['contactNo', 'companyContact', 'emergencyContact'];
+
+    if (max11Fields.includes(name) && value.length > 11) {
+      return;
+    }
+
+    if(name === 'birthdate'){
+      const age = calculateAge(value);
+      setEditData((prevObj) => ({
+        ...prevObj, age
+      }))
+    }
     
     // Special handling for birthdate field
     if (fieldName === 'birthdate') {
