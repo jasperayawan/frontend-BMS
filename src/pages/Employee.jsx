@@ -6,6 +6,7 @@ import axios from "axios";
 import { EMPLOYEE } from "../helper/api";
 import toast from "react-hot-toast";
 import Parse from "parse/dist/parse.min.js";
+import { calculateAge } from "../utils/toBase64";
 
 const Employee = () => {
   const [isPrint, setIsPrint] = useState(false);
@@ -199,7 +200,12 @@ const Employee = () => {
         );
 
         setIsEditModal(false);
+        setEditData((prevData) => ({
+            ...prevData,
+            ...response.data.data,
+        }))
         toast.success("Employee updated successfully!");
+        window.location.reload();
     } catch (error) {
         console.error("Error updating employee:", error);
         toast.error("Failed to update employee: " + error.message);
@@ -207,6 +213,7 @@ const Employee = () => {
         setLoading(false);
     }
   };
+
 
   const handleAddEmployee = async (e) => {
     e.preventDefault();
@@ -254,6 +261,7 @@ const Employee = () => {
       setImage(null);
       setAddEmployeeModal(false);
       toast.success("Employee added successfully!");
+      window.location.reload();
     } catch (error) {
       console.error("Error adding employee:", error);
       alert("Failed to add employee. Please try again.");
@@ -265,7 +273,19 @@ const Employee = () => {
   const handleInputChange = async (e) => {
     const { name, value, files } = e.target;
 
-    if((name === 'contactNo' || 'companyContact' || 'emergencyContact') && value.length > 11) return;
+    const max11Fields = ['contactNo', 'companyContact', 'emergencyContact'];
+
+    if (max11Fields.includes(name) && value.length > 11) {
+      return;
+    }
+
+
+    if(name === 'birthdate'){
+      const age = calculateAge(value);
+      setEmployeeObj((prevObj) => ({
+        ...prevObj, age
+      }))
+    }
 
     if (name === "image" && files?.[0]) {
       const file = files[0];
@@ -308,6 +328,7 @@ const Employee = () => {
         }));
     }
   };
+
 
   // Utility function to convert a file to Base64
   const toBase64 = (file) =>

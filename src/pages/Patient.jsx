@@ -106,9 +106,11 @@ const Patient = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === 'contact' && value.length > 11) return;
+    const max11Fields = ['contact', 'emergencyContact'];
 
-    if (name === 'emergencyContact' && value.length > 11) return; 
+    if (max11Fields.includes(name) && value.length > 11) {
+      return;
+    }
 
     setFormData({ ...formData, [name]: value });
 

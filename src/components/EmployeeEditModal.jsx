@@ -17,6 +17,7 @@ const EmployeeEditModal = ({
       : format(new Date(employeeData.birthdate), "yyyy-MM-dd")
     : "";
 
+    console.log("Employee Data:", employeeData);
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center z-50">
       <div className="bg-white rounded-[12px] min-w-[500px] h-[400px] relative p-4 overflow-y-auto">
@@ -66,6 +67,7 @@ const EmployeeEditModal = ({
                     type="text"
                     value={employeeData.lastName}
                     onChange={(e) => handleInputChangeData(e, 'lastName')}
+                    name="lastName"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -77,6 +79,7 @@ const EmployeeEditModal = ({
                     type="text"
                     value={employeeData.firstName}
                     onChange={(e) => handleInputChangeData(e, 'firstName')}
+                    name="firstName"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -88,6 +91,7 @@ const EmployeeEditModal = ({
                     type="text"
                     value={employeeData.middleInitial}
                     onChange={(e) => handleInputChangeData(e, 'middleInitial')}
+                    name="middleInitial"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -99,6 +103,7 @@ const EmployeeEditModal = ({
                     type="text"
                     value={employeeData.maritalStatus}
                     onChange={(e) => handleInputChangeData(e, 'maritalStatus')}
+                    name="maritalStatus" 
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -110,6 +115,7 @@ const EmployeeEditModal = ({
                     type="text"
                     value={employeeData.bloodType}
                     onChange={(e) => handleInputChangeData(e, 'bloodType')}
+                    name="bloodType"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -123,6 +129,7 @@ const EmployeeEditModal = ({
                     type="text"
                     value={employeeData.position}
                     onChange={(e) => handleInputChangeData(e, 'position')}
+                    name="position"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -134,6 +141,7 @@ const EmployeeEditModal = ({
                     type="date"
                     value={formattedBirthdate}
                     onChange={(e) => handleInputChangeData(e, 'birthdate')}
+                    name="birthdate"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -143,6 +151,7 @@ const EmployeeEditModal = ({
                     type="number"
                     value={employeeData.age}
                     onChange={(e) => handleInputChangeData(e, 'age')}
+                    name="age"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -154,6 +163,7 @@ const EmployeeEditModal = ({
                     type="text"
                     value={employeeData.nationality}
                     onChange={(e) => handleInputChangeData(e, 'nationality')}
+                    name="nationality"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -165,6 +175,7 @@ const EmployeeEditModal = ({
                     type="text"
                     value={employeeData.address}
                     onChange={(e) => handleInputChangeData(e, 'address')}
+                    name="address"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -188,6 +199,7 @@ const EmployeeEditModal = ({
                     type="email"
                     value={employeeData.email}
                     onChange={(e) => handleInputChangeData(e, 'email')}
+                    name="email"
                     className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -210,6 +222,7 @@ const EmployeeEditModal = ({
                   type="text"
                   value={employeeData.licenseId}
                   onChange={(e) => handleInputChangeData(e, 'licenseId')}
+                  name="licenseId"
                   className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -219,6 +232,7 @@ const EmployeeEditModal = ({
                   type="text"
                   value={employeeData.profession}
                   onChange={(e) => handleInputChangeData(e, 'profession')}
+                  name="profession"
                   className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -228,6 +242,7 @@ const EmployeeEditModal = ({
                   type="text"
                   value={employeeData.companyName}
                   onChange={(e) => handleInputChangeData(e, 'companyName')}
+                  name="companyName"
                   className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -247,6 +262,7 @@ const EmployeeEditModal = ({
                   type="text"
                   value={employeeData.workAddress}
                   onChange={(e) => handleInputChangeData(e, 'workAddress')}
+                  name="workAddress"
                   className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -268,6 +284,7 @@ const EmployeeEditModal = ({
                   type="text"
                   value={employeeData.emergencyName}
                   onChange={(e) => handleInputChangeData(e, 'emergencyName')}
+                  name="emergencyName"
                   className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -277,6 +294,7 @@ const EmployeeEditModal = ({
                   type="text"
                   value={employeeData.emergencyRelationship}
                   onChange={(e) => handleInputChangeData(e, 'emergencyRelationship')}
+                  name="emergencyRelationship"
                   className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -286,6 +304,7 @@ const EmployeeEditModal = ({
                   type="text"
                   value={employeeData.emergencyAddress}
                   onChange={(e) => handleInputChangeData(e, 'emergencyAddress')}
+                  name="emergencyAddress"
                   className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>

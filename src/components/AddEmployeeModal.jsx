@@ -47,7 +47,7 @@ const AddEmployeeModal = ({
                   name="userId"
                   value={employeeObj.userId || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
             </div>
@@ -62,7 +62,7 @@ const AddEmployeeModal = ({
                     name="lastName"
                     value={employeeObj.lastName || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -74,7 +74,7 @@ const AddEmployeeModal = ({
                     name="firstName"
                     value={employeeObj.firstName || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -86,7 +86,7 @@ const AddEmployeeModal = ({
                     name="middleInitial"
                     value={employeeObj.middleInitial || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col">
@@ -98,20 +98,29 @@ const AddEmployeeModal = ({
                     name="maritalStatus"
                     value={employeeObj.maritalStatus || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col">
                   <h5 className="text-[12px] font-semibold uppercase">
                     BLOODTYPE
                   </h5>
-                  <input
-                    type="text"
+                  <select
                     name="bloodType"
                     value={employeeObj.bloodType || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
-                  />
+                    className="mt-1 block w-full rounded-md border border-gray-300 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                  >
+                    <option value="" className="text-[13px]">--select--</option>
+                    <option value="O+" className="text-[13px]">O+</option>
+                    <option value="A+" className="text-[13px]">A+</option>
+                    <option value="B+" className="text-[13px]">B+</option>
+                    <option value="AB+" className="text-[13px]">AB+</option>
+                    <option value="O-" className="text-[13px]">O-</option>
+                    <option value="A-" className="text-[13px]">A-</option>
+                    <option value="B-" className="text-[13px]">B-</option>
+                    <option value="AB-" className="text-[13px]">AB-</option>
+                  </select>
                 </div>
               </div>
               <div className="flex flex-row space-x-2 secondInnerformContainer_child">
@@ -124,7 +133,7 @@ const AddEmployeeModal = ({
                     name="position"
                     value={employeeObj.position || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -136,7 +145,7 @@ const AddEmployeeModal = ({
                     name="birthdate"
                     value={employeeObj.birthdate || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -146,7 +155,7 @@ const AddEmployeeModal = ({
                     name="age"
                     value={employeeObj.age || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -158,7 +167,7 @@ const AddEmployeeModal = ({
                     name="nationality"
                     value={employeeObj.nationality || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -170,7 +179,7 @@ const AddEmployeeModal = ({
                     name="address"
                     value={employeeObj.address || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
               </div>
@@ -184,7 +193,7 @@ const AddEmployeeModal = ({
                     name="contactNo"
                     value={employeeObj.contactNo || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
                 <div className="flex flex-col justify-start items-start gap-x-4">
@@ -194,7 +203,7 @@ const AddEmployeeModal = ({
                     name="email"
                     value={employeeObj.email || ""}
                     onChange={handleInputChange}
-                    className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                    className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
               </div>
@@ -217,7 +226,7 @@ const AddEmployeeModal = ({
                   name="licenseId"
                     value={employeeObj.licenseId || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -227,7 +236,7 @@ const AddEmployeeModal = ({
                   name="profession"
                     value={employeeObj.profession || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -237,7 +246,7 @@ const AddEmployeeModal = ({
                   name="companyName"
                     value={employeeObj.companyName || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -247,7 +256,7 @@ const AddEmployeeModal = ({
                   name="companyContact"
                     value={employeeObj.companyContact || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -257,7 +266,7 @@ const AddEmployeeModal = ({
                   name="workAddress"
                     value={employeeObj.workAddress || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
             </div>
@@ -279,7 +288,7 @@ const AddEmployeeModal = ({
                   name="emergencyName"
                     value={employeeObj.emergencyName || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -289,7 +298,7 @@ const AddEmployeeModal = ({
                   name="emergencyRelationship"
                     value={employeeObj.emergencyRelationship || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
@@ -299,17 +308,17 @@ const AddEmployeeModal = ({
                   name="emergencyAddress"
                     value={employeeObj.emergencyAddress || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
               <div className="flex flex-col items-start dtContainer">
                 <h6 className="text-[12px] font-semibold">CONTACT NO.</h6>
                 <input
-                  type="text"
+                  type="number"
                   name="emergencyContact"
                     value={employeeObj.emergencyContact || ""}
                   onChange={handleInputChange}
-                  className="border-[1px] border-zinc-300 placeholder:text-[12px] text-[12px] px-2 rounded-md"
+                  className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
             </div>
