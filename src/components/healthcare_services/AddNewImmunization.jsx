@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useImmunization } from '../../hooks/useImmunization';
 import Parse from "parse/dist/parse.min.js";
+import { calculateAge } from '../../utils/toBase64';
+import toast from 'react-hot-toast';
 
 const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunization, setIsHealthcareActive }) => {
   const { createNewImmunization, isLoading } = useImmunization();
@@ -38,6 +40,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
     try {
       const payload = {
         ...formData,
+        age: String(formData.age),
         userId: patientDataSelected?.objectId,
         patientIdNo: patientDataSelected?.patientIdNo,
         motherName: patientDataSelected?.firstname,
@@ -51,6 +54,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
 
       
       await createNewImmunization(payload, user);
+      toast.success("added immunization record successfully");
       setHealthCare('default');
       setIsImmunization(false);
       setIsHealthcareActive(false);
@@ -84,6 +88,8 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
     }]);
   };
 
+ 
+
   return (
     <div className="min-h-screen p-4 md:p-8 w-full">
       <div className="bg-white p-6 rounded-lg shadow-lg mx-auto w-full max-w-4xl">
@@ -109,6 +115,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   type="text"
                   value={formData.lastName}
                   onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                  required
                   className="border p-2 rounded"
                 />
               </div>
@@ -118,6 +125,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   type="text"
                   value={formData.firstName}
                   onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                  required
                   className="border p-2 rounded"
                 />
               </div>
@@ -127,6 +135,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   type="text"
                   value={formData.middleName}
                   onChange={(e) => setFormData({...formData, middleName: e.target.value})}
+                  required
                   className="border p-2 rounded"
                 />
               </div>
@@ -135,7 +144,12 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                 <input
                   type="date"
                   value={formData.birthDate}
-                  onChange={(e) => setFormData({...formData, birthDate: e.target.value})}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    const age = calculateAge(value); 
+                    setFormData((prev) => ({ ...prev, birthDate: value, age }));
+                  }}
+                  required
                   className="border p-2 rounded"
                 />
               </div>
@@ -145,6 +159,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   type="text"
                   value={formData.age}
                   onChange={(e) => setFormData({...formData, age: e.target.value})}
+                  required
                   className="border p-2 rounded"
                 />
               </div>
@@ -154,6 +169,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   type="text"
                   value={formData.birthPlace}
                   onChange={(e) => setFormData({...formData, birthPlace: e.target.value})}
+                  required
                   className="border p-2 rounded"
                 />
               </div>
@@ -164,6 +180,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   step="0.01"
                   value={formData.birthWeight}
                   onChange={(e) => setFormData({...formData, birthWeight: e.target.value})}
+                  required
                   className="border p-2 rounded"
                 />
               </div>
@@ -174,6 +191,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   step="0.1"
                   value={formData.birthLength}
                   onChange={(e) => setFormData({...formData, birthLength: e.target.value})}
+                  required
                   className="border p-2 rounded"
                 />
               </div>
@@ -264,6 +282,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   <input
                     type="date"
                     value={vaccine.date}
+                    required
                     onChange={(e) => {
                       const newHistory = [...vaccinationHistory];
                       newHistory[index].date = e.target.value;
@@ -277,6 +296,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   <input
                     type="text"
                     value={vaccine.vaccineType}
+                    required
                     onChange={(e) => {
                       const newHistory = [...vaccinationHistory];
                       newHistory[index].vaccineType = e.target.value;
@@ -290,6 +310,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   <input
                     type="text"
                     value={vaccine.doses}
+                    required
                     onChange={(e) => {
                       const newHistory = [...vaccinationHistory];
                       newHistory[index].doses = e.target.value;
@@ -304,6 +325,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                     type="number"
                     step="0.1"
                     value={vaccine.weight}
+                    required
                     onChange={(e) => {
                       const newHistory = [...vaccinationHistory];
                       newHistory[index].weight = e.target.value;
@@ -318,6 +340,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                     type="number"
                     step="0.1"
                     value={vaccine.length}
+                    required
                     onChange={(e) => {
                       const newHistory = [...vaccinationHistory];
                       newHistory[index].length = e.target.value;
@@ -347,6 +370,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   <input
                     type="date"
                     value={supplement.date}
+                    required
                     onChange={(e) => {
                       const newHistory = [...micronutrientHistory];
                       newHistory[index].date = e.target.value;
@@ -360,6 +384,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   <input
                     type="text"
                     value={supplement.micronutrientType}
+                    required
                     onChange={(e) => {
                       const newHistory = [...micronutrientHistory];
                       newHistory[index].micronutrientType = e.target.value;
@@ -373,6 +398,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   <input
                     type="text"
                     value={supplement.doses}
+                    required
                     onChange={(e) => {
                       const newHistory = [...micronutrientHistory];
                       newHistory[index].doses = e.target.value;
@@ -386,6 +412,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
                   <input
                     type="text"
                     value={supplement.remarks}
+                    required
                     onChange={(e) => {
                       const newHistory = [...micronutrientHistory];
                       newHistory[index].remarks = e.target.value;
@@ -415,7 +442,7 @@ const AddNewImmunization = ({ patientDataSelected, setHealthCare, setIsImmunizat
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded"
+              className="px-4 py-2 bg-yellow-500 white rounded"
             >
               Submit
             </button>

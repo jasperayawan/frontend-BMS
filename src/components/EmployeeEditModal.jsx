@@ -20,7 +20,10 @@ const EmployeeEditModal = ({
 
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center z-50">
-      <div className="bg-white rounded-[12px] min-w-[500px] h-[400px] relative p-4 overflow-y-auto">
+      <div className="bg-white rounded-[12px] min-w-[500px] h-[600px] relative p-4 overflow-y-auto">
+        <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
+          EDIT EMPLOYEE PROFILE
+        </h1>
         <div className="absolute top-2 right-2"></div>
         <form className="w-full" onSubmit={handleEditModal}>
           <div className="flex gap-x-6 formContainer">
@@ -43,6 +46,7 @@ const EmployeeEditModal = ({
                   type="file"
                   id="image"
                   onChange={(e) => setImage(e.target.files[0])}
+                  required
                   className="hidden"
                 />
               </label>
@@ -53,6 +57,7 @@ const EmployeeEditModal = ({
                 name="userId"
                 value={employeeData.userId || ""}
                 onChange={(e) => handleInputChangeData(e, "userId")}
+                required
                 className="text-[12px]"
               />
             </div>
@@ -68,6 +73,7 @@ const EmployeeEditModal = ({
                     value={employeeData.lastName}
                     onChange={(e) => handleInputChangeData(e, 'lastName')}
                     name="lastName"
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -80,6 +86,7 @@ const EmployeeEditModal = ({
                     value={employeeData.firstName}
                     onChange={(e) => handleInputChangeData(e, 'firstName')}
                     name="firstName"
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -92,6 +99,7 @@ const EmployeeEditModal = ({
                     value={employeeData.middleInitial}
                     onChange={(e) => handleInputChangeData(e, 'middleInitial')}
                     name="middleInitial"
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -104,6 +112,7 @@ const EmployeeEditModal = ({
                     value={employeeData.maritalStatus}
                     onChange={(e) => handleInputChangeData(e, 'maritalStatus')}
                     name="maritalStatus" 
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -139,6 +148,7 @@ const EmployeeEditModal = ({
                     value={employeeData.position}
                     onChange={(e) => handleInputChangeData(e, 'position')}
                     name="position"
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -151,6 +161,7 @@ const EmployeeEditModal = ({
                     value={formattedBirthdate}
                     onChange={(e) => handleInputChangeData(e, 'birthdate')}
                     name="birthdate"
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -161,6 +172,7 @@ const EmployeeEditModal = ({
                     value={employeeData.age}
                     onChange={(e) => handleInputChangeData(e, 'age')}
                     name="age"
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -173,6 +185,7 @@ const EmployeeEditModal = ({
                     value={employeeData.nationality}
                     onChange={(e) => handleInputChangeData(e, 'nationality')}
                     name="nationality"
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -185,6 +198,7 @@ const EmployeeEditModal = ({
                     value={employeeData.address}
                     onChange={(e) => handleInputChangeData(e, 'address')}
                     name="address"
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -199,6 +213,7 @@ const EmployeeEditModal = ({
                     name="contactNo"
                     value={employeeData.contactNo}
                     onChange={(e) => handleInputChangeData(e, 'contactNo')}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -209,6 +224,7 @@ const EmployeeEditModal = ({
                     value={employeeData.email}
                     onChange={(e) => handleInputChangeData(e, 'email')}
                     name="email"
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -232,6 +248,7 @@ const EmployeeEditModal = ({
                   value={employeeData.licenseId}
                   onChange={(e) => handleInputChangeData(e, 'licenseId')}
                   name="licenseId"
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -242,6 +259,7 @@ const EmployeeEditModal = ({
                   value={employeeData.profession}
                   onChange={(e) => handleInputChangeData(e, 'profession')}
                   name="profession"
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -252,6 +270,7 @@ const EmployeeEditModal = ({
                   value={employeeData.companyName}
                   onChange={(e) => handleInputChangeData(e, 'companyName')}
                   name="companyName"
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -262,6 +281,7 @@ const EmployeeEditModal = ({
                   name="companyContact"
                   value={employeeData.companyContact}
                   onChange={(e) => handleInputChangeData(e, 'companyContact')}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -272,6 +292,7 @@ const EmployeeEditModal = ({
                   value={employeeData.workAddress}
                   onChange={(e) => handleInputChangeData(e, 'workAddress')}
                   name="workAddress"
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -294,6 +315,7 @@ const EmployeeEditModal = ({
                   value={employeeData.emergencyName}
                   onChange={(e) => handleInputChangeData(e, 'emergencyName')}
                   name="emergencyName"
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -304,6 +326,7 @@ const EmployeeEditModal = ({
                   value={employeeData.emergencyRelationship}
                   onChange={(e) => handleInputChangeData(e, 'emergencyRelationship')}
                   name="emergencyRelationship"
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -314,6 +337,7 @@ const EmployeeEditModal = ({
                   value={employeeData.emergencyAddress}
                   onChange={(e) => handleInputChangeData(e, 'emergencyAddress')}
                   name="emergencyAddress"
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -324,6 +348,7 @@ const EmployeeEditModal = ({
                   name="emergencyContact"
                   value={employeeData.emergencyContact}
                   onChange={(e) => handleInputChangeData(e, 'emergencyContact')}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>

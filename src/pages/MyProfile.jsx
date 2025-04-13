@@ -73,7 +73,7 @@ const MyProfile = () => {
 
 
   return (
-    <div className='flex justify-center items-center py-10 bg-white'>
+    <div className='flex flex-col justify-center items-center py-10 bg-white'>
 
         {openMedicalHistory && (
             <MedicalServices setOpenMedicalHistory={setOpenMedicalHistory} myProfile={myProfile} />

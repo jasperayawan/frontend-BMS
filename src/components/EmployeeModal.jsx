@@ -10,7 +10,10 @@ const EmployeeModal = ({ viewEmployee, setView, view, handlePrint }) => {
 
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center z-50">
-      <div className="bg-white rounded-[12px] min-w-[500px] h-[400px] relative p-4 overflow-y-auto">
+      <div className="bg-white rounded-[12px] w-full max-w-4xl h-[600px] relative p-4 overflow-y-auto">
+        <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
+          EMPLOYEE PROFILE
+        </h1>
         <div className="absolute top-2 right-2">
         </div>
         <div className="w-full">

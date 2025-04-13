@@ -12,7 +12,10 @@ const AddEmployeeModal = ({
 }) => {
   return (
     <div className="fixed top-0 left-0 bg-black/30 h-screen w-full flex justify-center items-center">
-      <div className="bg-white rounded-[12px] min-w-[500px] h-[400px] relative p-4 overflow-y-auto">
+      <div className="bg-white rounded-[12px] min-w-[500px] h-[600px] relative p-4 overflow-y-auto">
+        <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
+          ADD EMPLOYEE PROFILE
+        </h1>
         <div className="absolute top-2 right-2"></div>
         <form className="w-full" onSubmit={handleAddEmployee}>
           <div className="flex gap-x-6 formContainer">
@@ -35,6 +38,7 @@ const AddEmployeeModal = ({
                   type="file"
                   id="image"
                   onChange={(e) => setImage(e.target.files[0])}
+                  required
                   className="hidden"
                 />
               </label>
@@ -47,6 +51,7 @@ const AddEmployeeModal = ({
                   name="userId"
                   value={employeeObj.userId || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -62,6 +67,7 @@ const AddEmployeeModal = ({
                     name="lastName"
                     value={employeeObj.lastName || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -74,6 +80,7 @@ const AddEmployeeModal = ({
                     name="firstName"
                     value={employeeObj.firstName || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -86,6 +93,7 @@ const AddEmployeeModal = ({
                     name="middleInitial"
                     value={employeeObj.middleInitial || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -98,6 +106,7 @@ const AddEmployeeModal = ({
                     name="maritalStatus"
                     value={employeeObj.maritalStatus || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -133,6 +142,7 @@ const AddEmployeeModal = ({
                     name="position"
                     value={employeeObj.position || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -145,6 +155,7 @@ const AddEmployeeModal = ({
                     name="birthdate"
                     value={employeeObj.birthdate || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -155,6 +166,7 @@ const AddEmployeeModal = ({
                     name="age"
                     value={employeeObj.age || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -167,6 +179,7 @@ const AddEmployeeModal = ({
                     name="nationality"
                     value={employeeObj.nationality || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -179,6 +192,7 @@ const AddEmployeeModal = ({
                     name="address"
                     value={employeeObj.address || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -193,6 +207,7 @@ const AddEmployeeModal = ({
                     name="contactNo"
                     value={employeeObj.contactNo || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -203,6 +218,7 @@ const AddEmployeeModal = ({
                     name="email"
                     value={employeeObj.email || ""}
                     onChange={handleInputChange}
+                    required
                     className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                   />
                 </div>
@@ -226,6 +242,7 @@ const AddEmployeeModal = ({
                   name="licenseId"
                     value={employeeObj.licenseId || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -236,6 +253,7 @@ const AddEmployeeModal = ({
                   name="profession"
                     value={employeeObj.profession || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -246,6 +264,7 @@ const AddEmployeeModal = ({
                   name="companyName"
                     value={employeeObj.companyName || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -256,6 +275,7 @@ const AddEmployeeModal = ({
                   name="companyContact"
                     value={employeeObj.companyContact || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -266,6 +286,7 @@ const AddEmployeeModal = ({
                   name="workAddress"
                     value={employeeObj.workAddress || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -288,6 +309,7 @@ const AddEmployeeModal = ({
                   name="emergencyName"
                     value={employeeObj.emergencyName || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -296,8 +318,9 @@ const AddEmployeeModal = ({
                 <input
                   type="text"
                   name="emergencyRelationship"
-                    value={employeeObj.emergencyRelationship || ""}
+                  value={employeeObj.emergencyRelationship || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -306,8 +329,9 @@ const AddEmployeeModal = ({
                 <input
                   type="text"
                   name="emergencyAddress"
-                    value={employeeObj.emergencyAddress || ""}
+                  value={employeeObj.emergencyAddress || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
@@ -318,6 +342,7 @@ const AddEmployeeModal = ({
                   name="emergencyContact"
                     value={employeeObj.emergencyContact || ""}
                   onChange={handleInputChange}
+                  required
                   className="border-[1px] border-zinc-300 py-2 placeholder:text-[12px] text-[12px] px-2 rounded-md"
                 />
               </div>
