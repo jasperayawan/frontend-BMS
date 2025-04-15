@@ -89,6 +89,12 @@ const Patient = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [errors, setErrors] = useState({
+    name: "",
+    purok: "",
+    bloodType: "",
+    healthcareServices: "",
+  });
 
   const componentRef = useRef(null);
 
@@ -251,6 +257,35 @@ const Patient = () => {
   };
 
   const handleSearch = () => {
+    let hasError = false;
+  const newErrors = { name: "", purok: "", bloodType: "", healthcareServices: "" };
+
+  if (searchType === "NAME" && !searchInput.trim()) {
+    newErrors.name = "Field is empty";
+    hasError = true;
+  }
+
+  if (searchType === "PUROK" && !searchInput.trim()) {
+    newErrors.purok = "Field is empty";
+    hasError = true;
+  }
+
+  if (searchType === "BLOODTYPE" && !searchInput.trim()) {
+    newErrors.bloodType = "Field is empty";
+    hasError = true;
+  }
+
+  if (searchType === "HEALTHCARE SERVICES" && !searchInput.trim()) {
+    newErrors.healthcareServices = "Field is empty";
+    hasError = true;
+  }
+
+  setErrors(newErrors);
+
+  if (hasError) {
+    return;
+  }
+
     setHasSearched(true);
     
     if (searchType === "ALL") {
@@ -619,51 +654,57 @@ const Patient = () => {
             PATIENT LIST
           </h1>
           <div className="flex flex-col gap-y-3">
-            <div className="flex flex-row justify-center items-center gap-x-2">
-              <span>Search by:</span>
-              <select
-                value={searchType}
-                onChange={(e) => setSearchType(e.target.value)}
-                className="px-4 py-1 rounded-[12px] bg-zinc-300 outline-none w-[150px]"
-              >
-                <option value="ALL">ALL</option>
-                <option value="NAME">NAME</option>
-                <option value="BLOODTYPE">BLOODTYPE</option>
-                <option value="PUROK">PUROK</option>
-                <option value="HEALTHCARE SERVICES">HEALTHCARE SERVICES</option>
-              </select>
+            <div className="flex flex-row justify-center items-start gap-x-2">
+              <div className="flex gap-x-2 justify-center items-center">
+                <span>Search by:</span>
+                <select
+                  value={searchType}
+                  onChange={(e) => setSearchType(e.target.value)}
+                  className="px-4 py-1 rounded-[12px] bg-zinc-300 outline-none w-[150px]"
+                >
+                  <option value="ALL">ALL</option>
+                  <option value="NAME">NAME</option>
+                  <option value="BLOODTYPE">BLOODTYPE</option>
+                  <option value="PUROK">PUROK</option>
+                  <option value="HEALTHCARE SERVICES">HEALTHCARE SERVICES</option>
+                </select>
+              </div>
               {searchType === "NAME" && (
-                <div className="flex gap-x-2">
-                  <input
-                    type="search"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    className="border-[1.5px] border-zinc-500 rounded-md py-1 px-3 outline-none"
-                    placeholder="Search by name"
-                  />
-                  <button
-                    onClick={handleSearch}
-                    className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-md transition-colors"
-                  >
-                    <svg 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      strokeWidth={2} 
-                      stroke="currentColor" 
-                      className="w-5 h-5"
+                <div className="flex flex-col gap-y-1">
+                  <div className="flex gap-x-2">
+                    <input
+                      type="search"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      className="border-[1.5px] border-zinc-500 rounded-md py-1 px-3 outline-none"
+                      placeholder="Search by name"
+                    />
+                    <button
+                      onClick={handleSearch}
+                      className="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-md transition-colors"
                     >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" 
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={2}
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  {errors.name && <span className="text-red-500 text-sm">{errors.name}</span>}
                 </div>
               )}
               {searchType === "PUROK" && (
-                <div className="flex gap-x-2">
+                <div className="flex flex-col gap-y-1">
+                  <div className="flex gap-x-2">
                   <input
                     type="search"
                     value={searchInput}
@@ -691,9 +732,12 @@ const Patient = () => {
                     </svg>
                   </button>
                 </div>
+                {errors.purok && <span className="text-red-500 text-sm">{errors.purok}</span>} 
+                </div>
               )}
               {searchType === "BLOODTYPE" && (
-                <div className="flex gap-x-2">
+                <div className="flex flex-col gap-y-1">
+                  <div className="flex gap-x-2">
                   <select
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
@@ -729,9 +773,12 @@ const Patient = () => {
                     </svg>
                   </button>
                 </div>
+                {errors.bloodType && <span className="text-red-500 text-sm">{errors.bloodType}</span>}
+                </div>
               )}
               {searchType === "HEALTHCARE SERVICES" && (
-                <div className="flex gap-x-2">
+                <div className="flex flex-col gap-y-1">
+                  <div className="flex gap-x-2">
                   <select
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
@@ -762,6 +809,8 @@ const Patient = () => {
                       />
                     </svg>
                   </button>
+                </div>
+                {errors.healthcareServices && <span className="text-red-500 text-sm">{errors.healthcareServices}</span>}
                 </div>
               )}
             </div>
