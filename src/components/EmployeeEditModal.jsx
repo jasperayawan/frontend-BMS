@@ -46,7 +46,6 @@ const EmployeeEditModal = ({
                   type="file"
                   id="image"
                   onChange={(e) => setImage(e.target.files[0])}
-                  required
                   className="hidden"
                 />
               </label>
