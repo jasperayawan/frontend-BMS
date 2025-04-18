@@ -6,6 +6,7 @@ import Parse from "parse/dist/parse.min.js";
 import toast from "react-hot-toast";
 import { CameraIcon, EyeIcon, EyeOffIcon, X } from "lucide-react";
 import StatusToggle from "../components/StatusToggle"; // Adjust the path as necessary
+import { calculateAge } from "../utils/toBase64";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -123,7 +124,12 @@ const Users = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
+
+    if (name === 'birthdate') {
+      const age = calculateAge(value); 
+      setNewUser((prev) => ({ ...prev, age })); 
+    }
+
     if(name === "contact" && value.length > 11) return;
 
     setNewUser((prev) => ({ ...prev, [name]: value }));
