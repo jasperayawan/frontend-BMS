@@ -449,7 +449,7 @@ const Patient = () => {
         />
       )}
 
-      {isHealthCareModal && (
+      {(isPatientSelected && isHealthCareModal) && (
         <div className="fixed inset-0 w-full bg-black/50 h-screen flex justify-center items-center z-50 backdrop-blur-sm">
           <div className="relative bg-white border rounded-lg shadow-xl flex flex-col justify-center items-center space-y-6 p-8 w-[400px] animate-fadeIn">
             <button
@@ -877,8 +877,10 @@ const Patient = () => {
 
                     <button
                       onClick={() => {
-                        handleHealthcareServicesModal("HEALTHCARE SERVICES");
-                        setHealthCareAddorEdit("ADD");
+                        if(isPatientSelected){
+                          handleHealthcareServicesModal("HEALTHCARE SERVICES");
+                          setHealthCareAddorEdit("ADD");
+                        }
                       }}
                       className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
                     >
