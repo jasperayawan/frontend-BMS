@@ -42,6 +42,7 @@ const Patient = () => {
   const [isEditOtherServices, setIsEditOtherServices] = useState(false);
   const [healthCareAddorEdit, setHealthCareAddorEdit] = useState(false);
   const { patientData, getPatients, isLoading } = usePatient();
+  const [isPatientSelected, setIsPatientSelected] = useState(false);
   const user = Parse.User.current();
   const [formData, setFormData] = useState({
     // Patient fields
@@ -514,7 +515,7 @@ const Patient = () => {
         </div>
       )}
 
-      {isEditHealthCareModal && (
+      {(isPatientSelected && isEditHealthCareModal) && (
         <div className="fixed inset-0 w-full bg-black/50 h-screen flex justify-center items-center z-50 backdrop-blur-sm">
           <div className="relative bg-white border rounded-lg shadow-xl flex flex-col justify-center items-center space-y-6 p-8 w-[400px] animate-fadeIn">
             <button
@@ -831,6 +832,9 @@ const Patient = () => {
               searchType={searchType}
               searchInput={searchInput}
               hasSearched={hasSearched}
+              setIsPatientSelected={setIsPatientSelected}
+              handleHealthcareServicesModal={handleHealthcareServicesModal}
+              setHealthCareAddorEdit={setHealthCareAddorEdit}
             />
 
             <div className="flex justify-center gap-2 mt-5">
@@ -861,8 +865,10 @@ const Patient = () => {
 
                     <button
                       onClick={() => {
-                        handleHealthcareServicesModal("EDIT");
-                        setHealthCareAddorEdit("EDIT");
+                        if(isPatientSelected){
+                          handleHealthcareServicesModal("EDIT");
+                          setHealthCareAddorEdit("EDIT");
+                        }
                       }}
                       className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
                     >

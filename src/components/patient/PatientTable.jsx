@@ -8,7 +8,8 @@ const PatientTable = ({
   onRowDoubleClick, 
   searchType, 
   searchInput,
-  hasSearched 
+  hasSearched,
+  setIsPatientSelected 
 }) => {
   const data = Array.isArray(filteredData) ? filteredData : [];
 
@@ -33,7 +34,11 @@ const PatientTable = ({
             data.map((data, index) => (
               <tr
                 key={index}
-                onClick={() => handlePatientSelection(data)}
+                onClick={() => {
+                  handlePatientSelection(data)
+                  setIsPatientSelected(true)
+                }
+                }
                 onDoubleClick={() => onRowDoubleClick(data)}
                 className={`${
                   patientDataSelected?.objectId === data?.objectId 
