@@ -164,6 +164,7 @@ const AddPatientModal = ({
                     name="lastname"
                     value={formData.lastname}
                     onChange={handleInputChange}
+                    required
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
                 </div>
@@ -176,6 +177,7 @@ const AddPatientModal = ({
                     name="firstname"
                     value={formData.firstname}
                     onChange={handleInputChange}
+                    required
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
                 </div>
@@ -188,6 +190,7 @@ const AddPatientModal = ({
                     name="middleInitial"
                     value={formData.middleInitial}
                     onChange={handleInputChange}
+                    required
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   />
                 </div>
@@ -199,6 +202,7 @@ const AddPatientModal = ({
                     name="sex"
                     value={formData.sex}
                     onChange={handleInputChange}
+                    required
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                   >
                     <option value="">Select Sex</option>
@@ -226,6 +230,7 @@ const AddPatientModal = ({
                 name="civilStatus"
                 value={formData.civilStatus}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               >
                 <option value="Single">Single</option>
@@ -246,6 +251,7 @@ const AddPatientModal = ({
               name="purok"
               value={formData.purok}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -258,6 +264,7 @@ const AddPatientModal = ({
               name="barangay"
               value={formData.barangay}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -270,6 +277,7 @@ const AddPatientModal = ({
               name="municipality"
               value={formData.municipality}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -282,6 +290,7 @@ const AddPatientModal = ({
               name="province"
               value={formData.province}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -297,6 +306,7 @@ const AddPatientModal = ({
               name="bod"
               value={formData.bod}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -309,6 +319,7 @@ const AddPatientModal = ({
               name="age"
               value={formData.age}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -321,6 +332,7 @@ const AddPatientModal = ({
               name="nationality"
               value={formData.nationality}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -333,6 +345,7 @@ const AddPatientModal = ({
               name="religion"
               value={formData.religion}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -345,6 +358,7 @@ const AddPatientModal = ({
               name="patientIdNo"
               value={formData.patientIdNo}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -357,6 +371,7 @@ const AddPatientModal = ({
               name="birthPlace"
               value={formData.birthPlace}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -371,6 +386,7 @@ const AddPatientModal = ({
               name="bloodType"
               value={formData.bloodType}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             >
               <option value="O+">O+</option>
@@ -392,6 +408,7 @@ const AddPatientModal = ({
               name="contact"
               value={formData.contact}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -404,6 +421,7 @@ const AddPatientModal = ({
               name="occupation"
               value={formData.occupation}
               onChange={handleInputChange}
+              required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -416,6 +434,7 @@ const AddPatientModal = ({
               name="email"
               value={formData.email}
               onChange={handleInputChange}
+              required
               className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -429,6 +448,7 @@ const AddPatientModal = ({
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
+                required
                 className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
               <button
@@ -460,6 +480,7 @@ const AddPatientModal = ({
               name="houseHoldMonthlyIncome"
               value={formData.houseHoldMonthlyIncome}
               onChange={handleInputChange}
+              required
               className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -472,6 +493,7 @@ const AddPatientModal = ({
               name="livingChild"
               value={formData.livingChild}
               onChange={handleInputChange}
+              required
               className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -484,6 +506,7 @@ const AddPatientModal = ({
               name="nonLivingChild"
               value={formData.nonLivingChild}
               onChange={handleInputChange}
+              required
               className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
             />
           </div>
@@ -544,6 +567,7 @@ const AddPatientModal = ({
                 name="emergencyLastName"
                 value={formData.emergencyLastName}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -556,6 +580,7 @@ const AddPatientModal = ({
                 name="emergencyFirstName"
                 value={formData.emergencyFirstName}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -568,6 +593,7 @@ const AddPatientModal = ({
                 name="emergencyInitial"
                 value={formData.emergencyInitial}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -580,6 +606,7 @@ const AddPatientModal = ({
                 name="emergencyRelationship"
                 value={formData.emergencyRelationship}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -592,6 +619,7 @@ const AddPatientModal = ({
                 name="emergencyAddress"
                 value={formData.emergencyAddress}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -604,6 +632,7 @@ const AddPatientModal = ({
                 name="emergencyBod"
                 value={formData.emergencyBod}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -616,6 +645,7 @@ const AddPatientModal = ({
                 name="emergencyAge"
                 value={formData.emergencyAge}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -628,6 +658,7 @@ const AddPatientModal = ({
                 name="emergencyOccupation"
                 value={formData.emergencyOccupation}
                 onChange={handleInputChange}
+                required
                 className="mt-1 text-black px-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -640,6 +671,7 @@ const AddPatientModal = ({
                 name="emergencyCivilStatus"
                 value={formData.emergencyCivilStatus}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               >
                 <option value="Single">Single</option>
@@ -656,6 +688,7 @@ const AddPatientModal = ({
                 name="emergencyNationality"
                 value={formData.emergencyNationality}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -668,6 +701,7 @@ const AddPatientModal = ({
                 name="emergencyReligion"
                 value={formData.emergencyReligion}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -680,6 +714,7 @@ const AddPatientModal = ({
                 name="emergencyContact"
                 value={formData.emergencyContact}
                 onChange={handleInputChange}
+                required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
               />
             </div>

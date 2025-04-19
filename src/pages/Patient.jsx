@@ -256,35 +256,37 @@ const Patient = () => {
     }
   };
 
+  console.log(patientData)
+
   const handleSearch = () => {
     let hasError = false;
-  const newErrors = { name: "", purok: "", bloodType: "", healthcareServices: "" };
+    const newErrors = { name: "", purok: "", bloodType: "", healthcareServices: "" };
 
-  if (searchType === "NAME" && !searchInput.trim()) {
-    newErrors.name = "Field is empty";
-    hasError = true;
-  }
+    if (searchType === "NAME" && !searchInput.trim()) {
+      newErrors.name = "Field is empty";
+      hasError = true;
+    }
 
-  if (searchType === "PUROK" && !searchInput.trim()) {
-    newErrors.purok = "Field is empty";
-    hasError = true;
-  }
+    if (searchType === "PUROK" && !searchInput.trim()) {
+      newErrors.purok = "Field is empty";
+      hasError = true;
+    }
 
-  if (searchType === "BLOODTYPE" && !searchInput.trim()) {
-    newErrors.bloodType = "Field is empty";
-    hasError = true;
-  }
+    if (searchType === "BLOODTYPE" && !searchInput.trim()) {
+      newErrors.bloodType = "Field is empty";
+      hasError = true;
+    }
 
-  if (searchType === "HEALTHCARE SERVICES" && !searchInput.trim()) {
-    newErrors.healthcareServices = "Field is empty";
-    hasError = true;
-  }
+    if (searchType === "HEALTHCARE SERVICES" && !searchInput.trim()) {
+      newErrors.healthcareServices = "Field is empty";
+      hasError = true;
+    }
 
-  setErrors(newErrors);
+    setErrors(newErrors);
 
-  if (hasError) {
-    return;
-  }
+    if (hasError) {
+      return;
+    }
 
     setHasSearched(true);
     
@@ -294,6 +296,7 @@ const Patient = () => {
       setHasSearched(false);
       return;
     }
+
 
     const results = Array.isArray(patientData)
       ? patientData.filter((data) => {
@@ -310,16 +313,17 @@ const Patient = () => {
             return data.bloodType === searchInput;
           } else if (searchType === "PUROK") {
             return data.purok.toLowerCase().includes(searchInput.toLowerCase());
-          } else if (searchType === "HEALTHCARE SERVICES") {
+          } if (searchType === "HEALTHCARE SERVICES") {
+
             switch (searchInput) {
               case "PRENATAL":
-                return data.prenatal && data.prenatal.length > 0;
+                return Array.isArray(data.prenatal) && data.prenatal.length > 0;
               case "IMMUNIZATION":
-                return data.immunization && data.immunization.length > 0;
+                return Array.isArray(data.immunization) && data.immunization.length > 0;
               case "FAMILY PLANNING":
-                return data.familyPlanning && data.familyPlanning.length > 0;
+                return Array.isArray(data.familyPlanning) && data.familyPlanning.length > 0;
               case "OTHER SERVICES":
-                return data.otherServices && data.otherServices.length > 0;
+                return Array.isArray(data.otherServices) && data.otherServices.length > 0;
               default:
                 return true;
             }

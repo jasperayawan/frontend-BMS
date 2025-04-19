@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { CameraIcon, EyeIcon, EyeOffIcon, X } from "lucide-react";
 import StatusToggle from "../components/StatusToggle"; // Adjust the path as necessary
 import { calculateAge } from "../utils/toBase64";
+import { set } from "date-fns";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -45,6 +46,7 @@ const Users = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showEditConfirmModal, setShowEditConfirmModal] = useState(false);
+  const [isOk, setIsOk] = useState(false);
 
   const handleUserClick = (user) => {
     setSelectedUser(user);
@@ -260,12 +262,8 @@ const Users = () => {
         );
       }
 
-      // Close the edit modal
-      setIsEditing(false);
-      setEditingUser(null);
-
       // Show success message
-      toast.success("User updated successfully!");
+      setIsOk(true);
     } catch (error) {
       console.error("Error updating user:", error);
       toast.error("Failed to update user. Please try again.");
@@ -286,6 +284,45 @@ const Users = () => {
 
   return (
     <div className="container mx-auto p-8 max-w-7xl">
+
+      {isOk && (
+              <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">  
+              <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+                <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
+                  <button
+                    onClick={() => {
+                      setIsOk(false);
+                      window.location.reload();
+                      setIsEditing(false);
+                      setEditingUser(null);
+                    }}
+                    className=""
+                  >
+                    <X />
+                  </button>
+                </div>
+                <div className="flex flex-col justify-center items-center p-6">
+                  <h2 className="text-xl font-bold mb-4 text-center">
+                    SAVE SUCCESSFULLY
+                  </h2>
+                  <div className="flex justify-end gap-4">
+                    <button
+                      onClick={() => {
+                        setIsOk(false);
+                        window.location.reload();
+                        setIsEditing(false);
+                        setEditingUser(null);
+                      }}
+                      className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+                    >
+                      OK
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            )}
+
       {!showAddModal && !viewUser && !editingUser && (
         <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
           USERS ACCOUNT

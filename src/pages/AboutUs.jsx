@@ -72,6 +72,7 @@ const AboutUs = () => {
             )
           );
           toast.success("SAVE CHANGES!");
+          window.location.reload();
         }
       } else {
         const formData = {

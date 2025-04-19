@@ -3,6 +3,8 @@ import axios from "axios";
 import { SERVICES } from "../helper/api";
 import Parse from "parse/dist/parse.min.js";
 import toast from "react-hot-toast";
+import { X } from "lucide-react";
+
 
 const Services = () => {
   const [servicesData, setServicesData] = useState([]);
@@ -11,6 +13,7 @@ const Services = () => {
   const [selectedService, setSelectedService] = useState(null);
   const [loading, setLoading] = useState(false);
   const user = Parse.User.current();
+  const [isOk, setIsOk] = useState(false);
   const [newService, setNewService] = useState({
     id: null,
     image: "",
@@ -125,7 +128,7 @@ const Services = () => {
             : service
         )
       );
-      toast.success("SAVE CHANGES!");
+      setIsOk(true); 
       closeModal();
     } catch (error) {
       console.error(
@@ -218,6 +221,41 @@ const Services = () => {
 
   return (
     <div className="container mx-auto py-10 px-4">
+
+      {isOk && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">  
+        <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+          <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
+            <button
+              onClick={() => {
+                setIsOk(false);
+                window.location.reload();
+              }}
+              className=""
+            >
+              <X />
+            </button>
+          </div>
+          <div className="flex flex-col justify-center items-center p-6">
+            <h2 className="text-xl font-bold mb-4 text-center">
+              SAVE SUCCESSFULLY
+            </h2>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => {
+                  setIsOk(false);
+                  window.location.reload();
+                }}
+                className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      )}
+      
       <div className="flex flex-col items-center mb-8">
         <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
           SERVICES

@@ -4,6 +4,7 @@ import { CONTACTUS } from "../helper/api";
 import toast from "react-hot-toast";
 import Parse from "parse/dist/parse.min.js";
 import { Phone, LocateIcon, MailIcon } from "lucide-react";
+import { X } from "lucide-react";
 
 // API call functions
 const createContactus = async (data) => {
@@ -28,6 +29,7 @@ const ContactUs = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedInfo, setEditedInfo] = useState({});
+  const [isOk, setIsOk] = useState(false);
 
   // Handle opening the edit modal
   const handleEdit = () => {
@@ -50,7 +52,7 @@ const ContactUs = () => {
 
         if (response.success) {
           setContactInfo(response.data);
-          toast.success("SAVE CHANGES SUCCESSFULLY!");
+          setIsOk(true);
         } else {
           toast.error("Failed to update contact info.");
         }
@@ -122,6 +124,41 @@ const ContactUs = () => {
 
   return (
     <div className="min-h-screen flex flex-col gap-y-10 justify-center items-center py-12">
+
+      {isOk && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">  
+        <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+          <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
+            <button
+              onClick={() => {
+                setIsOk(false);
+                window.location.reload();
+              }}
+              className=""
+            >
+              <X />
+            </button>
+          </div>
+          <div className="flex flex-col justify-center items-center p-6">
+            <h2 className="text-xl font-bold mb-4 text-center">
+              SAVE SUCCESSFULLY
+            </h2>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => {
+                  setIsOk(false);
+                  window.location.reload();
+                }}
+                className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      )}
+
       <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2">
         CONTACT US
       </h1>
