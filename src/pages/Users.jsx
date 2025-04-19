@@ -1300,18 +1300,26 @@ const Users = () => {
                 <br /> TO SAVE?
               </h2>
               <div className="flex justify-end gap-4">
-                <button
-                  onClick={confirmSaveUser}
-                  className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
-                >
-                  {loading ? "Loading..." : "YEST"}
-                </button>
-                <button
-                  onClick={() => setShowConfirmModal(false)}
-                  className="px-4 py-2 bg-white hover:bg-gray-400 border border-zinc-600 transition-colors duration-200"
-                >
-                  NO
-                </button>
+                {loading ? (
+                  <span className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200">
+                    LOADING...
+                  </span>
+                ) : (
+                  <div className="flex justify-end gap-4">
+                    <button
+                      onClick={confirmSaveUser}
+                      className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+                    >
+                      YES
+                    </button>
+                      <button
+                        onClick={() => setShowConfirmModal(false)}
+                        className="px-4 py-2 bg-white hover:bg-gray-400 border border-zinc-600 transition-colors duration-200"
+                      >
+                        NO
+                      </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1335,18 +1343,26 @@ const Users = () => {
                 <br /> TO SAVE CHANGES?
               </h2>
               <div className="flex justify-end gap-4">
-                <button
-                  onClick={confirmEditUser}
-                  className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
-                >
-                  {loading ? "Loading..." : "YES"}
-                </button>
-                <button
-                  onClick={() => setShowEditConfirmModal(false)}
-                  className="px-4 py-2 bg-white hover:bg-gray-400 border border-zinc-600 transition-colors duration-200"
-                >
-                  NO
-                </button>
+                {loading ? (
+                  <span className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200">
+                    LOADING...
+                  </span>
+                ) : (
+                  <div className="flex justify-end gap-4">
+                    <button
+                      onClick={confirmEditUser}
+                      className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+                    >
+                      YES
+                    </button>
+                      <button
+                        onClick={() => setShowEditConfirmModal(false)}
+                        className="px-4 py-2 bg-white hover:bg-gray-400 border border-zinc-600 transition-colors duration-200"
+                      >
+                        NO
+                      </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

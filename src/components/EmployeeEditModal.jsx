@@ -9,7 +9,7 @@ const EmployeeEditModal = ({
   handleInputChangeData,
   setImage,
   image,
-  loading
+  loading,
 }) => {
   const formattedBirthdate = employeeData.birthdate
     ? typeof employeeData.birthdate === 'object' && employeeData.birthdate.iso

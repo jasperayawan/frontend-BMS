@@ -7,6 +7,7 @@ import { EMPLOYEE } from "../helper/api";
 import toast from "react-hot-toast";
 import Parse from "parse/dist/parse.min.js";
 import { calculateAge } from "../utils/toBase64";
+import { X } from "lucide-react";
 
 const Employee = () => {
   const [isPrint, setIsPrint] = useState(false);
@@ -23,6 +24,7 @@ const Employee = () => {
   const [image, setImage] = useState(null);
   const [addEmployeeModal, setAddEmployeeModal] = useState(false);
   const [employeeList, setEmployeeList] = useState([]);
+  const [isOk, setIsOk] = useState(false);
   const [employeeObj, setEmployeeObj] = useState({
     userId: "",
     lastName: "",
@@ -198,8 +200,7 @@ const Employee = () => {
           updatedEmployeeData.birthdate = new Date(updatedEmployeeData.birthdate);
         }
 
-        
-        console.log('updatedEmployeeData', updatedEmployeeData)
+      
 
         // If there is a new image, make sure it's included in the data
         if (image) {
@@ -207,7 +208,6 @@ const Employee = () => {
             updatedEmployeeData.profilePic = base64Image;
         }
         
-        console.log(updatedEmployeeData)
         const response = await axios.put(
             EMPLOYEE + `/${editData.objectId}`,
             updatedEmployeeData
@@ -218,8 +218,7 @@ const Employee = () => {
             ...prevData,
             ...response.data.data,
         }))
-        toast.success("Employee updated successfully!");
-        window.location.reload();
+        setIsOk(true)
     } catch (error) {
         console.error("Error updating employee:", error);
         toast.error("Failed to update employee: " + error.message);
@@ -379,6 +378,40 @@ const Employee = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {isOk && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">  
+        <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+          <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
+            <button
+              onClick={() => {
+                setIsOk(false);
+                window.location.reload();
+              }}
+              className=""
+            >
+              <X />
+            </button>
+          </div>
+          <div className="flex flex-col justify-center items-center p-6">
+            <h2 className="text-xl font-bold mb-4 text-center">
+              SAVE SUCCESSFULLY
+            </h2>
+            <div className="flex justify-end gap-4">
+              <button
+                onClick={() => {
+                  setIsOk(false);
+                  window.location.reload();
+                }}
+                className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      )}
+
       {view && (
         <EmployeeModal
           viewEmployee={viewEmployee}
