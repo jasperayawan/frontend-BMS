@@ -80,7 +80,7 @@ function App() {
       </div>
       )}
 
-      <Toaster />
+      <Toaster toastOptions={{ duration: 5000 }} />
       <Outlet />
     </>
   );
