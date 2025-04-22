@@ -51,7 +51,7 @@ const Header = () => {
           className="h-16 md:h-20 mt-4 md:mt-0"
         />
       </div>
-    {(location.pathname !== "/login" && location.pathname !== "/" && location.pathname !== "/forgot" || isAuthenticated) && (
+    {(location.pathname !== "/login" && location.pathname !== "/" && location.pathname !== "/forgot" && location.pathname !== "/reset-password" || isAuthenticated) && (
       <div className="relative bg-white border-b-[1px] border-yellow-600">
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
