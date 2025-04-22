@@ -15,6 +15,47 @@ const AddNewFamilyPlanning = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Single validation: Ensure at least one option is selected across all sections
+    const isTypeOfClientSelected =
+      formData.newAcceptor ||
+      formData.currentUser ||
+      formData.changingMethod ||
+      formData.changingClinic ||
+      formData.dropoutRestart;
+    
+      const isMethodCurrentlyUsedSelected =
+      formData.coc ||
+      formData.pop ||
+      formData.injectable ||
+      formData.implant ||
+      formData.interval ||
+      formData.postPartum ||
+      formData.condom ||
+      formData.bomCmm ||
+      formData.bbt ||
+      formData.stm ||
+      formData.lam ||
+      (formData.methodOthers && formData.methodOthers.trim() !== "");
+
+      const isRisksForViolenceSelected =
+      formData.unpleasantRelationship === "YES" ||
+      formData.unpleasantRelationship === "NO" ||
+      formData.partnerDisapproval === "YES" ||
+      formData.partnerDisapproval === "NO" ||
+      formData.domesticViolence === "YES" ||
+      formData.domesticViolence === "NO";
+
+      if (
+        !isTypeOfClientSelected &&
+        !isMethodCurrentlyUsedSelected &&
+        !isRisksForViolenceSelected
+      ) {
+        toast.error("Please select at least one option in each section.");
+        return;
+      }
+
+
     try {
       await createNewFamilyPlanning(formData, patientDataSelected?.objectId);
       toast.success("Family planning record added successfully!");
@@ -605,7 +646,7 @@ const AddNewFamilyPlanning = ({
             </button>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              className="bg-yellow-500 text-white px-4 py-2 rounded"
             >
               {isLoading ? "Submitting..." : "Submit"}
             </button>

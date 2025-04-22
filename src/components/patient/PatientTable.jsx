@@ -15,6 +15,7 @@ const PatientTable = ({
 
   return (
     <div ref={componentRef} className="overflow-x-auto shadow-md sm:rounded-lg">
+      <h2 className='text-2xl font-bold text-center mb-10 hidden print:block'>PATIENT LIST</h2>
       <table className="w-full text-sm text-left">
         <thead className="text-xs uppercase bg-gradient-to-r from-orange-400 to-orange-600 text-white">
           <tr>

@@ -134,6 +134,18 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validation logic
+    const errors = [];
+    if (!formData.trimesterOne || !formData.dateOne || !formData.weekOne) {
+      errors.push("First trimester details are incomplete.");
+    }
+
+    if (errors.length > 0) {
+      errors.forEach((error) => toast.error(error));
+      return;
+    }
+    
     try {
       await createNewPrenatal(formData, user);
       toast.success("Prenatal record created successfully");
@@ -256,6 +268,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
                 type="text"
                 value={formData.hospital}
                 onChange={(e) => setFormData({...formData, hospital: e.target.value})}
+                required
                 className="w-full p-2 border rounded"
               />
             </div>
@@ -265,6 +278,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
                 type="date"
                 value={formData.expectedDateToDeliver}
                 onChange={(e) => setFormData({...formData, expectedDateToDeliver: e.target.value})}
+                required
                 className="w-full p-2 border rounded"
               />
             </div>
@@ -280,6 +294,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
                 type="text"
                 value={formData.questionOne}
                 onChange={(e) => setFormData({...formData, questionOne: e.target.value})}
+                required
                 className="w-full p-2 border rounded"
               />
             </div>
@@ -289,6 +304,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
                 type="text"
                 value={formData.questionTwo}
                 onChange={(e) => setFormData({...formData, questionTwo: e.target.value})}
+                required
                 className="w-full p-2 border rounded"
               />
             </div>
@@ -478,6 +494,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
                   type="number" 
                   value={value}
                   onChange={(e) => setFormData({...formData, [key]: e.target.value})}
+                  required
                   className="w-full p-2 border rounded" 
                 />
               </div>
@@ -582,7 +599,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
         <div className="flex justify-center space-x-4 py-4">
           <button 
             type="submit"
-            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-green-700"
+            className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-700"
           >
             {isLoading ? 'Loading...' : 'SAVE'}
           </button>
