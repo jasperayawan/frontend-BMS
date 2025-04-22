@@ -491,7 +491,7 @@ const AddNewPrenatal = ({ patientDataSelected, setHealthCare, setIsPrenatal, set
               <div key={key}>
                 <label className="block mb-2">{key.toUpperCase()}</label>
                 <input 
-                  type="number" 
+                  type={key === "bloodPressure" ? "text" : "number"} 
                   value={value}
                   onChange={(e) => setFormData({...formData, [key]: e.target.value})}
                   required
