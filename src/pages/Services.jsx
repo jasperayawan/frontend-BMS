@@ -76,8 +76,25 @@ const Services = () => {
     }
   };
 
+  const validateService = () => {
+    if (!newService.title.trim()) {
+      toast.error("Title is required!");
+      return false;
+    }
+    if (!newService.desc.trim()) {
+      toast.error("Description is required!");
+      return false;
+    }
+    if (!newService.image) {
+      toast.error("Image is required!");
+      return false;
+    }
+    return true;
+  };
+
   // Handle adding a new service
   const handleAddService = async () => {
+    if (!validateService()) return;
     setLoading(true);
     try {
       if (newService.title && newService.desc && newService.image) {
@@ -439,6 +456,7 @@ const Services = () => {
                       ? newService.title
                       : selectedService?.title || ""
                   }
+                  // required
                   onChange={(e) =>
                     modalType === "add"
                       ? setNewService({ ...newService, title: e.target.value })
@@ -482,6 +500,7 @@ const Services = () => {
                           desc: e.target.value,
                         })
                   }
+                  required
                   rows={10}
                   className="border px-2 py-1 mb-2 w-full whitespace-pre-wrap font-sans"
                 />
@@ -490,7 +509,7 @@ const Services = () => {
                   {modalType === "add" ? (
                     <button
                       onClick={handleAddService}
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                      className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                     >
                       {loading ? "Loading..." : "Add Service"}
                     </button>
