@@ -257,7 +257,7 @@ const Patient = () => {
     }
   };
 
-  console.log(patientData)
+ 
 
   const handleSearch = () => {
     let hasError = false;

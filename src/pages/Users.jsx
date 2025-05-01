@@ -282,6 +282,20 @@ const Users = () => {
     setShowViewModal(true);
   };
 
+
+    const generateUserId = () => {
+      const randomNumber = Math.floor(100 + Math.random() * 900); // Generate a 3-digit number
+      return `MS-${randomNumber}`;
+    };
+    
+  
+    useEffect(() => {
+      setNewUser((prev) => ({
+        ...prev,
+        user_id: generateUserId(),
+      }));
+    }, [setNewUser]);
+
   return (
     <div className="container mx-auto p-8 max-w-7xl">
 
@@ -762,8 +776,7 @@ const Users = () => {
                       type="text"
                       name="user_id"
                       value={newUser.user_id}
-                      onChange={handleInputChange}
-                      required
+                      readOnly
                       className="px-2 py-1 border border-zinc-400 hover:border-orange-500 transition-colors"
                     />
                   </div>

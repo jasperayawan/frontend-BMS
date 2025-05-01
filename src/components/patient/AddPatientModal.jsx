@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Webcam from "react-webcam";
 
 
@@ -31,6 +31,19 @@ const AddPatientModal = ({
     
     setShowCamera(false);
   };
+
+  const generatePatientId = () => {
+    const randomNumber = Math.floor(100 + Math.random() * 900); // Generate a 3-digit number
+    return `BSF-${randomNumber}`;
+  };
+  
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      patientIdNo: generatePatientId(),
+    }));
+  }, [setFormData]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -354,13 +367,12 @@ const AddPatientModal = ({
               Patient ID NO.
             </label>
             <input
-              type="text"
-              name="patientIdNo"
-              value={formData.patientIdNo}
-              onChange={handleInputChange}
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
-            />
+                type="text"
+                name="patientIdNo"
+                value={formData.patientIdNo}
+                readOnly
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+              />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
