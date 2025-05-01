@@ -220,7 +220,6 @@ const Users = () => {
   const handleEditClick = (user) => {
     setEditingUser({
       ...user,
-      profilePicture: null, // Reset profile picture to avoid sending the URL
     });
     setIsEditing(true);
     setShowModal(false);
@@ -295,6 +294,7 @@ const Users = () => {
         user_id: generateUserId(),
       }));
     }, [setNewUser]);
+
 
   return (
     <div className="container mx-auto p-8 max-w-7xl">
@@ -455,10 +455,10 @@ const Users = () => {
                     Email
                   </th>
                   <th className="px-6 py-3 text-left text-xs text-black font-semibold uppercase tracking-wider">
-                    STATUS
+                    DATE REGISTERED
                   </th>
                   <th className="px-6 py-3 text-left text-xs text-black font-semibold uppercase tracking-wider">
-                    DATE REGISTERED
+                    STATUS
                   </th>
                 </tr>
               </thead>
@@ -504,10 +504,10 @@ const Users = () => {
                         {user.email}
                       </td>
                       <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
-                        {user.status}
+                        {new Date(user.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
-                        {new Date(user.createdAt).toLocaleDateString()}
+                        {user.status}
                       </td>
                     </tr>
                   ))
@@ -1004,11 +1004,12 @@ const Users = () => {
                         className="block text-sm font-medium"
                       >
                         <div className="cursor-pointer w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center mb-2 relative">
-                          {editingUser.profilePicture ? (
+                        {editingUser.profilePicture ? (
                             <img
                               src={
-                                editingUser.profilePicture &&
-                                URL.createObjectURL(editingUser.profilePicture)
+                                editingUser.profilePicture instanceof File
+                                  ? URL.createObjectURL(editingUser.profilePicture)
+                                  : editingUser.profilePicture // Use the URL directly if it's a string
                               }
                               alt="profile"
                               className="w-full h-full rounded-full object-cover"

@@ -98,6 +98,10 @@ const MyAccount = () => {
 
   return (
     <div className="min-h-screen py-12 px-4">
+      <h1 className="text-2xl mb-10 text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2">
+        MY PROFILE
+      </h1>
+
       <div className="max-w-4xl mx-auto">
         {/* Main Card */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
