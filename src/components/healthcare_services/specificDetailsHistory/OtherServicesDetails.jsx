@@ -7,6 +7,7 @@ const OtherServicesDetails = ({
   handleCloseHistoryDetails,
   handlePrint,
   componentRef,
+  user
 }) => {
   return (
     <div className="p-4 md:p-8 z-50">
@@ -171,6 +172,8 @@ const OtherServicesDetails = ({
             </div>
           </div>
         </div>
+
+        <p className='hidden print:block uppercase mt-10'>PRINTED BY: {user?.get("role")} {user?.get("name")}</p> 
       </div>
 
       <div className="flex justify-center space-x-4 py-6">

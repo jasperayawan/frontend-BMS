@@ -14,6 +14,7 @@ const PatientModal = ({
   componentRef,
   setIsPatientSelect,
   patientDataSelected,
+  user
 }) => {
   const [isPatientHistory, setIsPatientHistory] = useState(false);
   const { getPrenatalByUserIdHistory, prenatalHistory } = usePrenatal();
@@ -291,6 +292,7 @@ const PatientModal = ({
                 handlePrint={handlePrint}
                 componentRef={componentRef}
                 handleCloseHistoryDetails={handleCloseHistoryDetails}
+                user={user}
               />
             )}
           </div>
@@ -540,6 +542,8 @@ const PatientModal = ({
                 </div>
               </div>
             </div>
+
+            <p className='hidden print:block uppercase mt-20'>PRINTED BY: {user?.get("role")} {user?.get("name")}</p> 
           </div>
           {/* Action Buttons */}
           <div className="max-w-6xl mx-auto col-span-3 flex justify-between mt-6 text-[11px]">

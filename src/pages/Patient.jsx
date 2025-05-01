@@ -432,6 +432,7 @@ const Patient = () => {
           componentRef={componentRef}
           setIsPatientSelect={setIsPatientSelect}
           patientDataSelected={patientDataSelected}
+          user={user}
         />
       )}
 
@@ -828,6 +829,7 @@ const Patient = () => {
               }}
               patientDataSelected={patientDataSelected}
               componentRef={componentRef}
+              user={user}
               onRowDoubleClick={(data) => handleOpenModal(data)}
               searchType={searchType}
               searchInput={searchInput}

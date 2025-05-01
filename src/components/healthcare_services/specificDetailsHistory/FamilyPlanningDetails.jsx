@@ -6,7 +6,8 @@ const FamilyPlanningDetails = ({
   activeTab,
   handleCloseHistoryDetails,
   handlePrint,
-  componentRef
+  componentRef,
+  user
 }) => {
 
   return (
@@ -534,7 +535,7 @@ const FamilyPlanningDetails = ({
           </div>
         </div>
 
-        
+        <p className='hidden print:block uppercase mt-10'>PRINTED BY: {user?.get("role")} {user?.get("name")}</p>                 
       </div>
       {/* Modern Buttons */}
       <div className="flex justify-center space-x-4 mt-10">

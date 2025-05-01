@@ -6,10 +6,11 @@ const ImmunizationDetails = ({
   activeTab,
   handleCloseHistoryDetails,
   handlePrint,
-  componentRef
+  componentRef,
+  user
 }) => {
 
-  console.log(myProfile)
+
   return (
     <div className="min-h-screen p-4 md:p-8 w-full ">
       <div ref={componentRef && componentRef} className="bg-transparent p-8 rounded-xl mx-auto w-full max-w-4xl">
@@ -237,7 +238,8 @@ const ImmunizationDetails = ({
 
           </div>
         </div>
-
+        
+        <p className='hidden print:block uppercase mt-10'>PRINTED BY: {user?.get("role")} {user?.get("name")}</p> 
       </div>
 
       <div className="mt-8 flex justify-center gap-3">

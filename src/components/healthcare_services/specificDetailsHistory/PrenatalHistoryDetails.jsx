@@ -8,6 +8,7 @@ const PrenatalHistoryDetails = ({
   handleCloseHistoryDetails,
   handlePrint,
   componentRef,
+  user
 }) => {
   return (
     <div className="min-h-screen p-4 md:p-8">
@@ -427,6 +428,8 @@ const PrenatalHistoryDetails = ({
             </div>
           </div>
         </div>
+
+        <p className='hidden print:block uppercase mt-10'>PRINTED BY: {user?.get("role")} {user?.get("name")}</p>  
       </div>
 
       {/* Action Buttons */}

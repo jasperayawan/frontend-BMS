@@ -9,7 +9,8 @@ const PatientTable = ({
   searchType, 
   searchInput,
   hasSearched,
-  setIsPatientSelected 
+  setIsPatientSelected,
+  user 
 }) => {
   const data = Array.isArray(filteredData) ? filteredData : [];
 
@@ -75,6 +76,7 @@ const PatientTable = ({
           )}
         </tbody>
       </table>
+       <p className='hidden print:block uppercase'>PRINTED BY: {user?.get("role")} {user?.get("name")}</p>   
     </div>
   );
 };
