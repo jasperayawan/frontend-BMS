@@ -177,7 +177,18 @@ const AboutUs = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
         {Array.isArray(team) && team.map((member, i) => (
           member && (
-            <div key={i} className="text-center relative">
+            <div 
+            key={i}
+            className={`text-center relative ${
+              form.id === member.objectId ? "bg-slate-100" : ""
+            }`}
+            onClick={() => setForm({
+              id: member.objectId,
+              name: member.name,
+              role: member.role,
+              image: member.image,
+            })}
+            >
               <div className="relative inline-block">
                 <img
                   src={member.image || "https://via.placeholder.com/150"}
@@ -197,19 +208,36 @@ const AboutUs = () => {
               </div>
               <h2 className="font-semibold mt-4">{member.name}</h2>
               <p className="text-gray-600">{member.role}</p>
-              {user?.get("role") !== "SECRETARY" &&
-                user?.get("role") !== "PATIENT" &&
-                user?.get("role") === "ADMIN" && (
-                  <button
-                    onClick={() => handleEdit(member)}
-                    className="mt-2 text-blue-600 hover:underline"
-                  >
-                    Edit
-                  </button>
-                )}
             </div>
           )
         ))}
+      </div>
+
+      {/* Add/Edit Buttons */}
+      <div className="flex justify-center gap-4 mt-20">
+        {user?.get("role") !== "SECRETARY" &&
+          user?.get("role") !== "PATIENT" &&
+          user?.get("role") === "ADMIN" && (
+            <>
+              <button
+                onClick={openAddModal}
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+              >
+                Add
+              </button>
+              <button
+                onClick={() => form.id && setIsModalOpen(true)}
+                disabled={!form.id} // Disable the button if no member is selected
+                className={`border border-orange-500 font-semibold py-2 px-6 rounded-lg transition-colors duration-200 ${
+                  form.id
+                    ? "text-black"
+                    : "text-gray-400 cursor-not-allowed border-gray-400"
+                }`}
+              >
+                Edit
+              </button>
+            </>
+          )}
       </div>
 
       {/* Modal for Add/Edit Member */}

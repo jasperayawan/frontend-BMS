@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import "./App.css";
 import Parse from "parse/dist/parse.min.js";
 import { Toaster } from "react-hot-toast";
@@ -14,6 +14,10 @@ function App() {
   const user = Parse.User.current();
   const { loadingLoading, logout } = useLogout();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = window.location.pathname; 
+  const currentLoc = location.split("/").pop()
+  const [isStatementModal, setStatementModal] = useState(false)
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -23,12 +27,20 @@ function App() {
   const confirmLogout = async () => {
     await logout();
     setIsModalOpen(false);
+    navigate("/");
+    localStorage.removeItem("unregisteredUser");
     window.location.reload();
   };
 
   const cancelLogout = () => {
     setIsModalOpen(false);
   };
+
+  const preventPath = ["login", "signup", "forgot", "reset-password"];
+
+  const handleStatementModal = () => {
+    setStatementModal(true);
+  }
 
   return (
     <>
@@ -49,6 +61,22 @@ function App() {
           </button>
         </div>
       )}
+
+      {isStatementModal && (
+        <div className="fixed inset-0 bg-black/20 flex justify-center items-center min-h-screen w-full z-50">
+          <div className="px-14 py-7 w-[430px] bg-white border border-orange-600 flex justify-center items-center flex-col gap-y-3">
+            <p className="text-center">To access our services and to Register, please visit your local barangay office to create an account.</p>
+            <button onClick={() => setStatementModal(false)} className='px-4 py-1 border border-orange-600 text-orange-500 w-[max-content] mx-auto'>OK</button>
+          </div>
+        </div>
+      )}
+
+      {(!user) && (!preventPath.includes(currentLoc)) && (
+        <div className="flex justify-end m-5">
+          <button onClick={handleStatementModal} className="text-end hover:underline">DO YOU WANT TO REGISTER?</button>
+        </div>
+      )}
+
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center">
         <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">

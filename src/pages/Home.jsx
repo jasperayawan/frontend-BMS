@@ -159,6 +159,7 @@ const Home = () => {
 
   return (
     <div className="relative min-h-screen p-6">
+
       {isSuccess && (
         <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center">
         <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">

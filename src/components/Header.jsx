@@ -25,7 +25,7 @@ const Header = () => {
               onClick={() => Navigate("/")}
               src="/sanfranciscologo.svg"
               alt="San Francisco Logo"
-              className="z-30 cursor-pointer h-16 md:h-20 mb-4 md:mb-0"
+              className="z-30 cursor-pointer h-16 md:h-32 mb-4 md:mb-0"
             />
           </Link>
         ) : (
@@ -48,7 +48,7 @@ const Header = () => {
         <img 
           src="/pagadianlogo.svg" 
           alt="Pagadian Logo" 
-          className="h-16 md:h-20 mt-4 md:mt-0"
+          className="h-16 md:h-32 mt-4 md:mt-0"
         />
       </div>
     {(location.pathname !== "/login" && location.pathname !== "/" && location.pathname !== "/forgot" && location.pathname !== "/reset-password" || isAuthenticated) && (
