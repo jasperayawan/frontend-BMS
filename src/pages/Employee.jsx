@@ -465,7 +465,8 @@ const Employee = () => {
                 <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Position</th>
                 <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Contact</th>
                 <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Email</th>
-                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Status</th>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Remarks</th>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-white uppercase tracking-wider">Date Registered</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -494,6 +495,7 @@ const Employee = () => {
                         Active
                       </span>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{new Date(data.createdAt).toLocaleDateString()}</td>
                   </tr>
                 ))
               ) : (
