@@ -47,6 +47,48 @@ const Users = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showEditConfirmModal, setShowEditConfirmModal] = useState(false);
   const [isOk, setIsOk] = useState(false);
+  const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
+
+  const [showStatusModal, setShowStatusModal] = useState(false);
+  const [statusChangeUser, setStatusChangeUser] = useState(null);
+  const [message, setMessage] = useState("");
+
+
+
+  
+      // Function to handle status toggle click
+    const handleStatusToggleClick = (user) => {
+      setStatusChangeUser(user); // Set the user whose status is being changed
+      setMessage(
+        `Are you sure you want to ${
+          user.status === "ACTIVE" ? "inactivate" : "activate"
+        } this account?`
+      );
+      setShowStatusModal(true); // Show the confirmation modal
+    };
+
+
+    // Function to confirm the status change
+    const confirmStatusChange = () => {
+      if (!statusChangeUser) return;
+
+      // Update the status locally
+      setEditingUser((prev) => ({
+        ...prev,
+        status: prev.status === "ACTIVE" ? "INACTIVE" : "ACTIVE",
+      }));
+
+      setShowStatusModal(false); // Close the modal
+      setStatusChangeUser(null); // Clear the user being changed
+    };
+
+
+
+  // Function to cancel status change
+  const cancelStatusChange = () => {
+    setShowStatusModal(false);
+    setStatusChangeUser(null);
+  };
 
   const handleUserClick = (user) => {
     setSelectedUser(user);
@@ -232,9 +274,10 @@ const Users = () => {
 
   const confirmEditUser = async () => {
     setLoading(true);
-    const imageBase64 = editingUser.profilePicture
+    const imageBase64 =
+    editingUser.profilePicture instanceof File
       ? await toBase64(editingUser.profilePicture)
-      : null;
+      : editingUser.profilePicture;
 
     const formData = {
       ...editingUser,
@@ -335,7 +378,38 @@ const Users = () => {
                 </div>
               </div>
             </div>
+      )}
+
+      {showStatusModal && message && (
+        <div className="fixed inset-0 bg-black/20 flex justify-center items-center min-h-screen w-full z-50">
+          <div className="px-20 py-7 w-[430px] bg-white border border-orange-600 flex justify-center items-center flex-col gap-y-3">
+            <div dangerouslySetInnerHTML={{ __html: message }} className="text-center"/>
+            {isLoadingUpdate ? (
+              <button
+              disabled
+              className="px-4 py-1 border border-orange-600 text-orange-500 hover:bg-orange-500 hover:text-black w-[max-content] mx-auto"
+            >
+              Loading...
+            </button>
+            ) : (
+              <div className="flex flex-row gap-x-5">
+                <button
+                  onClick={confirmStatusChange}
+                  className="px-4 py-1 border border-orange-600 text-orange-500 hover:bg-orange-500 hover:text-black w-[max-content] mx-auto"
+                >
+                  YES
+                </button>
+                <button
+                  onClick={confirmStatusChange}
+                  className="px-4 py-1 border border-orange-600 text-orange-500 hover:bg-orange-500 hover:text-black w-[max-content] mx-auto"
+                >
+                  NO
+                </button>
+                </div>
             )}
+          </div>
+        </div>
+      )}
 
       {!showAddModal && !viewUser && !editingUser && (
         <h1 className="text-2xl text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2 my-7">
@@ -1264,12 +1338,7 @@ const Users = () => {
                         ACTIVE
                         <StatusToggle
                           status={editingUser.status}
-                          setStatus={(newStatus) =>
-                            setEditingUser((prev) => ({
-                              ...prev,
-                              status: newStatus,
-                            }))
-                          }
+                          setStatus={() => handleStatusToggleClick(editingUser)}
                         />
                         INACTIVE
                       </div>

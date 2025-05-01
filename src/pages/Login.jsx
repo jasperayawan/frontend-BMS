@@ -14,7 +14,32 @@ const Login = () => {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null);
   const [seePass, setSeePass] = useState("password")
+  
   const navigate = useNavigate()
+
+  const checkUserStatus = async () => {
+    const user = Parse.User.current();
+  
+    if (user) {
+      await user.fetch(); 
+  
+      const isActive = user.get("status");
+
+      if (!isActive) {
+        alert("Your account is inactive. Please contact support.");
+        await Parse.User.logOut();
+        window.location.href = "/login"; // Redirect or route away
+      }
+
+      console.log("User is active:", user.get("status"));
+    }
+  };
+
+  useEffect(() => {
+    checkUserStatus();
+  }, []);
+  
+
 
   const validateInputs = () => {
     const newErrors = { email: '', password: '' };
@@ -35,16 +60,15 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     if (!validateInputs()) return;
-
+  
     setLoading(true);
-
-    try{
-      const emailExists = new Parse.Cloud.run("checkEmailExists", { email })
-      const checkEmailIfExist = await emailExists;
-
-      if (!checkEmailIfExist) {
+  
+    try {
+      const emailExists = await Parse.Cloud.run("checkEmailExists", { email });
+  
+      if (!emailExists) {
         const errorHtml = `
           <h3 class="text-orange-500 text-lg font-semibold text-center">
             Your email address is not registered and you are unable to log in at this time.
@@ -53,26 +77,37 @@ const Login = () => {
             To access our services, please visit your local Barangay office to create an account.
           </p>
         `;
-
-        
-        
+  
         setError(errorHtml);
         setLoading(false);
         return;
       }
-      
+  
       const loggedInUser = await Parse.User.logIn(email, password);
 
-      setSuccess("YOU HAVE LOGGED IN SUCCESSFULLY!")
-      localStorage.setItem('sessionToken', loggedInUser.getSessionToken());
-
-      
+      // Check the user's status
+      const isActive = loggedInUser.get("status");
+      if (isActive == "INACTIVE") {
+        await Parse.User.logOut();
+        setError(`
+          <h3 class="text-orange-500 text-lg font-semibold text-center">
+            Your account is inactive. Please contact support.
+          </h3>
+        `);
+        setLoading(false);
+        return;
+      }
+  
+      setSuccess("YOU HAVE LOGGED IN SUCCESSFULLY!");
+      localStorage.setItem("sessionToken", loggedInUser.getSessionToken());
+      // navigate("/");
+      // window.location.reload();
     } catch (error) {
       setError("Incorrect Username or Password");
     } finally {
       setLoading(false);
     }
-  }
+  };
 
 
   const handleSeepassword = (e, data) => {

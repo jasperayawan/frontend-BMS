@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Parse from 'parse/dist/parse.min.js';
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBirthdayCake, FaTint, FaIdCard } from 'react-icons/fa';
+import toast from "react-hot-toast";
 
 const MyAccount = () => {
   const [account, setAccount] = useState({});
@@ -13,6 +14,7 @@ const MyAccount = () => {
   const user = Parse.User.current();
   const [error, setError] = useState(null);
   const [isConfirmSaveOpen, setIsConfirmSaveOpen] = useState(false);
+  const userRole = user.get('role')
 
   const handleEditToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -66,7 +68,7 @@ const MyAccount = () => {
         contact: formData.contact,
         profilePicture: profilePictureData
       });
-
+      toast.success(result.message)
       setAccount(result.user);
       setIsModalOpen(false);
     } catch (err) {
@@ -96,6 +98,8 @@ const MyAccount = () => {
     fetchUsers();
   }, []);
 
+
+ 
   return (
     <div className="min-h-screen py-12 px-4">
       <h1 className="text-2xl mb-10 text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2">
@@ -140,7 +144,7 @@ const MyAccount = () => {
               {/* Personal Information */}
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">Personal Information</h3>
-                <InfoItem icon={<FaBirthdayCake />} label="Birthdate" value={account.birthdate} />
+                <InfoItem icon={<FaBirthdayCake />} label="Birthdate" value={userRole === "PATIENT" ? account.bod : account.birthdate} /> 
                 <InfoItem icon={<FaUser />} label="Age" value={account.age} />
                 <InfoItem icon={<FaTint />} label="Blood Type" value={account.bloodType} />
               </div>
@@ -178,7 +182,7 @@ const MyAccount = () => {
                           hover:from-yellow-500 hover:to-orange-600 transform hover:-translate-y-0.5 
                           transition-all duration-200 shadow-md hover:shadow-lg"
               >
-                Edit Profile
+                EDIT MY ACCOUNT
               </button>
             </div>
           </div>
@@ -188,15 +192,9 @@ const MyAccount = () => {
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
             <div className="bg-white w-full max-w-lg rounded-2xl p-8 relative transform transition-all duration-300 scale-100">
-              <button
-                onClick={handleEditToggle}
-                className="absolute top-3 right-3 text-gray-600"
-              >
-                ✖️
-              </button>
               <h3 className="text-xl font-bold mb-4">Edit Account</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
+              <div className="flex flex-col gap-y-3">
+                {/* <div>
                   <label className="block font-bold">Name:</label>
                   <input
                     type="text"
@@ -205,6 +203,24 @@ const MyAccount = () => {
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border rounded"
                   />
+                </div> */}
+                <div className="col-span-2">
+                  <label className="block font-bold">Profile Picture:</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="w-full px-3 py-2 border rounded"
+                  />
+                  {previewImage && (
+                    <div className="mt-4">
+                      <img
+                        src={previewImage}
+                        alt="Preview"
+                        className="w-24 h-24 rounded-full"
+                      />
+                    </div>
+                  )}
                 </div>
                 <div>
                   <label className="block font-bold">Email:</label>
@@ -216,12 +232,23 @@ const MyAccount = () => {
                     className="w-full px-3 py-2 border rounded"
                   />
                 </div>
-                <div>
+                {/* <div>
                   <label className="block font-bold">Username:</label>
                   <input
                     type="text"
                     name="username"
                     value={formData.username}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border rounded"
+                  />
+                </div> */}
+               
+                <div className="w-full">
+                  <label className="block font-bold">Address:</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border rounded"
                   />
@@ -245,17 +272,7 @@ const MyAccount = () => {
                     </button>
                   </div>
                 </div>
-                <div>
-                  <label className="block font-bold">Address:</label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded"
-                  />
-                </div>
-                <div>
+                {/* <div>
                   <label className="block font-bold">Contact No.:</label>
                   <input
                     type="text"
@@ -264,34 +281,34 @@ const MyAccount = () => {
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border rounded"
                   />
-                </div>
-                <div className="col-span-2">
-                  <label className="block font-bold">Profile Picture:</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="w-full px-3 py-2 border rounded"
-                  />
-                  {previewImage && (
-                    <div className="mt-4">
-                      <img
-                        src={previewImage}
-                        alt="Preview"
-                        className="w-24 h-24 rounded-full"
-                      />
-                    </div>
-                  )}
-                </div>
+                </div> */}
+    
               </div>
               <div className="flex flex-col items-center mt-6">
-                <button
-                  onClick={handleSave}
-                  disabled={loading}
-                  className="px-4 py-2 bg-orange-500 text-white rounded disabled:bg-gray-400"
-                >
-                  {loading ? 'Saving...' : 'Save Changes'}
-                </button>
+                {loading ? (
+                  <button
+                    disabled={loading}
+                    className="px-4 py-2 bg-orange-500 text-white rounded disabled:bg-gray-400"
+                  >
+                    loading...
+                  </button>
+                ) : (
+                  <div className="flex flex-row gap-x-3">
+                    <button
+                      onClick={handleSave}
+                      disabled={loading}
+                      className="px-4 py-2 bg-orange-500 text-white rounded disabled:bg-gray-400"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={handleEditToggle}
+                      className="px-4 py-2 border border-orange-500 text-black rounded disabled:bg-gray-400"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
                 {error && (
                   <p className="text-red-500 mt-2">{error}</p>
                 )}
