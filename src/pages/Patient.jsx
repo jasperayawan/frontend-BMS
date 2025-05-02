@@ -892,7 +892,7 @@ const Patient = () => {
                 )}
               <button
                 onClick={handlePrint}
-                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                className="bg-yellow-500 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

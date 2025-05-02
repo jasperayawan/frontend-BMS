@@ -269,7 +269,7 @@ const ContactUs = () => {
               <div className="flex justify-center gap-4 mt-12">
                 <button
                   onClick={handleEdit}
-                  className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
+                  className="bg-yellow-500 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg"
                 >
                   Edit
                 </button>
@@ -366,13 +366,13 @@ const ContactUs = () => {
                 <div className="mt-8 flex justify-end gap-4">
                   <button
                     onClick={() => setIsEditing(false)}
-                    className="px-6 py-3 rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+                    className="px-6 py-3 rounded-lg bg-yellow-500 hover:bg-orange-500 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleSave}
-                    className="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transform hover:scale-105 transition-all duration-300"
+                    className="bg-yellow-500 hover:bg-orange-500 text-white px-6 py-3 rounded-lg transform hover:scale-105 transition-all duration-300"
                   >
                     Save Changes
                   </button>

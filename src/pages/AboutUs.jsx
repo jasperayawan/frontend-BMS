@@ -11,6 +11,7 @@ const AboutUs = () => {
     id: null,
     name: "",
     role: "",
+    memberType: "",
     image: null,
   });
   const [isEditing, setIsEditing] = useState(false);
@@ -41,60 +42,58 @@ const AboutUs = () => {
     }
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+  
     try {
       const imageBase64 =
         form.image instanceof File ? await toBase64(form.image) : form.image;
-
-      if (isEditing) {
-        const response = await axios.put(`${ORGANIZATION}/${form.id}`, {
-          name: form.name,
-          role: form.role,
-          image: imageBase64,
-        });
-
-        if (response.data) {
-          console.log('Update response:', response.data);
-          
+  
+      // Prepare form data
+      const formData = {
+        id: isEditing ? form.id : null, // Pass the ID only if editing
+        name: form.name,
+        role: form.role,
+        memberType: form.memberType,
+        image: imageBase64,
+      };
+  
+      // Call the Parse Cloud function
+      const result = await Parse.Cloud.run("addOrUpdateMember", formData);
+  
+      if (result.success) {
+        if (isEditing) {
+          // Update the team state for editing
           const updatedMember = {
             objectId: form.id,
-            name: form.name,
-            role: form.role,
-            image: imageBase64,
-            ...response.data
+            ...formData,
+            ...result.member,
           };
-
-          setTeam(prevTeam =>
+  
+          setTeam((prevTeam) =>
             prevTeam.map((member) =>
               member.objectId === form.id ? updatedMember : member
             )
           );
-          toast.success("SAVE CHANGES!");
+          toast.success("Member updated successfully!");
+          window.location.reload();
+        } else {
+          // Add the new member to the team state
+          setTeam((prevTeam) => [...prevTeam, result.member]);
+          toast.success("Member added successfully!");
           window.location.reload();
         }
-      } else {
-        const formData = {
-          name: form.name,
-          role: form.role,
-          image: imageBase64,
-        };
-
-        const result = await Parse.Cloud.run("addOrUpdateMember", formData);
-
-        if (result.success) {
-          setTeam(prevTeam => [...prevTeam, result.data]);
-          toast.success("Member added successfully");
-        }
       }
-
-      setForm({ id: null, name: "", role: "", image: null });
+  
+      // Reset form and close modal
+      setForm({ id: null, name: "", role: "", memberType: "", image: null });
       setIsEditing(false);
       setIsModalOpen(false);
     } catch (error) {
       console.error("Error saving member:", error);
-      toast.error(error.response?.data?.error || "Failed to save member");
+      toast.error(error.message || "Failed to save member");
     } finally {
       setLoading(false);
     }
@@ -112,14 +111,7 @@ const AboutUs = () => {
     }
   };
 
-  const handleEdit = (member) => {
-    // Set form data with existing member data
-    setForm({
-      id: member.objectId,
-      name: member.name,
-      role: member.role,
-      image: member.image, // Keep existing image
-    });
+  const handleEdit = () => {
     setIsEditing(true);
     setIsModalOpen(true);
   };
@@ -174,44 +166,101 @@ const AboutUs = () => {
 
 
       {/* Team Members */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
-        {Array.isArray(team) && team.map((member, i) => (
-          member && (
-            <div 
-            key={i}
-            className={`text-center relative ${
-              form.id === member.objectId ? "bg-slate-100" : ""
-            }`}
-            onClick={() => setForm({
-              id: member.objectId,
-              name: member.name,
-              role: member.role,
-              image: member.image,
-            })}
-            >
-              <div className="relative inline-block">
-                <img
-                  src={member.image || "https://via.placeholder.com/150"}
-                  alt={member.name}
-                  className="w-24 h-24 mx-auto rounded-full"
-                />
-                {/* {user?.get("role") !== "SECRETARY" &&
-                  user?.get("role") !== "PATIENT" &&
-                  user?.get("role") === "ADMIN" && (
-                    <button
-                      onClick={() => handleDelete(member.objectId)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
-                    >
-                      ✕
-                    </button>
-                  )} */}
+      <div className="flex flex-col gap-y-10 mt-28">
+        <div className="flex flex-row justify-center items-center gap-x-2">
+          <div className="h-[1px] w-28 bg-black"></div>
+            <h2 className="text-2xl font-semibold">Barangay Officials</h2>
+          <div className="h-[1px] w-28 bg-black"></div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
+          {Array.isArray(team) && team.filter((m) => m.memberType === "BO").map((member, i) => (
+            member && (
+              <div 
+              key={i}
+              className={`text-center relative ${
+                form.id === member.objectId ? "bg-slate-100" : ""
+              }`}
+              onClick={() => setForm({
+                id: member.objectId,
+                name: member.name,
+                role: member.role,
+                memberType: member.memberType,
+                image: member.image,
+              })}
+              >
+                <div className="relative inline-block">
+                  <img
+                    src={member.image || "https://via.placeholder.com/150"}
+                    alt={member.name}
+                    className="w-24 h-24 mx-auto rounded-full"
+                  />
+                  {/* {user?.get("role") !== "SECRETARY" &&
+                    user?.get("role") !== "PATIENT" &&
+                    user?.get("role") === "ADMIN" && (
+                      <button
+                        onClick={() => handleDelete(member.objectId)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                      >
+                        ✕
+                      </button>
+                    )} */}
+                </div>
+                <h2 className="font-semibold mt-4">{member.name}</h2>
+                <p className="text-gray-600">{member.role}</p>
               </div>
-              <h2 className="font-semibold mt-4">{member.name}</h2>
-              <p className="text-gray-600">{member.role}</p>
-            </div>
-          )
-        ))}
+            )
+          ))}
+        </div>
       </div>
+
+      <div className="flex flex-col gap-y-10 mt-28">
+        <div className="flex flex-row justify-center items-center gap-x-2">
+          <div className="h-[1px] w-28 bg-black"></div>
+            <h2 className="text-2xl font-semibold">Healthcare Workers</h2>
+          <div className="h-[1px] w-28 bg-black"></div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-10">
+          {Array.isArray(team) && team.filter((m) => m.memberType === "HW").map((member, i) => (
+            member && (
+              <div 
+              key={i}
+              className={`text-center relative ${
+                form.id === member.objectId ? "bg-slate-100" : ""
+              }`}
+              onClick={() => setForm({
+                id: member.objectId,
+                name: member.name,
+                role: member.role,
+                memberType: member.memberType,
+                image: member.image,
+              })}
+              >
+                <div className="relative inline-block">
+                  <img
+                    src={member.image || "https://via.placeholder.com/150"}
+                    alt={member.name}
+                    className="w-24 h-24 mx-auto rounded-full"
+                  />
+                  {/* {user?.get("role") !== "SECRETARY" &&
+                    user?.get("role") !== "PATIENT" &&
+                    user?.get("role") === "ADMIN" && (
+                      <button
+                        onClick={() => handleDelete(member.objectId)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                      >
+                        ✕
+                      </button>
+                    )} */}
+                </div>
+                <h2 className="font-semibold mt-4">{member.name}</h2>
+                <p className="text-gray-600">{member.role}</p>
+              </div>
+            )
+          ))}
+        </div>
+      </div>
+
+      
 
       {/* Add/Edit Buttons */}
       <div className="flex justify-center gap-4 mt-20">
@@ -221,17 +270,17 @@ const AboutUs = () => {
             <>
               <button
                 onClick={openAddModal}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+                className="bg-yellow-500 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
               >
                 Add
               </button>
               <button
-                onClick={() => form.id && setIsModalOpen(true)}
-                disabled={!form.id} // Disable the button if no member is selected
-                className={`border border-orange-500 font-semibold py-2 px-6 rounded-lg transition-colors duration-200 ${
+                onClick={handleEdit}
+                disabled={!form.id} 
+                className={`bg-yellow-500 hover:bg-orange-500 font-semibold py-2 px-6 rounded-lg transition-colors duration-200 ${
                   form.id
-                    ? "text-black"
-                    : "text-gray-400 cursor-not-allowed border-gray-400"
+                    ? "text-white"
+                    : "bg-yellow-500 text-white cursor-not-allowed border-gray-400"
                 }`}
               >
                 Edit
@@ -248,6 +297,15 @@ const AboutUs = () => {
               {isEditing ? "Edit Member" : "Add New Member"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-gray-700">Image</label>
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  className="w-full"
+                />
+                {error && <p className="text-red-500 text-sm">{error}</p>}
+              </div>
               <div>
                 <label className="block text-gray-700">Name</label>
                 <input
@@ -270,15 +328,19 @@ const AboutUs = () => {
                   required
                 />
               </div>
-              <div>
-                <label className="block text-gray-700">Image</label>
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  className="w-full"
-                />
-                {error && <p className="text-red-500 text-sm">{error}</p>}
+              <div className="flex flex-col justify-start items-start mt-4">
+                  <select 
+                    name="memberType"
+                    value={form.memberType}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-slate-100 rounded py-2">
+                    <option >Choose a type member:</option>
+                    <option value="BO">Barangay Official</option>
+                    <option value="HW">Healthcare Worker</option>
+                  </select>
               </div>
+              
               <div className="flex justify-end space-x-4">
                 <button
                   type="button"

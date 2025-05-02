@@ -374,7 +374,7 @@ const Services = () => {
         <div className="flex justify-center gap-4 mt-8">
           <button
             onClick={() => openModal("add")}
-            className="bg-white border-2 border-black px-8 py-2 hover:bg-gray-100"
+            className="bg-yellow-500 hover:bg-orange-500 rounded text-white px-8 py-2"
           >
             ADD
           </button>
@@ -383,9 +383,9 @@ const Services = () => {
               selectedCardService && openModal("edit", selectedCardService)
             }
             disabled={!selectedCardService}
-            className={`bg-white border-2 border-black px-8 py-2 ${
+            className={`bg-yellow-500 hover:bg-orange-500 rounded text-white px-8 py-2 ${
               selectedCardService
-                ? "hover:bg-gray-100"
+                ? ""
                 : "opacity-50 cursor-not-allowed"
             }`}
           >

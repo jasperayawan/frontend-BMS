@@ -293,7 +293,7 @@ const Gallery = () => {
                 setNewFile(null);
                 setShowModal(true);
               }}
-              className="px-8 py-2 border-2 border-gray-800 text-gray-800 font-bold uppercase hover:bg-gray-800 hover:text-white transition-colors"
+              className="px-8 py-2 bg-yellow-500 hover:bg-orange-500 text-white font-bold uppercase rounded transition-colors"
             >
               ADD
             </button>
@@ -307,10 +307,10 @@ const Gallery = () => {
                 }
               }}
               disabled={!selectedCardGallery}
-              className={`px-8 py-2 border-2 border-gray-800 font-bold uppercase transition-colors ${
+              className={`px-8 py-2 bg-yellow-500 hover:bg-orange-500 text-white rounded font-bold uppercase transition-colors ${
                 !selectedCardGallery
-                  ? "text-gray-400 border-gray-400 cursor-not-allowed"
-                  : "text-gray-800 hover:bg-gray-800 hover:text-white"
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:text-white"
               }`}
             >
               EDIT

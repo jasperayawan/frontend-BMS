@@ -515,7 +515,7 @@ const Employee = () => {
             <>
             <button
                 onClick={() => setAddEmployeeModal(!addEmployeeModal)}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                className="bg-yellow-500 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
               >
                 Add
               </button>
@@ -526,7 +526,7 @@ const Employee = () => {
                     setIsEditModal(!isEditModal);
                   }
                 }}
-                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+                className="bg-yellow-500 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
               >
                 Edit
               </button>

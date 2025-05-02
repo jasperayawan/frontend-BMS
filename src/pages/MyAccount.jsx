@@ -178,8 +178,7 @@ const MyAccount = () => {
             <div className="mt-8 flex justify-center">
               <button
                 onClick={handleEditToggle}
-                className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-lg
-                          hover:from-yellow-500 hover:to-orange-600 transform hover:-translate-y-0.5 
+                className="px-6 py-3 bg-yellow-500 hover:bg-orange-500 text-white rounded transform hover:-translate-y-0.5 
                           transition-all duration-200 shadow-md hover:shadow-lg"
               >
                 EDIT MY ACCOUNT
@@ -288,7 +287,7 @@ const MyAccount = () => {
                 {loading ? (
                   <button
                     disabled={loading}
-                    className="px-4 py-2 bg-orange-500 text-white rounded disabled:bg-gray-400"
+                    className="px-4 py-2 bg-yellow-500 hover:bg-orange-500 text-white rounded disabled:bg-gray-400"
                   >
                     loading...
                   </button>
@@ -297,13 +296,13 @@ const MyAccount = () => {
                     <button
                       onClick={handleSave}
                       disabled={loading}
-                      className="px-4 py-2 bg-orange-500 text-white rounded disabled:bg-gray-400"
+                      className="px-4 py-2 bg-yellow-500 hover:bg-orange-500 text-white rounded disabled:bg-gray-400"
                     >
                       Save
                     </button>
                     <button
                       onClick={handleEditToggle}
-                      className="px-4 py-2 border border-orange-500 text-black rounded disabled:bg-gray-400"
+                      className="px-4 py-2 bg-yellow-500 hover:bg-orange-500 text-white rounded disabled:bg-gray-400"
                     >
                       Cancel
                     </button>
