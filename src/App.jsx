@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import { PARSE } from "./helper/api";
 import { useLogout } from "./hooks/useLogout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 Parse.initialize(import.meta.env.VITE_APPLICATION_ID);
 Parse.serverURL = PARSE;
@@ -36,11 +36,17 @@ function App() {
     setIsModalOpen(false);
   };
 
-  const preventPath = ["login", "signup", "forgot", "reset-password"];
+  const preventPath = ["login", "signup", "forgot", "reset-password", ""];
 
   const handleStatementModal = () => {
     setStatementModal(true);
   }
+
+  useEffect(() => {
+    if(currentLoc === "") {
+      localStorage.removeItem("unregisteredUser");
+    }
+  },[currentLoc])
 
   return (
     <>
