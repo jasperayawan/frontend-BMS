@@ -400,7 +400,7 @@ const Users = () => {
                   YES
                 </button>
                 <button
-                  onClick={confirmStatusChange}
+                  onClick={cancelStatusChange}
                   className="px-4 py-1 border border-orange-600 text-orange-500 hover:bg-orange-500 hover:text-black w-[max-content] mx-auto"
                 >
                   NO
