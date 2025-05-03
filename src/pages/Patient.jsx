@@ -304,12 +304,18 @@ const Patient = () => {
           if (searchType === "NAME") {
             const fullName1 = `${data.firstname} ${data.lastname}`.toLowerCase(); 
             const fullName2 = `${data.lastname} ${data.firstname}`.toLowerCase(); 
-            const fullName3 = `${data.firstname} ${data.middleInitial} ${data.lastname}`.toLowerCase();
-            const fullName4 = `${data.firstname} ${data.middleInitial}`.toLowerCase();
-            const fullName5 = `${data.lastname} ${data.middleInitial}`.toLowerCase();
-
+            // const fullName3 = `${data.firstname} ${data.middleInitial} ${data.lastname}`.toLowerCase();
+            // const fullName4 = `${data.firstname} ${data.middleInitial}`.toLowerCase();
+            // const fullName5 = `${data.lastname} ${data.middleInitial}`.toLowerCase();
+            
             const search = searchInput.toLowerCase();
-            return fullName1.includes(search) || fullName2.includes(search) || fullName3.includes(search) || fullName4.includes(search) || fullName5.includes(search);
+            return (
+              fullName1.includes(search) ||
+              fullName2.includes(search) 
+              // fullName3.includes(search) ||
+              // fullName4.includes(search) ||
+              // fullName5.includes(search)
+            );
           } else if (searchType === "BLOODTYPE") {
             return data.bloodType === searchInput;
           } else if (searchType === "PUROK") {

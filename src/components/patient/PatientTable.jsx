@@ -13,7 +13,7 @@ const PatientTable = ({
   user 
 }) => {
   const data = Array.isArray(filteredData) ? filteredData : [];
-
+  console.log("PatientTable data:", data);
   return (
     <div ref={componentRef} className="overflow-x-auto shadow-md sm:rounded-lg">
       <h2 className='text-2xl font-bold text-center mb-10 hidden print:block'>PATIENT LIST</h2>
