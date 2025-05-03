@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Parse from 'parse/dist/parse.min.js';
-import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaBirthdayCake, FaTint, FaIdCard } from 'react-icons/fa';
+import Parse from "parse/dist/parse.min.js";
+import {
+  FaUser,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaBirthdayCake,
+  FaTint,
+  FaIdCard,
+} from "react-icons/fa";
 import toast from "react-hot-toast";
 
 const MyAccount = () => {
@@ -14,7 +22,8 @@ const MyAccount = () => {
   const user = Parse.User.current();
   const [error, setError] = useState(null);
   const [isConfirmSaveOpen, setIsConfirmSaveOpen] = useState(false);
-  const userRole = user.get('role')
+  const [isModalStateChanged, setIsModalStateChanged] = useState(false);
+  const userRole = user.get("role");
 
   const handleEditToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -25,7 +34,7 @@ const MyAccount = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    if(name === "contact" && (!/^\d*$/.test(value) || value.length > 11)){
+    if (name === "contact" && (!/^\d*$/.test(value) || value.length > 11)) {
       return;
     }
 
@@ -58,7 +67,7 @@ const MyAccount = () => {
         });
       }
 
-      const result = await Parse.Cloud.run('updateMyAccount', {
+      const result = await Parse.Cloud.run("updateMyAccount", {
         id: user.id,
         name: formData.name,
         email: formData.email,
@@ -66,9 +75,9 @@ const MyAccount = () => {
         password: formData.password,
         address: formData.address,
         contact: formData.contact,
-        profilePicture: profilePictureData
+        profilePicture: profilePictureData,
       });
-      toast.success(result.message)
+      toast.success(result.message);
       setAccount(result.user);
       setIsModalOpen(false);
     } catch (err) {
@@ -87,8 +96,8 @@ const MyAccount = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const result = await Parse.Cloud.run('myAccount', { id: user?.id });
-        setAccount(result)
+        const result = await Parse.Cloud.run("myAccount", { id: user?.id });
+        setAccount(result);
       } catch (err) {
         console.error(err);
       } finally {
@@ -98,8 +107,6 @@ const MyAccount = () => {
     fetchUsers();
   }, []);
 
-
- 
   return (
     <div className="min-h-screen py-12 px-4">
       <h1 className="text-2xl mb-10 text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2">
@@ -117,18 +124,22 @@ const MyAccount = () => {
                 <div className="w-32 h-32 rounded-full border-4 border-white overflow-hidden transition-transform duration-300 group-hover:scale-105">
                   {account.profilePicture ? (
                     <img
-                      src={account.profilePicture instanceof File ? previewImage : account.profilePicture}
+                      src={
+                        account.profilePicture instanceof File
+                          ? previewImage
+                          : account.profilePicture
+                      }
                       alt="Profile"
                       className="w-full h-full object-cover"
                     />
                   ) : (
                     <div className="flex items-center justify-center w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 text-2xl font-bold text-gray-600">
-                      {account.name?.charAt(0) || 'U'}
+                      {account.name?.charAt(0) || "U"}
                     </div>
                   )}
                 </div>
               </div>
-              
+
               {/* Basic Info */}
               <div className="text-center md:text-left text-white">
                 <h1 className="text-3xl font-bold mb-2">{account.name}</h1>
@@ -143,25 +154,57 @@ const MyAccount = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Personal Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">Personal Information</h3>
-                <InfoItem icon={<FaBirthdayCake />} label="Birthdate" value={userRole === "PATIENT" ? account.bod : account.birthdate} /> 
+                <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
+                  Personal Information
+                </h3>
+                <InfoItem
+                  icon={<FaBirthdayCake />}
+                  label="Birthdate"
+                  value={
+                    userRole === "PATIENT" ? account.bod : account.birthdate
+                  }
+                />
                 <InfoItem icon={<FaUser />} label="Age" value={account.age} />
-                <InfoItem icon={<FaTint />} label="Blood Type" value={account.bloodType} />
+                <InfoItem
+                  icon={<FaTint />}
+                  label="Blood Type"
+                  value={account.bloodType}
+                />
               </div>
 
               {/* Contact Information */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">Contact Information</h3>
-                <InfoItem icon={<FaMapMarkerAlt />} label="Address" value={account.address} />
-                <InfoItem icon={<FaPhone />} label="Contact" value={account.contact} />
-                <InfoItem icon={<FaEnvelope />} label="Email" value={account.email} />
+                <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
+                  Contact Information
+                </h3>
+                <InfoItem
+                  icon={<FaMapMarkerAlt />}
+                  label="Address"
+                  value={account.address}
+                />
+                <InfoItem
+                  icon={<FaPhone />}
+                  label="Contact"
+                  value={account.contact}
+                />
+                <InfoItem
+                  icon={<FaEnvelope />}
+                  label="Email"
+                  value={account.email}
+                />
               </div>
             </div>
 
             {/* Account Information */}
             <div className="mt-8 space-y-4">
-              <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">Account Information</h3>
-              <InfoItem icon={<FaIdCard />} label="Username" value={account.username} />
+              <h3 className="text-lg font-semibold text-gray-700 border-b pb-2">
+                Account Information
+              </h3>
+              <InfoItem
+                icon={<FaIdCard />}
+                label="Username"
+                value={account.username}
+              />
               <div className="flex items-center space-x-2 text-gray-600">
                 <strong>Password:</strong>
                 <span>{isPasswordVisible ? account.password : "********"}</span>
@@ -191,7 +234,9 @@ const MyAccount = () => {
         {isModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
             <div className="bg-white w-full max-w-lg rounded-2xl p-8 relative transform transition-all duration-300 scale-100">
-              <h3 className="text-xl font-bold mb-4">Edit Account</h3>
+              <h3 className="text-2xl mb-10 text-center font-semibold text-gray-800 bg-yellow-500 w-[max-content] mx-auto px-28 py-2">
+                {isModalStateChanged ? "CHANGE PASSWORD" : "EDIT MY ACCOUNT"}
+              </h3>
               <div className="flex flex-col gap-y-3">
                 {/* <div>
                   <label className="block font-bold">Name:</label>
@@ -203,7 +248,7 @@ const MyAccount = () => {
                     className="w-full px-3 py-2 border rounded"
                   />
                 </div> */}
-                <div className="col-span-2">
+                <div className={`${isModalStateChanged ? "hidden" : ""}`}>
                   <label className="block font-bold">Profile Picture:</label>
                   <input
                     type="file"
@@ -221,7 +266,7 @@ const MyAccount = () => {
                     </div>
                   )}
                 </div>
-                <div>
+                <div className={`${isModalStateChanged ? "hidden" : ""}`}>
                   <label className="block font-bold">Email:</label>
                   <input
                     type="email"
@@ -241,8 +286,8 @@ const MyAccount = () => {
                     className="w-full px-3 py-2 border rounded"
                   />
                 </div> */}
-               
-                <div className="w-full">
+
+                <div className={`${isModalStateChanged ? "hidden" : ""}`}>
                   <label className="block font-bold">Address:</label>
                   <input
                     type="text"
@@ -252,7 +297,24 @@ const MyAccount = () => {
                     className="w-full px-3 py-2 border rounded"
                   />
                 </div>
-                <div>
+                <div className="flex justify-start items-start">
+
+                  <button
+                    onClick={() => setIsModalStateChanged(false)}
+                    className={`${isModalStateChanged ? "" : "hidden"}`}
+                  >
+                    back
+                  </button>
+                </div>
+                <button
+                  onClick={() => setIsModalStateChanged(true)}
+                  className={`${
+                    isModalStateChanged ? "hidden" : "text-start underline"
+                  }`}
+                >
+                  Change password
+                </button>
+                <div className={`${isModalStateChanged ? "" : "hidden"}`}>
                   <label className="block font-bold">Password:</label>
                   <div className="relative">
                     <input
@@ -281,7 +343,6 @@ const MyAccount = () => {
                     className="w-full px-3 py-2 border rounded"
                   />
                 </div> */}
-    
               </div>
               <div className="flex flex-col items-center mt-6">
                 {loading ? (
@@ -308,9 +369,7 @@ const MyAccount = () => {
                     </button>
                   </div>
                 )}
-                {error && (
-                  <p className="text-red-500 mt-2">{error}</p>
-                )}
+                {error && <p className="text-red-500 mt-2">{error}</p>}
               </div>
             </div>
           </div>
@@ -319,14 +378,16 @@ const MyAccount = () => {
         {isConfirmSaveOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-center z-50">
             <div className="bg-white flex flex-col justify-center items-center w-full max-w-lg rounded-2xl p-8">
-              <h3 className="text-xl font-bold mb-4">ARE YOU SURE YOU WANT TO SAVE?</h3>
+              <h3 className="text-xl font-bold mb-4">
+                ARE YOU SURE YOU WANT TO SAVE?
+              </h3>
               <div className="flex justify-between gap-x-2">
                 <button
                   onClick={confirmSave}
                   className="px-4 py-2 bg-orange-500 text-white rounded"
                 >
                   Yes
-                </button> 
+                </button>
                 <button
                   onClick={() => setIsConfirmSaveOpen(false)}
                   className="px-4 py-2 bg-red-500 text-white rounded"

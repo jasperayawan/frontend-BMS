@@ -209,7 +209,7 @@ const Home = () => {
                       user?.get("role") !== "NURSE" && (
                         <button
                           onClick={() => handleEdit(announcement)}
-                          className="bg-orange-500 hover:bg-orange-600 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
+                          className="bg-yellow-500 hover:bg-orange-600 transition-colors text-white px-4 py-2 rounded-md flex items-center gap-2"
                         >
                           <span>Edit</span>
                         </button>
