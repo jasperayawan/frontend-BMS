@@ -10,6 +10,8 @@ import {
   FaIdCard,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { ArrowLeft } from "lucide-react";
+
 
 const MyAccount = () => {
   const [account, setAccount] = useState({});
@@ -23,7 +25,7 @@ const MyAccount = () => {
   const [error, setError] = useState(null);
   const [isConfirmSaveOpen, setIsConfirmSaveOpen] = useState(false);
   const [isModalStateChanged, setIsModalStateChanged] = useState(false);
-  const userRole = user.get("role");
+  const userRole = user && user.get("role");
 
   const handleEditToggle = () => {
     setIsModalOpen(!isModalOpen);
@@ -53,9 +55,19 @@ const MyAccount = () => {
     setIsConfirmSaveOpen(true); // Open confirmation modal
   };
 
+
   const confirmSave = async () => {
     setLoading(true);
     setError(null);
+    setIsConfirmSaveOpen(false);
+
+     // Check if passwords match
+     if (formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      setLoading(false);
+      return; 
+    }
+
     try {
       // Prepare the profile picture if it's a File object
       let profilePictureData = null;
@@ -66,6 +78,7 @@ const MyAccount = () => {
           reader.readAsDataURL(formData.profileImage);
         });
       }
+      
 
       const result = await Parse.Cloud.run("updateMyAccount", {
         id: user.id,
@@ -76,11 +89,19 @@ const MyAccount = () => {
         address: formData.address,
         contact: formData.contact,
         profilePicture: profilePictureData,
+        oldPassword: formData.oldPassword,
       });
-      toast.success(result.message);
       setAccount(result.user);
-      setIsModalOpen(false);
+      if (result.message === "Password updated successfully") { 
+        Parse.User.logOut();
+        localStorage.removeItem("sessionToken")
+        window.location.reload();
+      } else {
+        toast.success(result.message);
+        setIsModalOpen(false);
+      }
     } catch (err) {
+      toast.error(err.message);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -238,16 +259,7 @@ const MyAccount = () => {
                 {isModalStateChanged ? "CHANGE PASSWORD" : "EDIT MY ACCOUNT"}
               </h3>
               <div className="flex flex-col gap-y-3">
-                {/* <div>
-                  <label className="block font-bold">Name:</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded"
-                  />
-                </div> */}
+
                 <div className={`${isModalStateChanged ? "hidden" : ""}`}>
                   <label className="block font-bold">Profile Picture:</label>
                   <input
@@ -276,16 +288,6 @@ const MyAccount = () => {
                     className="w-full px-3 py-2 border rounded"
                   />
                 </div>
-                {/* <div>
-                  <label className="block font-bold">Username:</label>
-                  <input
-                    type="text"
-                    name="username"
-                    value={formData.username}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded"
-                  />
-                </div> */}
 
                 <div className={`${isModalStateChanged ? "hidden" : ""}`}>
                   <label className="block font-bold">Address:</label>
@@ -297,8 +299,8 @@ const MyAccount = () => {
                     className="w-full px-3 py-2 border rounded"
                   />
                 </div>
-                <div className="flex justify-start items-start">
-
+                <div className={`${isModalStateChanged ? "flex justify-start items-start gap-x-2 mb-2" : "hidden"}`}>
+                  <ArrowLeft />
                   <button
                     onClick={() => setIsModalStateChanged(false)}
                     className={`${isModalStateChanged ? "" : "hidden"}`}
@@ -315,34 +317,39 @@ const MyAccount = () => {
                   Change password
                 </button>
                 <div className={`${isModalStateChanged ? "" : "hidden"}`}>
-                  <label className="block font-bold">Password:</label>
+                  <label className="block font-bold">Old Password:</label>
+                  <div className="relative">
+                    <input
+                      type={isPasswordVisible ? "text" : "password"}
+                      name="oldPassword"
+                      value={formData.oldPassword || ""}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border rounded"
+                    />
+                  </div>
+
+                  <label className="block font-bold mt-4">New Password:</label>
                   <div className="relative">
                     <input
                       type={isPasswordVisible ? "text" : "password"}
                       name="password"
-                      value={formData.password}
+                      value={formData.password || ""}
                       onChange={handleInputChange}
                       className="w-full px-3 py-2 border rounded"
                     />
-                    <button
-                      type="button"
-                      onClick={togglePasswordVisibility}
-                      className="absolute right-2 top-2 text-gray-600"
-                    >
-                      {isPasswordVisible ? "👁️‍🗨️" : "👁️"}
-                    </button>
+                  </div>
+
+                  <label className="block font-bold mt-4">Confirm Password:</label>
+                  <div className="relative">
+                    <input
+                      type={isPasswordVisible ? "text" : "password"}
+                      name="confirmPassword"
+                      value={formData.confirmPassword || ""}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border rounded"
+                    />
                   </div>
                 </div>
-                {/* <div>
-                  <label className="block font-bold">Contact No.:</label>
-                  <input
-                    type="text"
-                    name="contact"
-                    value={formData.contact}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border rounded"
-                  />
-                </div> */}
               </div>
               <div className="flex flex-col items-center mt-6">
                 {loading ? (
