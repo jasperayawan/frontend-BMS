@@ -299,10 +299,9 @@ const MyAccount = () => {
                     className="w-full px-3 py-2 border rounded"
                   />
                 </div>
-                <div className={`${isModalStateChanged ? "flex justify-start items-start gap-x-2 mb-2" : "hidden"}`}>
-                  <ArrowLeft />
+                <div onClick={() => setIsModalStateChanged(false)} className={`${isModalStateChanged ? "flex hover:underline justify-start items-start gap-x-2 mb-2" : "hidden"}`}>
+                  <ArrowLeft className="cursor-pointer" />
                   <button
-                    onClick={() => setIsModalStateChanged(false)}
                     className={`${isModalStateChanged ? "" : "hidden"}`}
                   >
                     back
