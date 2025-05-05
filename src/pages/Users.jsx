@@ -529,10 +529,10 @@ const Users = () => {
                     Email
                   </th>
                   <th className="px-6 py-3 text-left text-xs text-black font-semibold uppercase tracking-wider">
-                    DATE REGISTERED
+                    STATUS
                   </th>
                   <th className="px-6 py-3 text-left text-xs text-black font-semibold uppercase tracking-wider">
-                    STATUS
+                    DATE REGISTERED
                   </th>
                 </tr>
               </thead>
@@ -577,11 +577,11 @@ const Users = () => {
                       <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
                         {user.email}
                       </td>
-                      <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
-                        {new Date(user.createdAt).toLocaleDateString()}
-                      </td>
-                      <td className="px-3 py-1 whitespace-nowrap text-sm text-black">
+                      <td className="px-3 text-center py-1 whitespace-nowrap text-sm text-black">
                         {user.status}
+                      </td>
+                      <td className="px-3 text-center py-1 whitespace-nowrap text-sm text-black">
+                        {new Date(user.createdAt).toLocaleDateString()}
                       </td>
                     </tr>
                   ))

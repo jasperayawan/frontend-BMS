@@ -738,8 +738,8 @@ const AddPatientModal = ({
             type="submit"
             className={`px-4 py-2 font-bold text-white rounded-md ${
               isSubmitting
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-orange-500 hover:bg-orange-600"
+                ? "bg-yellow-500 hover:bg-orange-500 cursor-not-allowed"
+                : "bg-yellow-500 hover:bg-orange-500"
             }`}
             disabled={isSubmitting}
           >
@@ -747,7 +747,7 @@ const AddPatientModal = ({
           </button>
           <button
             onClick={() => setIsAddPatientModal(false)}
-            className={`px-4 py-2 font-bold text-white rounded-md bg-orange-500`}
+            className={`px-4 py-2 font-bold text-white rounded-md bg-yellow-500 hover:bg-orange-500`}
           >
             cancel
           </button>

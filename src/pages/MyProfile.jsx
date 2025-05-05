@@ -19,7 +19,7 @@ const MyProfile = () => {
         setOpenMedicalHistory(true)
     }
 
-
+    console.log(myProfile)
     const handlePrint = () => {
       const printContent = componentRef.current;
       const printWindow = window.open("", "_blank");
@@ -302,11 +302,11 @@ const MyProfile = () => {
     
               {/* Action Buttons */}
               <div className="col-span-3 flex justify-between mt-6">
-                <button onClick={handleMedicalServices} className="px-8 py-2 bg-white text-black border border-zinc-600 rounded">
+                <button onClick={handleMedicalServices} className="px-8 py-2 block print:hidden bg-white text-black border border-zinc-600 rounded">
                   MEDICAL HISTORY
                 </button>
                 <div className="flex gap-4">
-                  <button onClick={handlePrint} className="px-8 py-2 border border-gray-300 rounded hover:bg-gray-50">
+                  <button onClick={handlePrint} className="px-8 py-2 border print:hidden border-gray-300 rounded hover:bg-gray-50">
                     PRINT
                   </button>
                 </div>

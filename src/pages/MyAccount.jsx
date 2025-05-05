@@ -28,6 +28,7 @@ const MyAccount = () => {
   const userRole = user && user.get("role");
 
   const handleEditToggle = () => {
+    setIsModalStateChanged(false)
     setIsModalOpen(!isModalOpen);
     setFormData(account); // Reset formData if editing is canceled
     setPreviewImage(account.profileImage);
@@ -299,14 +300,14 @@ const MyAccount = () => {
                     className="w-full px-3 py-2 border rounded"
                   />
                 </div>
-                <div onClick={() => setIsModalStateChanged(false)} className={`${isModalStateChanged ? "flex hover:underline justify-start items-start gap-x-2 mb-2" : "hidden"}`}>
+                {/* <div onClick={() => setIsModalStateChanged(false)} className={`${isModalStateChanged ? "flex hover:underline justify-start items-start gap-x-2 mb-2" : "hidden"}`}>
                   <ArrowLeft className="cursor-pointer" />
                   <button
                     className={`${isModalStateChanged ? "" : "hidden"}`}
                   >
                     back
                   </button>
-                </div>
+                </div> */}
                 <button
                   onClick={() => setIsModalStateChanged(true)}
                   className={`${

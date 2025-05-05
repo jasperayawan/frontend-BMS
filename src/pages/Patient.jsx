@@ -854,7 +854,7 @@ const Patient = () => {
                   <>
                     <button
                       onClick={() => setIsAddPatientModal(!isAddPatientModal)}
-                      className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
+                      className="bg-yellow-500 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -878,7 +878,7 @@ const Patient = () => {
                           setHealthCareAddorEdit("EDIT");
                         }
                       }}
-                      className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+                      className="bg-yellow-500 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
                     >
                       Edit
                     </button>
@@ -890,7 +890,7 @@ const Patient = () => {
                           setHealthCareAddorEdit("ADD");
                         }
                       }}
-                      className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
+                      className="bg-yellow-500 hover:bg-orange-500 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
                     >
                       Healthcare Services
                     </button>
