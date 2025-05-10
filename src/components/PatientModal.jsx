@@ -153,7 +153,7 @@ const PatientModal = ({
                             } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
                           >
                             <div className="py-3 px-4">{activeTab}</div>
-                            <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                            <div className="py-3 px-4">
                               {new Date(data.createdAt).getFullYear()}
                             </div>
                             <div className="py-3 px-4">
@@ -184,7 +184,7 @@ const PatientModal = ({
                             } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
                           >
                             <div className="py-3 px-4">{activeTab}</div>
-                            <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                            <div className="py-3 px-4">
                               {new Date(data.createdAt).getFullYear()}
                             </div>
                             <div className="py-3 px-4">
@@ -215,7 +215,7 @@ const PatientModal = ({
                             } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
                           >
                             <div className="py-3 px-4">{activeTab}</div>
-                            <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                            <div className="py-3 px-4">
                               {new Date(data.record?.createdAt).getFullYear()}
                             </div>
                             <div className="py-3 px-4">
@@ -246,7 +246,7 @@ const PatientModal = ({
                             } grid grid-cols-3 text-center border-b last:border-b-0 cursor-pointer`}
                           >
                             <div className="py-3 px-4">{activeTab}</div>
-                            <div className="py-3 px-4 border-l-2 border-r-2 border-black">
+                            <div className="py-3 px-4">
                               {data.createdAt
                                 ? new Date(data.createdAt).getFullYear()
                                 : "N/A"}
