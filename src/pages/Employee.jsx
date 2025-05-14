@@ -231,6 +231,11 @@ const Employee = () => {
   const handleAddEmployee = async (e) => {
     e.preventDefault();
     setLoading(true)
+    if(!image){
+      toast.error("Select a Photo for profile picture.")
+      setLoading(false)
+      return
+    }
     try {
       const formData = { ...employeeObj }; // Create plain object
 
@@ -375,6 +380,20 @@ const Employee = () => {
 
     fetchAllEmployee();
   }, []);
+
+
+    const generateUserId = () => {
+      const randomNumber = Math.floor(100 + Math.random() * 900); 
+      return `MDS-${randomNumber}`;
+    };
+
+    useEffect(() => {
+        setEmployeeObj((prev) => ({
+          ...prev,
+          userId: generateUserId(),
+        }));
+      }, [setEmployeeObj]);
+  
 
   return (
     <div className="container mx-auto px-4 py-8">
