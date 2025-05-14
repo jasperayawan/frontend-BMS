@@ -16,12 +16,15 @@ const Gallery = () => {
   const [loading, setLoading] = useState(false);
   const user = Parse.User.current();
   const [newFile, setNewFile] = useState(null);
-  const [prevImage, setPrevImage] = useState("");
   const [selectedCardGallery, setSelectedCardGallery] = useState(null);
   const [isOk, setIsOk] = useState(false);
 
   // Add a new gallery folder
   const handleAddGallery = async () => {
+    if(!newFile) {
+      toast.error("Please select a file to upload.");
+      return
+    }
     if (!folderName.trim() || !newFile) return;
     setLoading(true);
     try {
@@ -189,41 +192,40 @@ const Gallery = () => {
 
   return (
     <div className="min-h-screen py-12 px-4">
-
       {isOk && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">  
-        <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
-          <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
-            <button
-              onClick={() => {
-                setIsOk(false);
-                window.location.reload();
-              }}
-              className=""
-            >
-              <X />
-            </button>
-          </div>
-          <div className="flex flex-col justify-center items-center p-6">
-            <h2 className="text-xl font-bold mb-4 text-center">
-              SAVE SUCCESSFULLY
-            </h2>
-            <div className="flex justify-end gap-4">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
+            <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
               <button
                 onClick={() => {
                   setIsOk(false);
                   window.location.reload();
                 }}
-                className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+                className=""
               >
-                OK
+                <X />
               </button>
+            </div>
+            <div className="flex flex-col justify-center items-center p-6">
+              <h2 className="text-xl font-bold mb-4 text-center">
+                SAVE SUCCESSFULLY
+              </h2>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => {
+                    setIsOk(false);
+                    window.location.reload();
+                  }}
+                  className="px-4 py-2 bg-white text-black border border-zinc-600 transition-colors duration-200"
+                >
+                  OK
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       )}
-      
+
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="text-center mb-12">
