@@ -164,9 +164,9 @@ const Home = () => {
         <div className="fixed inset-0 z-50 bg-gray-800 bg-opacity-50 flex justify-center items-center">
         <div className="bg-zinc-300 rounded-lg shadow-xl w-[400px]">
           <div className="bg-zinc-400 flex justify-end items-center px-2 h-8">
-            <button onClick={() => setIsSuccess(false)} className="">
+            {/* <button onClick={() => setIsSuccess(false)} className="">
               <X />
-            </button>
+            </button> */}
           </div>
           <div className="flex flex-col justify-center items-center p-6">
             <h2 className="text-xl font-bold mb-4 text-center">
@@ -323,8 +323,8 @@ const Home = () => {
                   disabled={isSubmitting}
                   className={`${
                     isSubmitting
-                      ? "bg-orange-400"
-                      : "bg-orange-500 hover:bg-orange-600"
+                      ? "bg-yellow-400"
+                      : "bg-yellow-500 hover:bg-orange-600"
                   } transition-colors text-white px-6 py-2 rounded-md flex items-center gap-2`}
                 >
                   {isSubmitting ? (
