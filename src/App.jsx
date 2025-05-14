@@ -78,8 +78,11 @@ function App() {
       )}
 
       {(!user) && (!preventPath.includes(currentLoc)) && (
-        <div className="flex justify-end m-5">
-          <button onClick={handleStatementModal} className="text-end hover:underline">DO YOU WANT TO REGISTER?</button>
+        <div className="flex flex-col justify-start items-start m-5">
+          <a href="/login" onClick={() => {
+            localStorage.removeItem("unregisteredUser")
+          }} className="block py-2 underline">Log in</a>
+          <button onClick={handleStatementModal} className="hover:underline text-[12px] font-semibold text-orange-500">DO YOU WANT TO REGISTER?</button>
         </div>
       )}
 

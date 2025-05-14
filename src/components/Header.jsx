@@ -179,22 +179,8 @@ const Header = () => {
           </li>
         )}
 
-        {!isAuthenticated ? (
-           <li
-           onClick={() => {
-            handleActiveSelect("login")
-            localStorage.clear()
-           }}
-           className={`${
-             isActive === "login" || currentRoute === "login"
-               ? "bg-yellow-500 text-white"
-               : "hover:bg-yellow-100"
-           } rounded-md transition-colors`}
-         >
-           <a href="/login" className="block px-4 py-2">LOGIN</a>
-         </li>
-        ) : (
-          <li
+        {isAuthenticated && (
+            <li
           onClick={() => handleActiveSelect("myaccount")}
           className={`${
             isActive === "myaccount" || currentRoute === "myaccount"
